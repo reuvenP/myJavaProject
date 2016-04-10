@@ -10,6 +10,7 @@ public class Account {
     // variables
     float balance;
     Date lastActionDate;
+    float lastActionSum;
 
     // default constructor
     public Account() {
@@ -59,6 +60,4 @@ public class Account {
     public void setLastActionSum(float lastActionSum) {
         this.lastActionSum = lastActionSum;
     }
-
-    float lastActionSum;
 }
