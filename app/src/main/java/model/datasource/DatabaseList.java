@@ -12,7 +12,7 @@ import entities.Customer;
 import entities.CustomerType;
 import entities.Gender;
 import entities.Order;
-import entities.Rateing;
+import entities.Rating;
 import entities.Supplier;
 import model.backend.Backend;
 
@@ -346,7 +346,7 @@ public class DatabaseList implements Backend {
     public void updateSupplier(Supplier supplier, int supplierID) throws Exception {
         try {
             Supplier supplierTmp = getSupplierBySupplierID(supplierID);
-            supplierTmp.setRateing(supplier.getRateing());
+            supplierTmp.setRating(supplier.getRating());
             supplierTmp.setName(supplier.getName());
             supplierTmp.setBirthday(supplier.getBirthday());
             supplierTmp.setGender(supplier.getGender());
@@ -724,10 +724,10 @@ public class DatabaseList implements Backend {
         this.addBook(new Book("Harry Potter and the Half-Blood Prince", 2005, "J. K. Rowling", 607));
         this.addBook(new Book("Harry Potter and the Deathly Hallows", 2007, "J. K. Rowling", 607));
 
-        this.addSupplier(new Supplier(Rateing.FIVE, "Shmulik the great", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
-        this.addSupplier(new Supplier(Rateing.FOUR, "Reuven the great", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
-        this.addSupplier(new Supplier(Rateing.FIVE, "Shmulik & Reuven", new Date(), Gender.MALE, "Abcd 1 Bnei Brak", new Account()));
-        this.addSupplier(new Supplier(Rateing.ONE, "Reuven in vacation", new Date(), Gender.MALE, "Dcba 2 Bnei Brak", new Account()));
+        this.addSupplier(new Supplier(Rating.FIVE, "Shmulik the great", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
+        this.addSupplier(new Supplier(Rating.FOUR, "Reuven the great", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
+        this.addSupplier(new Supplier(Rating.FIVE, "Shmulik & Reuven", new Date(), Gender.MALE, "Abcd 1 Bnei Brak", new Account()));
+        this.addSupplier(new Supplier(Rating.ONE, "Reuven in vacation", new Date(), Gender.MALE, "Dcba 2 Bnei Brak", new Account()));
 
         this.addBooksInStore(new BooksInStore(getBookByBookID(1), 10));
         this.addBooksInStore(new BooksInStore(getBookByBookID(2), 15));
@@ -803,9 +803,9 @@ public class DatabaseList implements Backend {
         getSupplierBySupplierID(1).setAddress("update manually address 1");
         getSupplierBySupplierID(1).setAccount(new Account((float) 1234.364, new Date(), (float) 234.364));
 
-        this.updateSupplier(new Supplier(Rateing.FOUR, "updateSupplier 2", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()), 2);
-        this.updateSupplier(new Supplier(Rateing.FIVE, "updateSupplier 3", new Date(), Gender.MALE, "Abcd 1 Bnei Brak", new Account()), 3);
-        this.updateSupplier(new Supplier(Rateing.ONE, "updateSupplier 4", new Date(), Gender.MALE, "Dcba 2 Bnei Brak", new Account()), 4);
+        this.updateSupplier(new Supplier(Rating.FOUR, "updateSupplier 2", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()), 2);
+        this.updateSupplier(new Supplier(Rating.FIVE, "updateSupplier 3", new Date(), Gender.MALE, "Abcd 1 Bnei Brak", new Account()), 3);
+        this.updateSupplier(new Supplier(Rating.ONE, "updateSupplier 4", new Date(), Gender.MALE, "Dcba 2 Bnei Brak", new Account()), 4);
 
 
         this.updateBooksInStore(new BooksInStore(getBookByBookID(1), 15), 1);

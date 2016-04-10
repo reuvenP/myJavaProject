@@ -8,7 +8,7 @@ import java.util.Date;
 public class Supplier {
 
     // variables
-    Rateing rateing;
+    Rating rating;
     int supplierID;
     String name;
     Date birthday;
@@ -18,8 +18,8 @@ public class Supplier {
 
 
     // constructor
-    public Supplier(Rateing rateing, String name, Date birthday, Gender gender, String address, Account account) {
-        this.rateing = rateing;
+    public Supplier(Rating rating, String name, Date birthday, Gender gender, String address, Account account) {
+        this.rating = rating;
         this.name = name;
         this.birthday = birthday;
         this.gender = gender;
@@ -32,7 +32,7 @@ public class Supplier {
     public String toString() {
         return "Supplier{" +
                 "account=" + account +
-                ", rateing=" + rateing +
+                ", rating=" + rating +
                 ", supplierID=" + supplierID +
                 ", name='" + name + '\'' +
                 ", birthday=" + birthday +
@@ -91,11 +91,11 @@ public class Supplier {
         this.account = account;
     }
 
-    public Rateing getRateing() {
-        return rateing;
+    public Rating getRating() {
+        return rating;
     }
 
-    public void setRateing(Rateing rateing) {
-        this.rateing = rateing;
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 }
