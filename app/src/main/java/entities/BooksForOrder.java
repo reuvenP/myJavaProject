@@ -6,6 +6,7 @@ package entities;
 public class BooksForOrder {
 
     // variables
+    //TODO: replace "supplier" and "book" with "bookSupplier"
     Supplier supplier;
     Book book;
     int sumOfBooks;
