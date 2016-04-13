@@ -126,11 +126,11 @@ public class DatabaseList implements Backend {
     public float computeTotalPrice (Order order) throws Exception{
         float totalPrice = 0;
         for (BooksForOrder booksForOrder :order.getBooksForOrders()) {
-            if(!bookList.contains(booksForOrder.getBook())){
-                throw new Exception("This book(" + booksForOrder.getBook().getBookID() + " " + booksForOrder.getBook().getTitle() + ") does not exist in bookList\n first add the book to bookList!");
+            if(!bookList.contains(booksForOrder.getBookSupplier().getBook())){
+                throw new Exception("This book(" + booksForOrder.getBookSupplier().getBook().getBookID() + " " + booksForOrder.getBookSupplier().getBook().getTitle() + ") does not exist in bookList\n first add the book to bookList!");
             }
             try {
-                totalPrice += booksForOrder.getSumOfBooks() * getBookSupplierBySupplierIDAndByBookID(booksForOrder.getSupplier().getSupplierID(),booksForOrder.getBook().getBookID()).getPrice();
+                totalPrice += booksForOrder.getSumOfBooks() * getBookSupplierBySupplierIDAndByBookID(booksForOrder.getBookSupplier().getSupplier().getSupplierID(),booksForOrder.getBookSupplier().getBook().getBookID()).getPrice();
             }
             catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -502,7 +502,7 @@ public class DatabaseList implements Backend {
         for (Order order:orderList) {
             if(order.isOrderCompleted() == false){
                 for (BooksForOrder booksForOrderTmp:order.getBooksForOrders()) {
-                    if (booksForOrderTmp.getSupplier().getSupplierID() == supplierID) {
+                    if (booksForOrderTmp.getBookSupplier().getSupplier().getSupplierID() == supplierID) {
                         if(booksForOrderTmp.isOrderHasBeenCompleted() == false){
                             booksForOrderArrayListTmp.add(booksForOrderTmp);
                         }
@@ -527,24 +527,28 @@ public class DatabaseList implements Backend {
 
     @Override
     // return BookSupplier by bookID.
-    public BookSupplier getBookSupplierByBookID (int bookID) throws Exception {
+    public ArrayList<BookSupplier> getBookSupplierByBookID (int bookID) throws Exception {
+        ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
         for (BookSupplier bookSupplier:bookSupplierList) {
             if(bookSupplier.getBook().getBookID() == bookID) {
-                return bookSupplier;
+                bookSupplierArrayList.add(bookSupplier);
             }
         }
-        throw new Exception("There is no such bookID(" + bookID + ") Linked to supplier");
+       // throw new Exception("There is no such bookID(" + bookID + ") Linked to supplier");
+        return bookSupplierArrayList;
     }
 
     @Override
     // return BookSupplier by supplierID.
-    public BookSupplier getBookSupplierBySupplierID (int supplierID) throws Exception {
+    public ArrayList<BookSupplier> getBookSupplierBySupplierID (int supplierID) throws Exception {
+        ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
         for (BookSupplier bookSupplier:bookSupplierList) {
             if(bookSupplier.getSupplier().getSupplierID() == supplierID) {
-                return bookSupplier;
+                bookSupplierArrayList.add(bookSupplier);
             }
         }
-        throw new Exception("There is no such supplierID(" + supplierID + ") Linked to a book");
+        return bookSupplierArrayList;
+        //throw new Exception("There is no such supplierID(" + supplierID + ") Linked to a book");
     }
 
     @Override
@@ -753,37 +757,37 @@ public class DatabaseList implements Backend {
         this.addCustomer(new Customer(CustomerType.VIP, "Reuven", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
 
 
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(1), getBookByBookID(1), 4, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(1), getBookByBookID(2), 6, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(1), getBookByBookID(3), 8, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(1), getBookByBookID(4), 10, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(1), getBookByBookID(5), 12, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(1), getBookByBookID(6), 14, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(1), getBookByBookID(7), 16, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(1), 20), 4, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(2), 30), 6, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(3), 40), 8, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(4),45), 10, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(5),60), 12, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(6),45), 14, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(7),26), 16, false));
 
         this.addOrder(new Order(getCustomerByCustomerID(1), booksForOrderArrayList, new Date(), 0, false));
 
 
         booksForOrderArrayList.clear();
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(2), getBookByBookID(1), 4, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(2), getBookByBookID(2), 6, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(2), getBookByBookID(3), 8, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(2), getBookByBookID(4), 10, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(2), getBookByBookID(5), 12, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(2), getBookByBookID(6), 14, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(2), getBookByBookID(7), 16, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(2), getBookByBookID(1),40), 4, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(2), getBookByBookID(2),45), 6, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(2), getBookByBookID(3),50), 8, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(2), getBookByBookID(4),30), 10, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(2), getBookByBookID(5),40), 12, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(2), getBookByBookID(6),60), 14, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(2), getBookByBookID(7),49), 16, false));
 
         this.addOrder(new Order(getCustomerByCustomerID(2), booksForOrderArrayList, new Date(), 0, false));
 
 
         booksForOrderArrayList.clear();
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(3), getBookByBookID(1), 4, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(3), getBookByBookID(2), 6, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(3), getBookByBookID(3), 8, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(3), getBookByBookID(4), 10, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(3), getBookByBookID(5), 12, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(3), getBookByBookID(6), 14, false));
-        booksForOrderArrayList.add(new BooksForOrder(getSupplierBySupplierID(3), getBookByBookID(7), 16, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(3), getBookByBookID(1),40), 4, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(3), getBookByBookID(2),37), 6, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(3), getBookByBookID(3),69), 8, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(3), getBookByBookID(4),56), 10, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(3), getBookByBookID(5),74), 12, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(3), getBookByBookID(6),112), 14, false));
+        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(3), getBookByBookID(7),7), 16, false));
 
         this.addOrder(new Order(getCustomerByCustomerID(3), booksForOrderArrayList, new Date(), 0, false));
 

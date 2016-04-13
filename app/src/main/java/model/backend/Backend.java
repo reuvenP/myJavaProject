@@ -54,10 +54,8 @@ public interface Backend {
     public Order getOrderByCustomerID(int customerID) throws Exception;// return Order by customerID.
     public ArrayList<BooksForOrder> getActiveBooksForOrderFromSupplierBySupplierID(int supplierID) throws Exception;// return ArrayList<BooksForOrder> of books that does not supplied yet, by supplierID.
     public BookSupplier getBookSupplierBySupplierIDAndByBookID(int supplierID, int bookID) throws Exception;// return BookSupplier by supplierID and by bookID.
-    //TODO: return list instead object
-    public BookSupplier getBookSupplierByBookID(int bookID) throws Exception;// return BookSupplier by bookID.
-    //TODO: return list instead object
-    public BookSupplier getBookSupplierBySupplierID(int supplierID) throws Exception;// return BookSupplier by supplierID.
+    public ArrayList<BookSupplier> getBookSupplierByBookID(int bookID) throws Exception;// return BookSupplier by bookID.
+    public ArrayList<BookSupplier> getBookSupplierBySupplierID(int supplierID) throws Exception;// return BookSupplier by supplierID.
 
     public ArrayList<Book> getBookList() throws Exception;
     public ArrayList<Customer> getCustomerList() throws Exception;

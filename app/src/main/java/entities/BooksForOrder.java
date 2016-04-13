@@ -6,16 +6,14 @@ package entities;
 public class BooksForOrder {
 
     // variables
-    //TODO: replace "supplier" and "book" with "bookSupplier"
-    Supplier supplier;
-    Book book;
+    BookSupplier bookSupplier;
     int sumOfBooks;
     boolean orderHasBeenCompleted;
 
     // constructor
-    public BooksForOrder(Supplier supplier, Book book, int sumOfBooks, boolean orderHasBeenCompleted) {
-        this.supplier = supplier;
-        this.book = book;
+
+    public BooksForOrder(BookSupplier bookSupplier, int sumOfBooks, boolean orderHasBeenCompleted) {
+        this.bookSupplier = bookSupplier;
         this.sumOfBooks = sumOfBooks;
         this.orderHasBeenCompleted = orderHasBeenCompleted;
     }
@@ -23,29 +21,20 @@ public class BooksForOrder {
     @Override
     public String toString() {
         return "BooksForOrder{" +
-                "book=" + book +
-                ", supplier=" + supplier +
+                "bookSupplier=" + bookSupplier +
                 ", sumOfBooks=" + sumOfBooks +
                 ", orderHasBeenCompleted=" + orderHasBeenCompleted +
                 '}';
     }
+// getters and setters
 
-    // getters and setters
 
-    public Supplier getSupplier() {
-        return supplier;
+    public BookSupplier getBookSupplier() {
+        return bookSupplier;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
+    public void setBookSupplier(BookSupplier bookSupplier) {
+        this.bookSupplier = bookSupplier;
     }
 
     public int getSumOfBooks() {
