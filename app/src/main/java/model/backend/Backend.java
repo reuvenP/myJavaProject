@@ -18,7 +18,7 @@ public interface Backend {
 
     /*1)*/
     public void addBook(Book book) throws Exception;// add book to bookList.
-    public void addCustomer(Customer customer) throws Exception;// add customer to customerList.
+    public int addCustomer(Customer customer) throws Exception;// add customer to customerList.
     public void addSupplier(Supplier supplier) throws Exception;// add supplier to supplierList.
     public void addBooksInStore(BooksInStore booksInStore) throws Exception;// add booksInStore to booksInStoreList.
     public void addOrder(Order order) throws Exception;// add order to orderList.

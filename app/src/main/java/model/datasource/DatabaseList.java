@@ -8,6 +8,7 @@ import entities.Book;
 import entities.BookSupplier;
 import entities.BooksForOrder;
 import entities.BooksInStore;
+import entities.Category;
 import entities.Customer;
 import entities.CustomerType;
 import entities.Gender;
@@ -78,12 +79,13 @@ public class DatabaseList implements Backend {
 
     @Override
     // add customer to customerList.
-    public void addCustomer (Customer customer) throws Exception {
+    public int addCustomer (Customer customer) throws Exception {
         if (customerList.contains(customer)) {
             throw new Exception("This customer(" + customer.getCustomerID() + " " + customer.getName() + ") already exists");
         }
         customer.setCustomerID(customerIDGenerator++);
         customerList.add(customer);
+        return customer.getCustomerID();
     }
 
     @Override
@@ -785,13 +787,13 @@ public class DatabaseList implements Backend {
 
     @Override
     public void createLists () throws Exception {
-        this.addBook(new Book("Harry Potter and the Sorcerer's Stone", 1997, "J. K. Rowling", 223));
-        this.addBook(new Book("Harry Potter and the Chamber of Secrets", 1998, "J. K. Rowling", 251));
-        this.addBook(new Book("Harry Potter and the Prisoner of Azkaban", 1999, "J. K. Rowling", 317));
-        this.addBook(new Book("Harry Potter and the Goblet of Fire", 2000, "J. K. Rowling", 636));
-        this.addBook(new Book("Harry Potter and the Order of the Phoenix", 2003, "J. K. Rowling", 766));
-        this.addBook(new Book("Harry Potter and the Half-Blood Prince", 2005, "J. K. Rowling", 607));
-        this.addBook(new Book("Harry Potter and the Deathly Hallows", 2007, "J. K. Rowling", 607));
+        this.addBook(new Book("Harry Potter and the Sorcerer's Stone", 1997, "J. K. Rowling", 223, Category.NOVEL));
+        this.addBook(new Book("Harry Potter and the Chamber of Secrets", 1998, "J. K. Rowling", 251, Category.NOVEL));
+        this.addBook(new Book("Harry Potter and the Prisoner of Azkaban", 1999, "J. K. Rowling", 317, Category.NOVEL));
+        this.addBook(new Book("Harry Potter and the Goblet of Fire", 2000, "J. K. Rowling", 636, Category.NOVEL));
+        this.addBook(new Book("Harry Potter and the Order of the Phoenix", 2003, "J. K. Rowling", 766, Category.NOVEL));
+        this.addBook(new Book("Harry Potter and the Half-Blood Prince", 2005, "J. K. Rowling", 607, Category.NOVEL));
+        this.addBook(new Book("Harry Potter and the Deathly Hallows", 2007, "J. K. Rowling", 607, Category.NOVEL));
 
         this.addSupplier(new Supplier(Rating.FIVE, "Shmulik the great", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
         this.addSupplier(new Supplier(Rating.FOUR, "Reuven the great", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
@@ -861,11 +863,11 @@ public class DatabaseList implements Backend {
 
     @Override
     public void updateLists () throws Exception {
-        this.updateBook(new Book("updateBook 1", 1997, "J. K. Rowling", 223), 1);
-        this.updateBook(new Book("updateBook 2", 1998, "J. K. Rowling", 251), 2);
-        this.updateBook(new Book("updateBook 3", 1999, "J. K. Rowling", 317), 3);
-        this.updateBook(new Book("updateBook 5", 2003, "J. K. Rowling", 766), 5);
-        this.updateBook(new Book("updateBook 6", 2005, "J. K. Rowling", 607), 6);
+        this.updateBook(new Book("updateBook 1", 1997, "J. K. Rowling", 223, Category.NOVEL), 1);
+        this.updateBook(new Book("updateBook 2", 1998, "J. K. Rowling", 251, Category.NOVEL), 2);
+        this.updateBook(new Book("updateBook 3", 1999, "J. K. Rowling", 317, Category.NOVEL), 3);
+        this.updateBook(new Book("updateBook 5", 2003, "J. K. Rowling", 766, Category.NOVEL), 5);
+        this.updateBook(new Book("updateBook 6", 2005, "J. K. Rowling", 607, Category.NOVEL), 6);
 
 
         getSupplierBySupplierID(1).setName("update manually Supplier 1");

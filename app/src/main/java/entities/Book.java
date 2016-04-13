@@ -11,28 +11,30 @@ public class Book {
 	int year;
 	String author;
 	int pages;
+	Category category;
 
 
 
 	// constructor
-	public Book(String title, int year, String author, int pages) {
+	public Book(String title, int year, String author, int pages, Category category) {
 		this.title = title;
 		this.year = year;
 		this.author = author;
 		this.pages = pages;
+		this.category = category;
 	}
 
 	@Override
 	public String toString() {
 		return "Book{" +
-				"author='" + author + '\'' +
-				", title='" + title + '\'' +
+				"title='" + title + '\'' +
 				", bookID=" + bookID +
 				", year=" + year +
+				", author='" + author + '\'' +
 				", pages=" + pages +
+				", category=" + category +
 				'}';
 	}
-
 
 	// getters and setters
 	public String getTitle() {
@@ -75,4 +77,11 @@ public class Book {
 		this.pages = pages;
 	}
 
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 }

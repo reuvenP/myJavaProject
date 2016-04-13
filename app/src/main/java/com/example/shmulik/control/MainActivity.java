@@ -8,14 +8,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shmulik.myjavaproject.R;
 
+import java.util.Date;
+
+import entities.Account;
+import entities.Customer;
+import entities.CustomerType;
+import entities.Gender;
+import entities.Permission;
 import entities.User;
+import model.backend.Backend;
+import model.backend.BackendFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     public User currentUser = null;
+    Backend backend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +40,31 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Shmulik, stop press on this button!!!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
             }
         });
+        backend = BackendFactory.getInstance();
+        try {
+            int ID = backend.addCustomer(new Customer(CustomerType.VIP, "Shmulik", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
+            backend.addUser(new User(Permission.CUSTOMER, "shmulik@shmulikCorporatin.com","1234",ID));
+            currentUser = backend.getUserByID(ID);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+        if (currentUser != null){
+            TextView mailTV = (TextView) findViewById(R.id.mailTV);
+            mailTV.setText(currentUser.getMail());
+            TextView permTV = (TextView) findViewById(R.id.permTV);
+            permTV.setText(currentUser.getPermission().toString());
+            TextView nameTV = (TextView) findViewById(R.id.nameTV);
+            nameTV.setText("Shmulik");
+            TextView passTV = (TextView) findViewById(R.id.passwordTV);
+            passTV.setText(currentUser.getPassword());
+        }
     }
 
     @Override

@@ -2,7 +2,6 @@ package entities;
 //TODO: take care of all try catch
 //TODO: change all from void to int for error checking
 //TODO: possible merge between supplier / customer and user
-//TODO: add category
 import java.util.Date;
 
 /**
