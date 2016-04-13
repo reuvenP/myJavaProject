@@ -12,8 +12,10 @@ import entities.Customer;
 import entities.CustomerType;
 import entities.Gender;
 import entities.Order;
+import entities.Permission;
 import entities.Rating;
 import entities.Supplier;
+import entities.User;
 import model.backend.Backend;
 
 /**
@@ -27,6 +29,7 @@ public class DatabaseList implements Backend {
     private ArrayList<BooksInStore> booksInStoreList = new ArrayList<>();
     private ArrayList<Order> orderList = new ArrayList<>();
     private ArrayList<BookSupplier> bookSupplierList = new ArrayList<>();
+    private ArrayList<User> userArrayList = new ArrayList<>();
 
     private static int bookIDGenerator = 1;
     private static int customerIDGenerator = 1;
@@ -170,6 +173,32 @@ public class DatabaseList implements Backend {
     }
 
     @Override
+    public void addUser(User user) throws Exception {
+        for (User userTemp : userArrayList){
+            if (user.getMail() == userTemp.getMail())
+                throw new Exception("This mail already register");
+        }
+        Boolean IDexist = false;
+        if (user.getPermission() == Permission.CUSTOMER){
+            for (Customer customer : customerList){
+                if (customer.getCustomerID() == user.getUserID())
+                    IDexist = true;
+            }
+            if (IDexist == false)
+                throw new Exception("There is no ID in customers");
+        }
+        if (user.getPermission() == Permission.SUPPLIER){
+            for (Supplier supplier : supplierList){
+                if (supplier.getSupplierID() == user.getUserID())
+                    IDexist = true;
+            }
+            if (IDexist == false)
+                throw new Exception("There is no ID in suppliers");
+        }
+        userArrayList.add(user);
+    }
+
+    @Override
     // delete book to bookList by bookID.
     public void deleteBook(int bookID) throws Exception {
         Book bookTemp = getBookByBookID(bookID);
@@ -306,6 +335,17 @@ public class DatabaseList implements Backend {
     }
 
     @Override
+    public void deleteUser(int UserID) throws Exception {
+        try{
+            User user = this.getUserByID(UserID);
+            userArrayList.remove(user);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
     // update book in bookList by bookID.
     public void updateBook(Book book, int bookID) throws Exception {
         try {
@@ -412,6 +452,17 @@ public class DatabaseList implements Backend {
         try {
             getBooksInStoreByBooksInStoreID(booksInStoreID).setAmount(newAmount);
             System.out.println("inventory updated");
+        }
+        catch (Exception e){
+            throw e;
+        }
+    }
+
+    @Override
+    public void resetUserPassword(int userID, String newPassword) throws Exception {
+        try{
+            User user = getUserByID(userID);
+            user.setPassword(newPassword);
         }
         catch (Exception e){
             throw e;
@@ -552,6 +603,15 @@ public class DatabaseList implements Backend {
     }
 
     @Override
+    public User getUserByID(int userID) throws Exception {
+        for (User user : userArrayList){
+            if (user.getUserID() == userID)
+                return user;
+        }
+        throw new Exception("There is no user with this ID");
+    }
+
+    @Override
     // return ArrayList<Book> of books with specific title by title.
     public ArrayList<Book> getBookListByTitle(String title) throws Exception {
         ArrayList<Book> bookArrayList = new ArrayList<Book>();
@@ -597,6 +657,11 @@ public class DatabaseList implements Backend {
             }
         }
         return customerArrayList;
+    }
+
+    @Override
+    public ArrayList<User> getUserList() throws Exception {
+        return userArrayList;
     }
 
     // getters and setters:

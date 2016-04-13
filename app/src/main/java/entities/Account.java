@@ -1,8 +1,8 @@
 package entities;
-//TODO: enum for permissions.
-//TODO: variable for supplier / customer ID
+//TODO: take care of all try catch
+//TODO: change all from void to int for error checking
+//TODO: possible merge between supplier / customer and user
 //TODO: add category
-//TODO: add to supplier and customer mail and password for login or create DB for login.
 import java.util.Date;
 
 /**

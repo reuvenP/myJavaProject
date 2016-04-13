@@ -9,6 +9,7 @@ import entities.BooksInStore;
 import entities.Customer;
 import entities.Order;
 import entities.Supplier;
+import entities.User;
 
 /**
  * Created by shmuel on 29/03/2016.
@@ -23,6 +24,7 @@ public interface Backend {
     public void addOrder(Order order) throws Exception;// add order to orderList.
     public void addBooksForOrder(int orderID, BooksForOrder booksForOrder) throws Exception;// add booksForOrder to the list of specific order by orderID.
     public void addBookSupplier(BookSupplier bookSupplier) throws Exception;// add bookSupplier to bookSupplierList.
+    public void addUser(User user) throws Exception;
 
     /*2)*/
     public void deleteBook(int bookID) throws Exception;// delete book to bookList by bookID.
@@ -34,6 +36,7 @@ public interface Backend {
     public void deleteOrderPermanently(int orderID, boolean bool) throws Exception;// force order delete even if it's not completed.
     public void deleteBooksForOrder(int orderID, BooksForOrder booksForOrder) throws Exception;// delete booksForOrder from the list in specific order by orderID.
     public void deleteBookSupplier(int bookID, int supplierID) throws Exception;// delete bookSupplier from bookSupplierList by bookID and by supplierID.
+    public void deleteUser(int UserID) throws Exception;
 
     /*3)*/
     public void updateBook(Book book, int bookID) throws Exception;// update book in bookList by bookID.
@@ -43,6 +46,7 @@ public interface Backend {
     public void updateOrder(Order order, int orderID) throws Exception;// update order in orderList by orderID.
     public void updateBookSupplier(BookSupplier bookSupplier) throws Exception;// update bookSupplier in bookSupplierList.
     public void updateInventory(int bookID, int newAmount) throws Exception;// update booksInStore.amount in booksInStoreList by booksInStoreID.
+    public void resetUserPassword(int userID, String newPassword) throws Exception;
 
     /*4)*/
     public Book getBookByBookID(int bookID) throws Exception;// return Book by bookID.
@@ -56,6 +60,7 @@ public interface Backend {
     public BookSupplier getBookSupplierBySupplierIDAndByBookID(int supplierID, int bookID) throws Exception;// return BookSupplier by supplierID and by bookID.
     public ArrayList<BookSupplier> getBookSupplierByBookID(int bookID) throws Exception;// return BookSupplier by bookID.
     public ArrayList<BookSupplier> getBookSupplierBySupplierID(int supplierID) throws Exception;// return BookSupplier by supplierID.
+    public User getUserByID(int userID) throws Exception;
 
     public ArrayList<Book> getBookList() throws Exception;
     public ArrayList<Customer> getCustomerList() throws Exception;
@@ -67,6 +72,7 @@ public interface Backend {
     public ArrayList<BooksInStore> getBooksInStoreByTitle(String title) throws Exception;// return ArrayList<BooksInStore> of BooksInStore with specific title by title.
     public ArrayList<Order> getOrderListOfSpecificCustomerByCustomerID(int customerID) throws Exception;// return ArrayList<Order> of orders of specific customer by customerID.
     public ArrayList<Customer> getCustomerListByName(String name) throws Exception;// return ArrayList<Customer> of customers with specific name by name.
+    public ArrayList<User> getUserList() throws Exception;
 
     /*5) test */
     public void printList(ArrayList arrayList);

@@ -11,7 +11,11 @@ import android.view.MenuItem;
 
 import com.example.shmulik.myjavaproject.R;
 
+import entities.User;
+
 public class MainActivity extends AppCompatActivity {
+
+    public User currentUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
