@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.shmulik.control.LoginActivity"></activity>
+        <activity android:name="com.example.shmulik.control.LoginActivity" />
+        <activity android:name="com.example.shmulik.control.SignupActivity"></activity>
     </application>
 
 </manifest>

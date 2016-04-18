@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             TextView passTV = (TextView) findViewById(R.id.passwordTV);
             passTV.setText(currentUser.getPassword());
         }
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
     }
 
