@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">myJavaProject</string>
     <string name="action_settings">Settings</string>
+    <string name="prompt_email">email</string>
+    <string name="prompt_password">password</string>
+    <string name="action_sign_in_short"></string>
+    <string name="action_sign_in">Login</string>
+    <string name="action_sign_up">Register</string>
 </resources>

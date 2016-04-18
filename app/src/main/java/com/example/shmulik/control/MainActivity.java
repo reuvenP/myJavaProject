@@ -1,5 +1,6 @@
 package com.example.shmulik.control;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,13 +27,14 @@ import model.backend.BackendFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    public User currentUser = null;
+    User currentUser;
     Backend backend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        backend = BackendFactory.getInstance();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Shmulik, stop press on this button!!!", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, currentUser.getPassword(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
             }
         });
-        backend = BackendFactory.getInstance();
+
         try {
             int ID = backend.addCustomer(new Customer(CustomerType.VIP, "Shmulik", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
             backend.addUser(new User(Permission.CUSTOMER, "shmulik@shmulikCorporatin.com","1234",ID));
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
             TextView passTV = (TextView) findViewById(R.id.passwordTV);
             passTV.setText(currentUser.getPassword());
         }
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override

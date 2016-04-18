@@ -1,12 +1,14 @@
 package entities;
 
+
+import java.io.Serializable;
+
 /**
  * Created by reuvenp on 4/13/2016.
  */
 public class User {
     //permissions, mail and userID may not change. there is no setters for those fields
     //if object user is null - its a guest. his permissions are like customer without access to a specific account
-
     Permission permission;
     String mail;
     String password;
