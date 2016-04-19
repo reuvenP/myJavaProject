@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     User currentUser;
     Backend backend;
+    Button loginBT;
+    Button signupBT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,11 @@ public class MainActivity extends AppCompatActivity {
         backend = BackendFactory.getInstance();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        loginBT = (Button) findViewById(R.id.login_mainBT);
+        signupBT = (Button) findViewById(R.id.signup_mainBT);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
 
             }
-        });
+        });*/
 
         try {
             int ID = backend.addCustomer(new Customer(CustomerType.VIP, "Shmulik", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
@@ -57,18 +63,20 @@ public class MainActivity extends AppCompatActivity {
         {
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
-        if (currentUser != null){
-            TextView mailTV = (TextView) findViewById(R.id.mailTV);
-            mailTV.setText(currentUser.getMail());
-            TextView permTV = (TextView) findViewById(R.id.permTV);
-            permTV.setText(currentUser.getPermission().toString());
-            TextView nameTV = (TextView) findViewById(R.id.nameTV);
-            nameTV.setText("Shmulik");
-            TextView passTV = (TextView) findViewById(R.id.passwordTV);
-            passTV.setText(currentUser.getPassword());
-        }
-        Intent intent = new Intent(this, SignupActivity.class);
-        startActivity(intent);
+        signupBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+                startActivity(intent);
+            }
+        });
+        loginBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
