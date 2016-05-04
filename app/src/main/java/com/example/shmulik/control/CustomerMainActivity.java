@@ -43,15 +43,15 @@ public class CustomerMainActivity extends AppCompatActivity {
         try {
 
             backend = BackendFactory.getInstance();
-            bookArrayList = backend.getBookList();
+            //bookArrayList = backend.getBookList();
         }
         catch (Exception e)
         {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            finish();
         }
 
-        BooksAdapter adapter = new BooksAdapter(this, bookArrayList);
-        customerLV.setAdapter(adapter);
+        setCustomerLV();
         customerLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -63,7 +63,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         });
 
         List<Category> categoryList = Arrays.asList(Category.values());
-        ArrayList<String> list = new ArrayList<>();
+        final ArrayList<String> list = new ArrayList<>();
         list.add("All");
         for (int i=0; i<categoryList.size();i++)
         {
@@ -71,11 +71,44 @@ public class CustomerMainActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, list);
         categorySpinner.setAdapter(spinnerAdapter);
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0)
+                    setCustomerLV();
+                else
+                    setCustomerLV(Category.valueOf(list.get(position)));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         /*categorySpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             }
         });*/
+    }
+
+    void setCustomerLV(){
+        try {
+            bookArrayList = backend.getBookList();
+            BooksAdapter adapter = new BooksAdapter(this, bookArrayList);
+            customerLV.setAdapter(adapter);
+        } catch (Exception e) {
+            finish();
+        }
+    }
+    void setCustomerLV(Category category){
+        try {
+            bookArrayList = backend.getBookListByCategory(category);
+            BooksAdapter adapter = new BooksAdapter(this, bookArrayList);
+            customerLV.setAdapter(adapter);
+        } catch (Exception e) {
+            finish();
+        }
     }
 }
