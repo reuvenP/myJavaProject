@@ -19,7 +19,11 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.shmulik.control.LoginActivity" />
-        <activity android:name="com.example.shmulik.control.SignupActivity"></activity>
+        <activity android:name="com.example.shmulik.control.SignupActivity" />
+        <activity
+            android:name="com.example.shmulik.control.UserMainActivity"
+            android:label="@string/title_activity_user_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
