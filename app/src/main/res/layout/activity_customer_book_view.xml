@@ -7,12 +7,53 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.example.shmulik.control.CustomerBookViewActivity">
 
+    <!--   <ScrollView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">-->
     <TextView
+        android:id="@+id/book_name_bookview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/book_name_bookview"
-        android:textSize="20dp"/>
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/year_bookview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/author_bookview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/pages_bookview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/category_bookview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/id_bookview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--   </LinearLayout> -->
+    <!--  </ScrollView>  -->
+    <ListView
+        android:id="@+id/bookSupplierLV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ListView>
+
 
 </LinearLayout>
