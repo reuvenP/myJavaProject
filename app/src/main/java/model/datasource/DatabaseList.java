@@ -677,6 +677,16 @@ public class DatabaseList implements Backend {
         return bookArrayList;
     }
 
+    @Override
+    public User login(String email, String password)  {
+        for (User user : userArrayList)
+        {
+            if (user.getMail().equals(email) && user.getPassword().equals(password))
+                return user;
+        }
+        return null;
+    }
+
     // getters and setters:
 
     public ArrayList<BooksInStore> getBooksInStoreList() {
@@ -798,6 +808,8 @@ public class DatabaseList implements Backend {
 
     @Override
     public void createLists () throws Exception {
+        int ID;
+
         this.addBook(new Book("Harry Potter and the Sorcerer's Stone", 1997, "J. K. Rowling", 223, Category.Novel));
         this.addBook(new Book("Harry Potter and the Chamber of Secrets", 1998, "J. K. Rowling", 251, Category.Novel));
         this.addBook(new Book("Harry Potter and the Prisoner of Azkaban", 1999, "J. K. Rowling", 317, Category.Novel));
@@ -807,6 +819,7 @@ public class DatabaseList implements Backend {
         this.addBook(new Book("Harry Potter and the Deathly Hallows", 2007, "J. K. Rowling", 607, Category.Novel));
 
         this.addSupplier(new Supplier(Rating.FIVE, "Shmulik the great", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
+
         this.addSupplier(new Supplier(Rating.FOUR, "Reuven the great", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
         this.addSupplier(new Supplier(Rating.FIVE, "Shmulik & Reuven", new Date(), Gender.MALE, "Abcd 1 Bnei Brak", new Account()));
         this.addSupplier(new Supplier(Rating.ONE, "Reuven in vacation", new Date(), Gender.MALE, "Dcba 2 Bnei Brak", new Account()));
@@ -830,9 +843,12 @@ public class DatabaseList implements Backend {
         this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(6), (float)80.2));
         this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(7), (float) 91.32));
 
-        this.addCustomer(new Customer(CustomerType.VIP, "Shmulik", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
-        this.addCustomer(new Customer(CustomerType.REGULAR, "Shmulik thr regular", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
-        this.addCustomer(new Customer(CustomerType.VIP, "Reuven", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
+        ID = this.addCustomer(new Customer(CustomerType.VIP, "Shmulik", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
+        this.addUser(new User(Permission.CUSTOMER, "shmu1@gmail.com","1231",ID));
+        ID = this.addCustomer(new Customer(CustomerType.REGULAR, "Shmulik thr regular", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
+        this.addUser(new User(Permission.CUSTOMER, "shmu2@gmail.com","1232",ID));
+        ID = this.addCustomer(new Customer(CustomerType.VIP, "Reuven", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
+        this.addUser(new User(Permission.CUSTOMER, "reu1@gmail.com","1233",ID));
 
 
         booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(1), 20), 4, false));

@@ -2,6 +2,7 @@ package com.example.shmulik.control;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,8 +23,10 @@ import java.util.List;
 
 import entities.Book;
 import entities.Category;
+import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
+import model.backend.UserSingltone;
 
 public class CustomerMainActivity extends AppCompatActivity {
 
@@ -32,6 +35,8 @@ public class CustomerMainActivity extends AppCompatActivity {
     ArrayList<Book> bookArrayList;
     public Book bookToShow = null;
     Spinner categorySpinner;
+    User currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         try {
 
             backend = BackendFactory.getInstance();
+            currentUser = UserSingltone.getInstance();
             //bookArrayList = backend.getBookList();
         }
         catch (Exception e)

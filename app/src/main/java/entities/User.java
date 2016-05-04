@@ -17,6 +17,10 @@ public class User {
     //ID alone is not enough cause its possible customer and supplier equal ID
     int userID;
 
+    public User(){
+        this.userID = -1;
+    }
+
     public User(Permission permission, String mail, String password, int userID) {
         this.permission = permission;
         this.mail = mail;

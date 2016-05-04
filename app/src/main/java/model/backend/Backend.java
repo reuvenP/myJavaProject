@@ -76,6 +76,8 @@ public interface Backend {
     public ArrayList<User> getUserList() throws Exception;
     public ArrayList<Book> getBookListByCategory(Category category) throws Exception;
 
+    public User login(String email, String password);
+
     /*5) test */
     public void printList(ArrayList arrayList);
     public void createLists() throws Exception;

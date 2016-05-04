@@ -1,6 +1,8 @@
 package com.example.shmulik.control;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,6 +27,7 @@ import entities.Permission;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
+import model.backend.UserSingltone;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,12 +35,14 @@ public class MainActivity extends AppCompatActivity {
     Backend backend;
     Button loginBT;
     Button signupBT;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         backend = BackendFactory.getInstance();
+        currentUser = UserSingltone.getInstance();
         try {
             backend.createLists();
         } catch (Exception e) {
@@ -47,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         loginBT = (Button) findViewById(R.id.login_mainBT);
         signupBT = (Button) findViewById(R.id.signup_mainBT);
+
+
 
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -59,15 +66,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        try {
-            int ID = backend.addCustomer(new Customer(CustomerType.VIP, "Shmulik", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
-            backend.addUser(new User(Permission.CUSTOMER, "shmulik@shmulikCorporatin.com","1234",ID));
-            currentUser = backend.getUserByID(ID);
-        }
-        catch (Exception e)
-        {
-            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
-        }
         signupBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         loginBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CustomerMainActivity.class);//LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -104,5 +102,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
+        int userID = sharedPreferences.getInt("userID", -1);
+        if (userID != -1)
+        {
+            try {
+                User user = backend.getUserByID(userID);
+                UserSingltone.setInstance(user);
+                currentUser = UserSingltone.getInstance();
+                sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply();
+                if (currentUser.getPermission() == Permission.CUSTOMER)
+                {
+                    Intent intent = new Intent(MainActivity.this, CustomerMainActivity.class);
+                    startActivity(intent);
+                }
+                else if (currentUser.getPermission() == Permission.SUPPLIER)
+                {
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
