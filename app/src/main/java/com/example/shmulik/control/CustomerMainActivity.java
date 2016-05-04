@@ -1,9 +1,13 @@
 package com.example.shmulik.control;
 
+import android.app.Fragment;
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +26,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     Backend backend;
     ListView customerLV;
     ArrayList<Book> bookArrayList;
+    public Book bookToShow = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +44,16 @@ public class CustomerMainActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
-            ArrayAdapter<Book> adapter = new ArrayAdapter<Book>(this, R.layout.row_book, bookArrayList)
-            {
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    if (convertView == null){
-                        convertView = View.inflate(CustomerMainActivity.this, R.layout.row_book, null);
-                    }
-                    Book book = getItem(position);
-                    TextView book_id = (TextView) findViewById(R.id.book_id_row);
-                    TextView book_name = (TextView)findViewById(R.id.book_name_row);
-                    TextView book_category = (TextView) findViewById(R.id.book_category_row);
-                   // book_id.setText(bookArrayList.get(position).getBookID());
-                   // book_name.setText(bookArrayList.get(position).getTitle());
-                   // book_category.setText(book.getCategory().toString());
-                    return convertView;
-                }
-            };
-            customerLV.setAdapter(adapter);
-
+        BooksAdapter adapter = new BooksAdapter(this, bookArrayList);
+        customerLV.setAdapter(adapter);
+        customerLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                bookToShow = (Book) customerLV.getItemAtPosition(position);
+                Intent intent = new Intent(CustomerMainActivity.this, CustomerBookViewActivity.class);
+                intent.putExtra("bookID", bookToShow.getBookID());
+                startActivity(intent);
+            }
+        });
     }
 }
