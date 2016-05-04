@@ -38,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         backend = BackendFactory.getInstance();
+        try {
+            backend.createLists();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         loginBT = (Button) findViewById(R.id.login_mainBT);
@@ -73,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         loginBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, CustomerMainActivity.class);//LoginActivity.class);
                 startActivity(intent);
             }
         });

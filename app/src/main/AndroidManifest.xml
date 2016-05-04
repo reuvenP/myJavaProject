@@ -23,7 +23,8 @@
         <activity
             android:name="com.example.shmulik.control.UserMainActivity"
             android:label="@string/title_activity_user_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.example.shmulik.control.CustomerMainActivity"></activity>
     </application>
 
 </manifest>
