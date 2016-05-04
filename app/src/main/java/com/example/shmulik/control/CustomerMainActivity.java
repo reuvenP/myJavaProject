@@ -10,14 +10,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shmulik.myjavaproject.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import entities.Book;
+import entities.Category;
 import model.backend.Backend;
 import model.backend.BackendFactory;
 
@@ -27,6 +31,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     ListView customerLV;
     ArrayList<Book> bookArrayList;
     public Book bookToShow = null;
+    Spinner categorySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_customer_main);
         customerLV =// new ListView(this);
                 (ListView) findViewById(R.id.customer_LV);
+        categorySpinner = (Spinner) findViewById(R.id.category_spinner);
         try {
 
             backend = BackendFactory.getInstance();
@@ -55,5 +61,15 @@ public class CustomerMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        List<Category> categoryList = Arrays.asList(Category.values());
+        ArrayList<String> list = new ArrayList<>();
+        list.add("All");
+        for (int i=0; i<categoryList.size();i++)
+        {
+            list.add(categoryList.get(i).toString());
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, list);
+        categorySpinner.setAdapter(spinnerAdapter);
     }
 }
