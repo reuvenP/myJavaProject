@@ -6,6 +6,7 @@ import entities.Book;
 import entities.BookSupplier;
 import entities.BooksForOrder;
 import entities.BooksInStore;
+import entities.Category;
 import entities.Customer;
 import entities.Order;
 import entities.Supplier;
@@ -73,6 +74,7 @@ public interface Backend {
     public ArrayList<Order> getOrderListOfSpecificCustomerByCustomerID(int customerID) throws Exception;// return ArrayList<Order> of orders of specific customer by customerID.
     public ArrayList<Customer> getCustomerListByName(String name) throws Exception;// return ArrayList<Customer> of customers with specific name by name.
     public ArrayList<User> getUserList() throws Exception;
+    public ArrayList<Book> getBookListByCategory(Category category) throws Exception;
 
     /*5) test */
     public void printList(ArrayList arrayList);

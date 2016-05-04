@@ -667,6 +667,16 @@ public class DatabaseList implements Backend {
         return userArrayList;
     }
 
+    @Override
+    public ArrayList<Book> getBookListByCategory(Category category) throws Exception {
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        for (Book book: bookList){
+            if (book.getCategory() == category)
+                bookArrayList.add(book);
+        }
+        return bookArrayList;
+    }
+
     // getters and setters:
 
     public ArrayList<BooksInStore> getBooksInStoreList() {
@@ -788,13 +798,13 @@ public class DatabaseList implements Backend {
 
     @Override
     public void createLists () throws Exception {
-        this.addBook(new Book("Harry Potter and the Sorcerer's Stone", 1997, "J. K. Rowling", 223, Category.NOVEL));
-        this.addBook(new Book("Harry Potter and the Chamber of Secrets", 1998, "J. K. Rowling", 251, Category.NOVEL));
-        this.addBook(new Book("Harry Potter and the Prisoner of Azkaban", 1999, "J. K. Rowling", 317, Category.NOVEL));
-        this.addBook(new Book("Harry Potter and the Goblet of Fire", 2000, "J. K. Rowling", 636, Category.NOVEL));
-        this.addBook(new Book("Harry Potter and the Order of the Phoenix", 2003, "J. K. Rowling", 766, Category.NOVEL));
-        this.addBook(new Book("Harry Potter and the Half-Blood Prince", 2005, "J. K. Rowling", 607, Category.NOVEL));
-        this.addBook(new Book("Harry Potter and the Deathly Hallows", 2007, "J. K. Rowling", 607, Category.NOVEL));
+        this.addBook(new Book("Harry Potter and the Sorcerer's Stone", 1997, "J. K. Rowling", 223, Category.Novel));
+        this.addBook(new Book("Harry Potter and the Chamber of Secrets", 1998, "J. K. Rowling", 251, Category.Novel));
+        this.addBook(new Book("Harry Potter and the Prisoner of Azkaban", 1999, "J. K. Rowling", 317, Category.Novel));
+        this.addBook(new Book("Harry Potter and the Goblet of Fire", 2000, "J. K. Rowling", 636, Category.Novel));
+        this.addBook(new Book("Harry Potter and the Order of the Phoenix", 2003, "J. K. Rowling", 766, Category.Novel));
+        this.addBook(new Book("Harry Potter and the Half-Blood Prince", 2005, "J. K. Rowling", 607, Category.Novel));
+        this.addBook(new Book("Harry Potter and the Deathly Hallows", 2007, "J. K. Rowling", 607, Category.Novel));
 
         this.addSupplier(new Supplier(Rating.FIVE, "Shmulik the great", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
         this.addSupplier(new Supplier(Rating.FOUR, "Reuven the great", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
@@ -864,11 +874,11 @@ public class DatabaseList implements Backend {
 
     @Override
     public void updateLists () throws Exception {
-        this.updateBook(new Book("updateBook 1", 1997, "J. K. Rowling", 223, Category.NOVEL), 1);
-        this.updateBook(new Book("updateBook 2", 1998, "J. K. Rowling", 251, Category.NOVEL), 2);
-        this.updateBook(new Book("updateBook 3", 1999, "J. K. Rowling", 317, Category.NOVEL), 3);
-        this.updateBook(new Book("updateBook 5", 2003, "J. K. Rowling", 766, Category.NOVEL), 5);
-        this.updateBook(new Book("updateBook 6", 2005, "J. K. Rowling", 607, Category.NOVEL), 6);
+        this.updateBook(new Book("updateBook 1", 1997, "J. K. Rowling", 223, Category.Novel), 1);
+        this.updateBook(new Book("updateBook 2", 1998, "J. K. Rowling", 251, Category.Novel), 2);
+        this.updateBook(new Book("updateBook 3", 1999, "J. K. Rowling", 317, Category.Novel), 3);
+        this.updateBook(new Book("updateBook 5", 2003, "J. K. Rowling", 766, Category.Novel), 5);
+        this.updateBook(new Book("updateBook 6", 2005, "J. K. Rowling", 607, Category.Novel), 6);
 
 
         getSupplierBySupplierID(1).setName("update manually Supplier 1");
