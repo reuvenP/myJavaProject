@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                         {
                             Intent intent = new Intent(LoginActivity.this, CustomerMainActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                         else if (currentUser.getPermission() == Permission.SUPPLIER)
                         {
@@ -82,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
             {
                 Intent intent = new Intent(LoginActivity.this, CustomerMainActivity.class);
                 startActivity(intent);
+                finish();
             }
             else if (currentUser.getPermission() == Permission.SUPPLIER)
             {
