@@ -31,9 +31,11 @@ public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
         TextView supplier_name = (TextView) convertView.findViewById(R.id.supplier_name);
         TextView supplier_address = (TextView)convertView.findViewById(R.id.supplier_address);
         TextView price = (TextView) convertView.findViewById(R.id.price);
+        TextView amount = (TextView) convertView.findViewById(R.id.amount);
         supplier_name.setText("Supplier: " + bookSupplier.getSupplier().getName());
         supplier_address.setText("Address: " + bookSupplier.getSupplier().getAddress());
         price.setText("Price: " + Float.toString(bookSupplier.getPrice()));
+        amount.setText("Amount: " + Integer.toString(bookSupplier.getAmount()));
         return convertView;
     }
 }

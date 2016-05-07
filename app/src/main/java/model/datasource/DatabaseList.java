@@ -34,9 +34,8 @@ public class DatabaseList implements Backend {
     private ArrayList<User> userArrayList = new ArrayList<>();
 
     private static int bookIDGenerator = 1;
-    private static int customerIDGenerator = 1;
+    private static int userIDGenerator = 1;
     private static int orderIDGenerator = 1;
-    private static int supplierIDGenerator = 1;
     private static int booksInStoreIDGenerator = 1;
 
     // default constructor
@@ -89,19 +88,20 @@ public class DatabaseList implements Backend {
         if (customerList.contains(customer)) {
             throw new Exception("This customer(" + customer.getCustomerID() + " " + customer.getName() + ") already exists");
         }
-        customer.setCustomerID(customerIDGenerator++);
+        customer.setCustomerID(userIDGenerator++);
         customerList.add(customer);
         return customer.getCustomerID();
     }
 
     @Override
     // add supplier to supplierList.
-    public void addSupplier (Supplier supplier) throws Exception {
+    public int addSupplier (Supplier supplier) throws Exception {
         if (supplierList.contains(supplier)) {
             throw new Exception("This supplier(" + supplier.getSupplierID() + " " + supplier.getName() + ") already exists");
         }
-        supplier.setSupplierID(supplierIDGenerator++);
+        supplier.setSupplierID(userIDGenerator++);
         supplierList.add(supplier);
+        return supplier.getSupplierID();
     }
     @Override
     // add booksInStore to booksInStoreList.
@@ -683,6 +683,21 @@ public class DatabaseList implements Backend {
     }
 
     @Override
+    public int getBookAmountByBookID(int bookID) {
+        int amount = 0;
+        try {
+            ArrayList<BookSupplier> bookSupplierArrayList = this.getBookSupplierByBookID(bookID);
+            for (BookSupplier bookSupplier : bookSupplierArrayList)
+            {
+                amount += bookSupplier.getAmount();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return amount;
+    }
+
+    @Override
     public User login(String email, String password)  {
         for (User user : userArrayList)
         {
@@ -834,19 +849,19 @@ public class DatabaseList implements Backend {
         this.addBooksInStore(new BooksInStore(getBookByBookID(3), 18));
         this.addBooksInStore(new BooksInStore(getBookByBookID(4), 0));
 
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(1), (float) 55.5));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(2), (float) 58.5));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(3), (float) 62.38));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(4), (float) 78.6));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(5), (float) 82.4));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(6), (float) 83.1));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(2), getBookByBookID(1), (float) 83.1));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(2),getBookByBookID(7), (float)83.1));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(3),getBookByBookID(1), (float)50.4));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(3),getBookByBookID(3), (float)65.3));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(5), (float)82.9));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(6), (float)80.2));
-        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(7), (float) 91.32));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(1), (float) 55.5,3));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(2), (float) 58.5,6));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(3), (float) 62.38,76));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(4), (float) 78.6,45));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(5), (float) 82.4,34));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(6), (float) 83.1,43));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(2), getBookByBookID(1), (float) 83.1,23));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(2),getBookByBookID(7), (float)83.1,99));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(3),getBookByBookID(1), (float)50.4,1));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(3),getBookByBookID(3), (float)65.3,4));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(5), (float)82.9,2));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(6), (float)80.2,150));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(7), (float) 91.32,45));
 
         ID = this.addCustomer(new Customer(CustomerType.VIP, "Shmulik", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
         this.addUser(new User(Permission.CUSTOMER, "shmu1@gmail.com","1231",ID));
@@ -856,7 +871,7 @@ public class DatabaseList implements Backend {
         this.addUser(new User(Permission.CUSTOMER, "reu1@gmail.com","1233",ID));
 
 
-        booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(1), 20), 4, false));
+      /*  booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(1), 20), 4, false));
         booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(2), 30), 6, false));
         booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(3), 40), 8, false));
         booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(4),45), 10, false));
@@ -889,7 +904,7 @@ public class DatabaseList implements Backend {
         booksForOrderArrayList.add(new BooksForOrder(new BookSupplier(getSupplierBySupplierID(3), getBookByBookID(7),7), 16, false));
 
         this.addOrder(new Order(getCustomerByCustomerID(3), booksForOrderArrayList, new Date(), 0, false));
-
+*/
 
     }
 
@@ -914,7 +929,7 @@ public class DatabaseList implements Backend {
         this.updateBooksInStore(new BooksInStore(getBookByBookID(1), 15), 1);
         this.updateBooksInStore(new BooksInStore(getBookByBookID(2), 20), 2);
 
-
+/*
         this.updateBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(1), (float) 11.11));
         this.updateBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(2), (float) 22.22));
         this.updateBookSupplier(new BookSupplier(getSupplierBySupplierID(1), getBookByBookID(3), (float) 33.33));
@@ -928,7 +943,7 @@ public class DatabaseList implements Backend {
         this.updateBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(5), (float) 222.222));
         this.updateBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(6), (float) 333.333));
         this.updateBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(7), (float) 444.444));
-
+*/
 
         this.updateCustomer(new Customer(CustomerType.VIP, "updateCustomer 3", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()), 3);
         this.updateCustomer(new Customer(CustomerType.REGULAR, "updateCustomer 2", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()), 2);

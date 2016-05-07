@@ -23,6 +23,8 @@ import entities.Customer;
 import entities.CustomerType;
 import entities.Gender;
 import entities.Permission;
+import entities.Rating;
+import entities.Supplier;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
@@ -110,8 +112,28 @@ public class SignupActivity extends AppCompatActivity {
                 Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                //finish();
             } catch (Exception e) {
+                Toast.makeText(SignupActivity.this, "unsuccessful registered", Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
+        else if(supplierRB.isChecked())
+        {
+            try
+            {
+                int ID = backend.addSupplier(new Supplier(Rating.THREE,name,birthday,gender,address,null));
+                User user = new User(Permission.SUPPLIER, email, password, ID);
+                backend.addUser(user);
+                UserSingltone.setInstance(user);
+                currentUser = UserSingltone.getInstance();
+                SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
+                sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply();
+                Toast.makeText(SignupActivity.this, "registered successfully", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class);//TODO new class
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+            catch (Exception e) {
                 Toast.makeText(SignupActivity.this, "unsuccessful registered", Toast.LENGTH_LONG).show();
                 return;
             }

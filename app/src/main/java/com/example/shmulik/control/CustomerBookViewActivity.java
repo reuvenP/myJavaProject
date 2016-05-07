@@ -31,6 +31,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     TextView author;
     TextView category;
     TextView id;
+    TextView amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         author = (TextView) findViewById(R.id.author_bookview);
         category = (TextView) findViewById(R.id.category_bookview);
         id = (TextView) findViewById(R.id.id_bookview);
+        amount = (TextView) findViewById(R.id.amount_bookview);
 
         bookName.setText(book.getTitle());
         year.setText("Year: " + Integer.toString(book.getYear()));
@@ -63,6 +65,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         author.setText("Author: " + book.getAuthor());
         category.setText("Category: " + book.getCategory().toString());
         id.setText("Serial Number: " + Integer.toString(book.getBookID()));
+        amount.setText("Total amount in store: " + backend.getBookAmountByBookID(book.getBookID()));
 
         ArrayList<BookSupplier> bookSupplierArrayList;
         BookSuppliersAdapter adapter;

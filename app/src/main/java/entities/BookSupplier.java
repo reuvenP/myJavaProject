@@ -9,22 +9,24 @@ public class BookSupplier {
     Supplier supplier;
     Book book;
     float price;
+    int amount;
 
 
     // constructor
-    public BookSupplier(Supplier supplier, Book book, float price) {
-
+    public BookSupplier(Supplier supplier, Book book, float price, int amount) {
         this.supplier = supplier;
         this.book = book;
         this.price = price;
+        this.amount = amount;
     }
 
     @Override
     public String toString() {
         return "BookSupplier{" +
-                "book=" + book +
-                ", supplier=" + supplier +
+                "supplier=" + supplier +
+                ", book=" + book +
                 ", price=" + price +
+                ", amount=" + amount +
                 '}';
     }
 
@@ -53,5 +55,11 @@ public class BookSupplier {
         this.price = price;
     }
 
+    public int getAmount() {
+        return amount;
+    }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 }

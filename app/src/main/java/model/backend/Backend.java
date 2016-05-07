@@ -20,7 +20,7 @@ public interface Backend {
     /*1)*/
     public void addBook(Book book) throws Exception;// add book to bookList.
     public int addCustomer(Customer customer) throws Exception;// add customer to customerList.
-    public void addSupplier(Supplier supplier) throws Exception;// add supplier to supplierList.
+    public int addSupplier(Supplier supplier) throws Exception;// add supplier to supplierList.
     public void addBooksInStore(BooksInStore booksInStore) throws Exception;// add booksInStore to booksInStoreList.
     public void addOrder(Order order) throws Exception;// add order to orderList.
     public void addBooksForOrder(int orderID, BooksForOrder booksForOrder) throws Exception;// add booksForOrder to the list of specific order by orderID.
@@ -75,6 +75,7 @@ public interface Backend {
     public ArrayList<Customer> getCustomerListByName(String name) throws Exception;// return ArrayList<Customer> of customers with specific name by name.
     public ArrayList<User> getUserList() throws Exception;
     public ArrayList<Book> getBookListByCategory(Category category) throws Exception;
+    public int getBookAmountByBookID(int bookID);
 
     public User login(String email, String password);
 
