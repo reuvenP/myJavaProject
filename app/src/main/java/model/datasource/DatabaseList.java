@@ -837,12 +837,13 @@ public class DatabaseList implements Backend {
         this.addBook(new Book("Harry Potter and the Order of the Phoenix", 2003, "J. K. Rowling", 766, Category.Novel));
         this.addBook(new Book("Harry Potter and the Half-Blood Prince", 2005, "J. K. Rowling", 607, Category.Novel));
         this.addBook(new Book("Harry Potter and the Deathly Hallows", 2007, "J. K. Rowling", 607, Category.Novel));
+        this.addBook(new Book("Romeo and Juliet", 1597, "William Shakespeare", 283, Category.Drama));
 
         this.addSupplier(new Supplier(Rating.FIVE, "Shmulik the great", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
 
-        this.addSupplier(new Supplier(Rating.FOUR, "Reuven the great", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
-        this.addSupplier(new Supplier(Rating.FIVE, "Shmulik & Reuven", new Date(), Gender.MALE, "Abcd 1 Bnei Brak", new Account()));
-        this.addSupplier(new Supplier(Rating.ONE, "Reuven in vacation", new Date(), Gender.MALE, "Dcba 2 Bnei Brak", new Account()));
+        this.addSupplier(new Supplier(Rating.ONE, "Reuven the great", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
+        this.addSupplier(new Supplier(Rating.ONE, "Shmulik & Reuven", new Date(), Gender.MALE, "Abcd 1 Bnei Brak", new Account()));
+        this.addSupplier(new Supplier(Rating.FIVE, "Reuven in vacation", new Date(), Gender.MALE, "Dcba 2 Bnei Brak", new Account()));
 
         this.addBooksInStore(new BooksInStore(getBookByBookID(1), 10));
         this.addBooksInStore(new BooksInStore(getBookByBookID(2), 15));
@@ -862,6 +863,7 @@ public class DatabaseList implements Backend {
         this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(5), (float)82.9,2));
         this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(6), (float)80.2,150));
         this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(7), (float) 91.32,45));
+        this.addBookSupplier(new BookSupplier(getSupplierBySupplierID(4), getBookByBookID(8), (float) 110,70));
 
         ID = this.addCustomer(new Customer(CustomerType.VIP, "Shmulik", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
         this.addUser(new User(Permission.CUSTOMER, "shmu1@gmail.com","1231",ID));
