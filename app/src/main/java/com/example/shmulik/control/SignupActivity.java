@@ -108,8 +108,9 @@ public class SignupActivity extends AppCompatActivity {
                 sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply();
                 Toast.makeText(SignupActivity.this, "registered successfully", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+                //finish();
             } catch (Exception e) {
                 Toast.makeText(SignupActivity.this, "unsuccessful registered", Toast.LENGTH_LONG).show();
                 return;

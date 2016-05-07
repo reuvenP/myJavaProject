@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         backend = BackendFactory.getInstance();
         currentUser = UserSingltone.getInstance();
         try {
-            backend.createLists();
+           // backend.createLists();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,8 +99,9 @@ public class MainActivity extends AppCompatActivity {
                 if (currentUser.getPermission() == Permission.CUSTOMER)
                 {
                     Intent intent = new Intent(MainActivity.this, CustomerMainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                    finish();
+                   // finish();
                 }
                 else if (currentUser.getPermission() == Permission.SUPPLIER)
                 {

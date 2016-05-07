@@ -47,6 +47,11 @@ public class DatabaseList implements Backend {
 //        ArrayList<BooksInStore> booksInStoreList = new ArrayList<>();
 //        ArrayList<Order> orderList = new ArrayList<>();
 //        ArrayList<BookSupplier> bookSupplierList = new ArrayList<>();
+        try {
+            this.createLists();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // constructor

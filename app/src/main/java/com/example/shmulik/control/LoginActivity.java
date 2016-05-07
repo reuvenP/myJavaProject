@@ -61,8 +61,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (currentUser.getPermission() == Permission.CUSTOMER)
                         {
                             Intent intent = new Intent(LoginActivity.this, CustomerMainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
-                            finish();
+                            //finish();
                         }
                         else if (currentUser.getPermission() == Permission.SUPPLIER)
                         {
