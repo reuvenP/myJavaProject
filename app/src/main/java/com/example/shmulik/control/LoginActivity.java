@@ -39,9 +39,18 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mailTextView == null || passwordTextView == null)
+                if (mailTextView == null || passwordTextView == null ||
+                        mailTextView.getText().toString().equals("") || passwordTextView.getText().toString().equals(""))
                 {
                     Toast.makeText(LoginActivity.this, "all fields must not be empty", Toast.LENGTH_LONG).show();
+                }
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mailTextView.getText().toString()).matches())
+                {
+                    Toast.makeText(LoginActivity.this, "enter a valid email address", Toast.LENGTH_LONG).show();
+                    mailTextView.setText("");
+                    passwordTextView.setText("");
+                    mailTextView.requestFocus();
+                    return;
                 }
                 else
                 {

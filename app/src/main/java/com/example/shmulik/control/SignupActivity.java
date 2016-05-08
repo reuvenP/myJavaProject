@@ -74,9 +74,19 @@ public class SignupActivity extends AppCompatActivity {
     void register()
     {
         if (mailTV == null || passwordTV == null || passwordReenterTV == null ||
-                nameTV == null || addressTV == null)
+                nameTV == null || addressTV == null ||
+                mailTV.getText().toString().equals("") || passwordTV.getText().toString().equals("") ||
+                passwordReenterTV.getText().toString().equals("") ||
+                nameTV.getText().toString().equals("") || addressTV.getText().toString().equals(""))
         {
             Toast.makeText(SignupActivity.this, "all fields must not be empty", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mailTV.getText().toString()).matches())
+        {
+            Toast.makeText(SignupActivity.this, "enter a valid email address", Toast.LENGTH_LONG).show();
+            mailTV.setText("");
+            mailTV.requestFocus();
             return;
         }
         if (!passwordTV.getText().toString().equals(passwordReenterTV.getText().toString()))
