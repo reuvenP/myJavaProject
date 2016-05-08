@@ -62,6 +62,7 @@ public interface Backend {
     public ArrayList<BookSupplier> getBookSupplierByBookID(int bookID) throws Exception;// return BookSupplier by bookID.
     public ArrayList<BookSupplier> getBookSupplierBySupplierID(int supplierID) throws Exception;// return BookSupplier by supplierID.
     public User getUserByID(int userID) throws Exception;
+    public ArrayList<Book> getBookListBySupplier(int supplierID);
 
     public ArrayList<Book> getBookList() throws Exception;
     public ArrayList<Customer> getCustomerList() throws Exception;

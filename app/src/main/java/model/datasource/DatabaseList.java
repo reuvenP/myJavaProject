@@ -620,6 +620,17 @@ public class DatabaseList implements Backend {
     }
 
     @Override
+    public ArrayList<Book> getBookListBySupplier(int supplierID) {
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        for (BookSupplier bookSupplier: bookSupplierList)
+        {
+            if (bookSupplier.getSupplier().getSupplierID() == supplierID)
+                bookArrayList.add(bookSupplier.getBook());
+        }
+        return bookArrayList;
+    }
+
+    @Override
     // return ArrayList<Book> of books with specific title by title.
     public ArrayList<Book> getBookListByTitle(String title) throws Exception {
         ArrayList<Book> bookArrayList = new ArrayList<Book>();
@@ -839,11 +850,14 @@ public class DatabaseList implements Backend {
         this.addBook(new Book("Harry Potter and the Deathly Hallows", 2007, "J. K. Rowling", 607, Category.Novel));
         this.addBook(new Book("Romeo and Juliet", 1597, "William Shakespeare", 283, Category.Drama));
 
-        this.addSupplier(new Supplier(Rating.FIVE, "Shmulik the great", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
-
-        this.addSupplier(new Supplier(Rating.ONE, "Reuven the great", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
-        this.addSupplier(new Supplier(Rating.ONE, "Shmulik & Reuven", new Date(), Gender.MALE, "Abcd 1 Bnei Brak", new Account()));
-        this.addSupplier(new Supplier(Rating.FIVE, "Reuven in vacation", new Date(), Gender.MALE, "Dcba 2 Bnei Brak", new Account()));
+        ID = this.addSupplier(new Supplier(Rating.FIVE, "Shmulik the great", new Date(), Gender.MALE, "Miron 16 Bnei Brak", new Account()));
+        this.addUser(new User(Permission.SUPPLIER, "a1@gmail.com","1111", ID));
+        ID = this.addSupplier(new Supplier(Rating.ONE, "Reuven the great", new Date(), Gender.MALE, "Hashnaim 19 Bnei Brak", new Account()));
+        this.addUser(new User(Permission.SUPPLIER, "a2@gmail.com","2222", ID));
+        ID = this.addSupplier(new Supplier(Rating.ONE, "Shmulik & Reuven", new Date(), Gender.MALE, "Abcd 1 Bnei Brak", new Account()));
+        this.addUser(new User(Permission.SUPPLIER, "a3@gmail.com","3333", ID));
+        ID = this.addSupplier(new Supplier(Rating.FIVE, "Reuven in vacation", new Date(), Gender.MALE, "Dcba 2 Bnei Brak", new Account()));
+        this.addUser(new User(Permission.SUPPLIER, "a4@gmail.com","4444", ID));
 
         this.addBooksInStore(new BooksInStore(getBookByBookID(1), 10));
         this.addBooksInStore(new BooksInStore(getBookByBookID(2), 15));

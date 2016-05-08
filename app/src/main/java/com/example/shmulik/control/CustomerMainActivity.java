@@ -45,14 +45,12 @@ public class CustomerMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_main);
-        customerLV =// new ListView(this);
-                (ListView) findViewById(R.id.customer_LV);
+        customerLV = (ListView) findViewById(R.id.customer_LV);
         categorySpinner = (Spinner) findViewById(R.id.category_spinner);
         try {
 
             backend = BackendFactory.getInstance();
             currentUser = UserSingltone.getInstance();
-            //bookArrayList = backend.getBookList();
         }
         catch (Exception e)
         {

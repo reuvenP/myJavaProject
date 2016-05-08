@@ -139,7 +139,7 @@ public class SignupActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
                 sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply();
                 Toast.makeText(SignupActivity.this, "registered successfully", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class);//TODO new class
+                Intent intent = new Intent(SignupActivity.this, SupplierMainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
