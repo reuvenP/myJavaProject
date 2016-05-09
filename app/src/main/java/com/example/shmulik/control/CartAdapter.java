@@ -27,7 +27,7 @@ public class CartAdapter extends ArrayAdapter<BookSupplier> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_cart, parent, false);
         }
@@ -36,9 +36,19 @@ public class CartAdapter extends ArrayAdapter<BookSupplier> {
         TextView supplierName = (TextView) convertView.findViewById(R.id.supplier_name_cart);
         TextView price = (TextView) convertView.findViewById(R.id.price_cart);
         Button submit = (Button) convertView.findViewById(R.id.cart_submit_BTN);
+        Button remove = (Button) convertView.findViewById(R.id.remove_from_cart_BTN);
         bookName.setText(bookSupplier.getBook().getTitle().toString());
         supplierName.setText(bookSupplier.getSupplier().getName().toString());
         price.setText(Float.toString(bookSupplier.getPrice()));
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mContext instanceof CartActivity)
+                {
+                    ((CartActivity)mContext).removeFromCard(position);
+                }
+            }
+        });
         return convertView;
     }
 }

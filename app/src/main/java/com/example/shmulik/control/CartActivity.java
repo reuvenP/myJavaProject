@@ -62,5 +62,23 @@ public class CartActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    
+    public void removeFromCard(int position)
+    {
+        try {
+            BookSupplier bookSupplier = currentUser.getOrder().get(position);
+            bookSupplier.setAmount(bookSupplier.getAmount()+1);
+            currentUser.getOrder().remove(position);
+            backend.updateBookSupplier(bookSupplier);
+            backend.updateUser(currentUser);
+            refreshView();
+        } catch (Exception e) {
+            Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            return;
+        }
+    }
+    void refreshView()
+    {
+        CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
+        listView.setAdapter(adapter);
+    }
 }
