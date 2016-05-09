@@ -23,7 +23,6 @@ import model.backend.BackendFactory;
 import model.backend.UserSingltone;
 
 public class CartActivity extends AppCompatActivity {
-    Order order;
     Backend backend;
     User currentUser;
     ListView listView;
@@ -35,37 +34,8 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
         backend = BackendFactory.getInstance();
         currentUser = UserSingltone.getInstance();
-        if (order == null)
-        {
-            SharedPreferences orderSharedPreferences;
-            orderSharedPreferences = getSharedPreferences("orderIDPre", Context.MODE_PRIVATE);
-            int orderID = orderSharedPreferences.getInt("orderID", -1);
-            if (orderID == -1)
-            {
-                order = null;
-                Toast.makeText(CartActivity.this, "Cart is empty", Toast.LENGTH_LONG).show();
-                finish();
-                return;
-            }
-            else
-            {
-                try
-                {
-                    order = backend.getOrderByOrderID(orderID);
-                }
-                catch (Exception e)
-                {
-                    order = null;
-                }
-            }
-        }
         listView = (ListView) findViewById(R.id.cart_LV);
-        ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
-        for (BooksForOrder booksForOrder: order.getBooksForOrders())
-        {
-            bookSupplierArrayList.add(booksForOrder.getBookSupplier());
-        }
-        CartAdapter adapter = new CartAdapter(this, bookSupplierArrayList);
+        CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
         listView.setAdapter(adapter);
     }
 
@@ -92,29 +62,5 @@ public class CartActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences orderSharedPreferences;
-        orderSharedPreferences = getSharedPreferences("orderIDPre", Context.MODE_PRIVATE);
-        int orderID = orderSharedPreferences.getInt("orderID", -1);
-        if (orderID == -1)
-        {
-            order = null;
-            Toast.makeText(CartActivity.this, "Cart is empty", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-        else
-        {
-            try
-            {
-                order = backend.getOrderByOrderID(orderID);
-            }
-            catch (Exception e)
-            {
-                order = null;
-            }
-        }
-    }
+    
 }

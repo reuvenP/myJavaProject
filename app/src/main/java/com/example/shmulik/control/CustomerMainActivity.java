@@ -36,7 +36,6 @@ public class CustomerMainActivity extends AppCompatActivity {
     public Book bookToShow = null;
     Spinner categorySpinner;
     User currentUser;
-    Order order;
 
 
     @Override
@@ -144,21 +143,5 @@ public class CustomerMainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setCustomerLV();
-        SharedPreferences orderSharedPreferences;
-        orderSharedPreferences = getSharedPreferences("orderIDPre", Context.MODE_PRIVATE);
-        int orderID = orderSharedPreferences.getInt("orderID", -1);
-        if (orderID == -1)
-            order = null;
-        else
-        {
-            try
-            {
-                order = backend.getOrderByOrderID(orderID);
-            }
-            catch (Exception e)
-            {
-                order = null;
-            }
-        }
     }
 }

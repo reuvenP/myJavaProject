@@ -48,6 +48,7 @@ public interface Backend {
     public void updateBookSupplier(BookSupplier bookSupplier) throws Exception;// update bookSupplier in bookSupplierList.
     public void updateInventory(int bookID, int newAmount) throws Exception;// update booksInStore.amount in booksInStoreList by booksInStoreID.
     public void resetUserPassword(int userID, String newPassword) throws Exception;
+    public void updateUser(User user);
 
     /*4)*/
     public Book getBookByBookID(int bookID) throws Exception;// return Book by bookID.

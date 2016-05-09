@@ -2,6 +2,7 @@ package entities;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by reuvenp on 4/13/2016.
@@ -16,6 +17,7 @@ public class User {
     //you can access the object by permission and ID.
     //ID alone is not enough cause its possible customer and supplier equal ID
     int userID;
+    ArrayList<BookSupplier> order;
 
     public User(){
         this.userID = -1;
@@ -26,6 +28,7 @@ public class User {
         this.mail = mail;
         this.password = password;
         this.userID = userID;
+        order = new ArrayList<>();
     }
 
     @Override
@@ -58,4 +61,11 @@ public class User {
         return userID;
     }
 
+    public ArrayList<BookSupplier> getOrder() {
+        return order;
+    }
+
+    public void setOrder(ArrayList<BookSupplier> order) {
+        this.order = order;
+    }
 }

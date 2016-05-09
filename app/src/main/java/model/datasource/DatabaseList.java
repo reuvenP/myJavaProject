@@ -478,6 +478,16 @@ public class DatabaseList implements Backend {
     }
 
     @Override
+    public void updateUser(User user) {
+        try {
+            User user1 = getUserByID(user.getUserID());
+            user1.setOrder(user.getOrder());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     // return Book by bookID.
     public Book getBookByBookID (int bookID) throws Exception {
         for (Book book:bookList) {

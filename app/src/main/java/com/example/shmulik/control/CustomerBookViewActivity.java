@@ -34,8 +34,6 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     TextView category;
     TextView id;
     TextView amount;
-    Order order;
-    SharedPreferences orderSharedPreferences;
     User currentUser;
 
     @Override
@@ -114,44 +112,18 @@ public class CustomerBookViewActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences orderSharedPreferences;
-        orderSharedPreferences = getSharedPreferences("orderIDPre", Context.MODE_PRIVATE);
-        int orderID = orderSharedPreferences.getInt("orderID", -1);
-        if (orderID == -1)
-            order = null;
-        else
-        {
-            try
-            {
-                order = backend.getOrderByOrderID(orderID);
-            }
-            catch (Exception e)
-            {
-                order = null;
-            }
-        }
-    }
+
     public void addToCart(int bookID, int supplierID)
     {
         try {
-            if (order == null) {
-                order = new Order(backend.getCustomerByCustomerID(currentUser.getUserID()), new ArrayList<BooksForOrder>(),
-                        null,0,false);
-                SharedPreferences orderSharedPreferences;
-                orderSharedPreferences = getSharedPreferences("orderIDPre", Context.MODE_PRIVATE);
-                orderSharedPreferences.edit().putInt("orderID", order.getOrderID()).apply();
-            }
             BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(supplierID,bookID);
             if (bookSupplier.getAmount() < 1)
                 throw new Exception("out of stock");
-            BooksForOrder booksForOrder = new BooksForOrder(bookSupplier,1,false);
-            order.getBooksForOrders().add(booksForOrder);
             bookSupplier.setAmount(bookSupplier.getAmount()-1);
+            currentUser.getOrder().add(bookSupplier);
+            backend.updateBookSupplier(bookSupplier);
+            backend.updateUser(currentUser);
             Toast.makeText(CustomerBookViewActivity.this, "added to cart", Toast.LENGTH_LONG).show();
-            //backend.addOrder(order);
         }
         catch (Exception e)
         {
