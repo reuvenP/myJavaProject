@@ -35,6 +35,9 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     TextView id;
     TextView amount;
     User currentUser;
+    ArrayList<BookSupplier> bookSupplierArrayList;
+    BookSuppliersAdapter adapter;
+    ListView LV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +74,10 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         id.setText("Serial Number: " + Integer.toString(book.getBookID()));
         amount.setText("Total amount in store: " + backend.getBookAmountByBookID(book.getBookID()));
 
-        ArrayList<BookSupplier> bookSupplierArrayList;
-        BookSuppliersAdapter adapter;
-
         try {
             bookSupplierArrayList = backend.getBookSupplierByBookID(book.getBookID());
             adapter = new BookSuppliersAdapter(this,bookSupplierArrayList);
-            ListView LV = (ListView) findViewById(R.id.bookSupplierLV);
+            LV = (ListView) findViewById(R.id.bookSupplierLV);
             LV.setAdapter(adapter);
         } catch (Exception e) {
             finish();
@@ -123,6 +123,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             currentUser.getOrder().add(bookSupplier);
             backend.updateBookSupplier(bookSupplier);
             backend.updateUser(currentUser);
+            refreshView();
             Toast.makeText(CustomerBookViewActivity.this, "added to cart", Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
@@ -130,5 +131,22 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             Toast.makeText(CustomerBookViewActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
+    }
+    void refreshView()
+    {
+        try {
+            bookSupplierArrayList = backend.getBookSupplierByBookID(book.getBookID());
+            adapter = new BookSuppliersAdapter(this,bookSupplierArrayList);
+            LV.setAdapter(adapter);
+            amount.setText("Total amount in store: " + backend.getBookAmountByBookID(book.getBookID()));
+        } catch (Exception e) {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshView();
     }
 }
