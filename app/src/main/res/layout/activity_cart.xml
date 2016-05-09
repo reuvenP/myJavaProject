@@ -19,6 +19,13 @@
         android:layout_height="wrap_content"
         android:text="CLEAR"
         android:id="@+id/cart_clear_BTN"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cart_total"
+        android:textSize="20dp"
+        android:paddingTop="10dp"
+        android:text="Total: "/>
 
     <ListView
         android:layout_width="match_parent"

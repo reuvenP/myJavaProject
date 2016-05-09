@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shmulik.myjavaproject.R;
@@ -29,6 +30,7 @@ public class CartActivity extends AppCompatActivity {
     User currentUser;
     ListView listView;
     Button clear;
+    TextView total;
 
 
     @Override
@@ -39,6 +41,7 @@ public class CartActivity extends AppCompatActivity {
         currentUser = UserSingltone.getInstance();
         listView = (ListView) findViewById(R.id.cart_LV);
         clear = (Button) findViewById(R.id.cart_clear_BTN);
+        total = (TextView) findViewById(R.id.cart_total);
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +50,7 @@ public class CartActivity extends AppCompatActivity {
         });
         CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
         listView.setAdapter(adapter);
+        total.setText("Total: " + Float.toString(totalForOrder()));
     }
 
     @Override
@@ -90,6 +94,7 @@ public class CartActivity extends AppCompatActivity {
     {
         CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
         listView.setAdapter(adapter);
+        total.setText("Total: " + Float.toString(totalForOrder()));
     }
 
     void emptyCart()
@@ -106,5 +111,16 @@ public class CartActivity extends AppCompatActivity {
             Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
+    }
+    float totalForOrder()
+    {
+        if (currentUser == null || currentUser.getOrder() == null)
+            return 0;
+        float sum = 0;
+        for (BookSupplier bookSupplier : currentUser.getOrder())
+        {
+            sum += bookSupplier.getPrice();
+        }
+        return sum;
     }
 }
