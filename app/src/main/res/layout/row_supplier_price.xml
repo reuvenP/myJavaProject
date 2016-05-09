@@ -22,6 +22,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add to cart"/>
+        android:text="Add to cart"
+        android:id="@+id/add_to_cart_BTN"/>
 
 </LinearLayout>

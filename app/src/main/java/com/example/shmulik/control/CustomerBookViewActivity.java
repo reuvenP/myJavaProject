@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import entities.Book;
 import entities.BookSupplier;
+import entities.BooksForOrder;
 import entities.Order;
 import entities.User;
 import model.backend.Backend;
@@ -35,6 +36,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     TextView amount;
     Order order;
     SharedPreferences orderSharedPreferences;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         {
             try {
                 book = backend.getBookByBookID(extras.getInt("bookID"));
+                currentUser = UserSingltone.getInstance();
             } catch (Exception e) {
                 finish();
             }
@@ -124,6 +127,30 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             {
                 order = null;
             }
+        }
+    }
+    public void addToCart(int bookID)
+    {
+        try {
+            if (order == null) {
+                order = new Order(backend.getCustomerByCustomerID(currentUser.getUserID()), new ArrayList<BooksForOrder>(),
+                        null,0,false);
+                SharedPreferences orderSharedPreferences;
+                orderSharedPreferences = getSharedPreferences("orderIDPre", Context.MODE_PRIVATE);
+                orderSharedPreferences.edit().putInt("orderID", order.getOrderID()).apply();
+            }
+            BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(currentUser.getUserID(),bookID);
+            if (bookSupplier.getAmount() < 1)
+                throw new Exception("out of stock");
+            BooksForOrder booksForOrder = new BooksForOrder(bookSupplier,1,false);
+            order.getBooksForOrders().add(booksForOrder);
+            bookSupplier.setAmount(bookSupplier.getAmount()-1);
+            Toast.makeText(CustomerBookViewActivity.this, "added to cart", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(CustomerBookViewActivity.this, "Error", Toast.LENGTH_LONG).show();
+            return;
         }
     }
 }

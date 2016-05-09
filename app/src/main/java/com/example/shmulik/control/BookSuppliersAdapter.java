@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.shmulik.myjavaproject.R;
@@ -23,7 +24,7 @@ public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_supplier_price, parent, false);
         }
@@ -32,10 +33,17 @@ public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
         TextView supplier_address = (TextView)convertView.findViewById(R.id.supplier_address);
         TextView price = (TextView) convertView.findViewById(R.id.price);
         TextView amount = (TextView) convertView.findViewById(R.id.amount);
+        Button addToCart = (Button) convertView.findViewById(R.id.add_to_cart_BTN);
         supplier_name.setText("Supplier: " + bookSupplier.getSupplier().getName());
         supplier_address.setText("Address: " + bookSupplier.getSupplier().getAddress());
         price.setText("Price: " + Float.toString(bookSupplier.getPrice()));
         amount.setText("Amount: " + Integer.toString(bookSupplier.getAmount()));
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return convertView;
     }
 }
