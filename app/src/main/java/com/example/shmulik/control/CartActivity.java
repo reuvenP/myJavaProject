@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ public class CartActivity extends AppCompatActivity {
     Backend backend;
     User currentUser;
     ListView listView;
+    Button clear;
 
 
     @Override
@@ -35,6 +38,13 @@ public class CartActivity extends AppCompatActivity {
         backend = BackendFactory.getInstance();
         currentUser = UserSingltone.getInstance();
         listView = (ListView) findViewById(R.id.cart_LV);
+        clear = (Button) findViewById(R.id.cart_clear_BTN);
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                emptyCart();
+            }
+        });
         CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
         listView.setAdapter(adapter);
     }
@@ -80,5 +90,21 @@ public class CartActivity extends AppCompatActivity {
     {
         CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
         listView.setAdapter(adapter);
+    }
+
+    void emptyCart()
+    {
+        try {
+            for (BookSupplier bookSupplier : currentUser.getOrder()) {
+                bookSupplier.setAmount(bookSupplier.getAmount()+1);
+                backend.updateBookSupplier(bookSupplier);
+            }
+            currentUser.getOrder().clear();
+            backend.updateUser(currentUser);
+            refreshView();
+        }catch (Exception e) {
+            Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            return;
+        }
     }
 }
