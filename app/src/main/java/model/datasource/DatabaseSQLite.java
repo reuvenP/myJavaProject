@@ -20,12 +20,14 @@ import model.backend.Backend;
 /**
  * Created by reuvenp on 5/9/2016.
  */
-public class DatabaseSQLite extends SQLiteOpenHelper implements Backend {
-    public static final String DATABASE_NAME = "ProjectDB";
+public class DatabaseSQLite implements Backend {
 
-    public DatabaseSQLite (Context context)
+    SQLiteDatabase database;
+    DBHelper helper;
+
+    public DatabaseSQLite(Context context)
     {
-        super(context, DATABASE_NAME , null, 1);
+        helper = new DBHelper(context);
     }
 
     @Override
@@ -323,13 +325,4 @@ public class DatabaseSQLite extends SQLiteOpenHelper implements Backend {
 
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
 }
