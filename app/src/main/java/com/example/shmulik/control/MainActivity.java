@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         backend = BackendFactory.getInstance();
         currentUser = UserSingltone.getInstance();
         try {
-           // backend.createLists();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,18 +52,6 @@ public class MainActivity extends AppCompatActivity {
         loginBT = (Button) findViewById(R.id.login_mainBT);
         signupBT = (Button) findViewById(R.id.signup_mainBT);
 
-
-
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, currentUser.getPassword(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-            }
-        });*/
 
         signupBT.setOnClickListener(new View.OnClickListener() {
             @Override
