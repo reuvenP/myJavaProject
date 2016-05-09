@@ -136,4 +136,10 @@ public class CustomerMainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCustomerLV();
+    }
 }

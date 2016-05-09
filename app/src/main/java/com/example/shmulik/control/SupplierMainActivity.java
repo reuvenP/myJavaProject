@@ -87,4 +87,24 @@ public class SupplierMainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    void refreshListView()
+    {
+        try
+        {
+            bookArrayList = backend.getBookListBySupplier(currentUser.getUserID());
+            BooksAdapter adapter = new BooksAdapter(this, bookArrayList);
+            supplierLV.setAdapter(adapter);
+        }
+        catch (Exception e)
+        {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshListView();
+    }
 }
