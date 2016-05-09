@@ -1,21 +1,17 @@
 package com.example.shmulik.control;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shmulik.myjavaproject.R;
@@ -26,6 +22,7 @@ import java.util.List;
 
 import entities.Book;
 import entities.Category;
+import entities.Order;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
@@ -39,6 +36,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     public Book bookToShow = null;
     Spinner categorySpinner;
     User currentUser;
+    Order order;
 
 
     @Override
@@ -141,5 +139,21 @@ public class CustomerMainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setCustomerLV();
+        SharedPreferences orderSharedPreferences;
+        orderSharedPreferences = getSharedPreferences("orderIDPre", Context.MODE_PRIVATE);
+        int orderID = orderSharedPreferences.getInt("orderID", -1);
+        if (orderID == -1)
+            order = null;
+        else
+        {
+            try
+            {
+                order = backend.getOrderByOrderID(orderID);
+            }
+            catch (Exception e)
+            {
+                order = null;
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import entities.Book;
 import entities.BookSupplier;
+import entities.Order;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
@@ -32,6 +33,8 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     TextView category;
     TextView id;
     TextView amount;
+    Order order;
+    SharedPreferences orderSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,5 +105,25 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences orderSharedPreferences;
+        orderSharedPreferences = getSharedPreferences("orderIDPre", Context.MODE_PRIVATE);
+        int orderID = orderSharedPreferences.getInt("orderID", -1);
+        if (orderID == -1)
+            order = null;
+        else
+        {
+            try
+            {
+                order = backend.getOrderByOrderID(orderID);
+            }
+            catch (Exception e)
+            {
+                order = null;
+            }
+        }
     }
 }
