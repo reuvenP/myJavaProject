@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.shmulik.myjavaproject.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import entities.BookSupplier;
 import entities.BooksForOrder;
@@ -31,6 +32,7 @@ public class CartActivity extends AppCompatActivity {
     ListView listView;
     Button clear;
     TextView total;
+    Button submit;
 
 
     @Override
@@ -51,6 +53,13 @@ public class CartActivity extends AppCompatActivity {
         CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
         listView.setAdapter(adapter);
         total.setText("Total: " + Float.toString(totalForOrder()));
+        submit = (Button) findViewById(R.id.cart_submit_BTN);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit();
+            }
+        });
     }
 
     @Override
@@ -122,5 +131,28 @@ public class CartActivity extends AppCompatActivity {
             sum += bookSupplier.getPrice();
         }
         return sum;
+    }
+
+    void submit()
+    {
+        try
+        {
+            ArrayList<BooksForOrder> booksForOrders = new ArrayList<>();
+            for (BookSupplier bookSupplier : currentUser.getOrder())
+            {
+                booksForOrders.add(new BooksForOrder(bookSupplier,1,true));
+            }
+            Date now = new Date();
+            Order order = new Order(backend.getCustomerByCustomerID(currentUser.getUserID()),booksForOrders,now,totalForOrder(),true);
+            backend.addOrder(order);
+            Toast.makeText(CartActivity.this, "submitted",Toast.LENGTH_LONG).show();
+            currentUser.getOrder().clear();
+            backend.updateUser(currentUser);
+            refreshView();
+
+        }catch (Exception e) {
+            Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            return;
+        }
     }
 }
