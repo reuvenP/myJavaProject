@@ -7,11 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.shmulik.myjavaproject.R;
 
@@ -39,6 +42,7 @@ public class SupplierBookViewActivity extends AppCompatActivity {
     NumberPicker amount;
     User currentUser;
     LinearLayout layout;
+    Button update;
 
 
     @Override
@@ -67,6 +71,7 @@ public class SupplierBookViewActivity extends AppCompatActivity {
         category = (Spinner) findViewById(R.id.book_category_sup_bookview);
         price = (AutoCompleteTextView) findViewById(R.id.book_price_sup_bookview);
         amount = (NumberPicker) findViewById(R.id.book_amount_sup_bookview);
+        update = (Button) findViewById(R.id.book_update_sup_bookview);
         amount.setMinValue(0);
         amount.setMaxValue(1000);
 
@@ -84,6 +89,26 @@ public class SupplierBookViewActivity extends AppCompatActivity {
         }
         category.setAdapter(new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, list));
         category.setSelection(bookSupplier.getBook().getCategory().ordinal());
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bookSupplier.getBook().setTitle(title.getText().toString());
+                bookSupplier.getBook().setAuthor(author.getText().toString());
+                bookSupplier.getBook().setPages(Integer.parseInt(pages.getText().toString()));
+                bookSupplier.getBook().setYear(Integer.parseInt(year.getText().toString()));
+                bookSupplier.getBook().setCategory(Category.valueOf(list.get(category.getSelectedItemPosition())));
+                bookSupplier.setAmount(amount.getValue());
+                bookSupplier.setPrice(Float.parseFloat(price.getText().toString()));
+                try {
+                    backend.updateBook(bookSupplier.getBook(),bookSupplier.getBook().getBookID());
+                    backend.updateBookSupplier(bookSupplier);
+                    Toast.makeText(SupplierBookViewActivity.this,"Update complete!",Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(SupplierBookViewActivity.this,"Error",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
