@@ -49,7 +49,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        backend = BackendFactory.getInstance();
+        backend = BackendFactory.getInstance(SignupActivity.this);
         currentUser = UserSingltone.getInstance();
         birthdayDP = (DatePicker) findViewById(R.id.birthday_signup);
         birthdayDP.setCalendarViewShown(false);

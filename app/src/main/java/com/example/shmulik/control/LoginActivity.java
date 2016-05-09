@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         mailTextView = (AutoCompleteTextView) findViewById(R.id.email);
         passwordTextView = (EditText) findViewById(R.id.password);
         loginButton = (Button) findViewById(R.id.email_sign_in_button);
-        backend = BackendFactory.getInstance();
+        backend = BackendFactory.getInstance(LoginActivity.this);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

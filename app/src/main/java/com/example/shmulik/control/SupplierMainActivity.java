@@ -37,7 +37,7 @@ public class SupplierMainActivity extends AppCompatActivity {
         supplierLV = (ListView) findViewById(R.id.supplier_LV);
         try {
 
-            backend = BackendFactory.getInstance();
+            backend = BackendFactory.getInstance(SupplierMainActivity.this);
             currentUser = UserSingltone.getInstance();
             bookArrayList = backend.getBookListBySupplier(currentUser.getUserID());
             BooksAdapter adapter = new BooksAdapter(this, bookArrayList);

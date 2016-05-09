@@ -50,7 +50,7 @@ public class AddBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
-        backend = BackendFactory.getInstance();
+        backend = BackendFactory.getInstance(AddBookActivity.this);
         currentUser = UserSingltone.getInstance();
         title = (AutoCompleteTextView) findViewById(R.id.book_name_sup_addbook);
         author = (AutoCompleteTextView) findViewById(R.id.book_author_sup_addbook);

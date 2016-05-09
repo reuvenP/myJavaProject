@@ -43,7 +43,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_book_view);
-        backend = BackendFactory.getInstance();
+        backend = BackendFactory.getInstance(CustomerBookViewActivity.this);
         Bundle extras = getIntent().getExtras();
         if (extras == null)
         {

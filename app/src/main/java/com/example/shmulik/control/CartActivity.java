@@ -39,7 +39,7 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        backend = BackendFactory.getInstance();
+        backend = BackendFactory.getInstance(CartActivity.this);
         currentUser = UserSingltone.getInstance();
         listView = (ListView) findViewById(R.id.cart_LV);
         clear = (Button) findViewById(R.id.cart_clear_BTN);

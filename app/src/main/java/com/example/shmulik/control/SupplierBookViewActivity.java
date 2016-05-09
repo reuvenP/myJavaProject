@@ -49,7 +49,7 @@ public class SupplierBookViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supplier_book_view);
-        backend = BackendFactory.getInstance();
+        backend = BackendFactory.getInstance(SupplierBookViewActivity.this);
         currentUser = UserSingltone.getInstance();
         Bundle extras = getIntent().getExtras();
         if (extras == null)

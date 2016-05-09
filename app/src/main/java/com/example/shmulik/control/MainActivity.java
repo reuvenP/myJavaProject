@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        backend = BackendFactory.getInstance();
+        backend = BackendFactory.getInstance(MainActivity.this);
         currentUser = UserSingltone.getInstance();
         try {
         } catch (Exception e) {

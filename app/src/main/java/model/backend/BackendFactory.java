@@ -1,5 +1,7 @@
 package model.backend;
 
+import android.content.Context;
+
 /**
  * Created by shmuel on 29/03/2016.
  */
@@ -11,7 +13,7 @@ public class BackendFactory {
     public static String mode = "lists";
 
     /*3)*/
-    public final static Backend getInstance() {
+    public final static Backend getInstance(Context context) {
     /*3.1)*/
         if (mode == "lists") {
             if (instance == null) instance = new model.datasource.DatabaseList();
@@ -19,10 +21,10 @@ public class BackendFactory {
         }
 
         /*3.2)*/
-//        if (mode == "sql") {
-//            if (instance == null) instance = new model.datasource.DatabaseSqlite(context);
-//            return instance;
-//        }
+        if (mode == "sql") {
+            if (instance == null) instance = new model.datasource.DatabaseSQLite(context);
+            return instance;
+        }
 //
 //        /*3.3)*/
 //        if (mode == "Service") {

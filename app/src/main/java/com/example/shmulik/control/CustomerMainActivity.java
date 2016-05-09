@@ -46,7 +46,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         categorySpinner = (Spinner) findViewById(R.id.category_spinner);
         try {
 
-            backend = BackendFactory.getInstance();
+            backend = BackendFactory.getInstance(CustomerMainActivity.this);
             currentUser = UserSingltone.getInstance();
         }
         catch (Exception e)
