@@ -88,7 +88,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_logout, menu);
+        getMenuInflater().inflate(R.menu.menu_logout_cart, menu);
         return true;
     }
 
@@ -105,6 +105,11 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             return true;
+        }
+        else if (id == R.id.action_cart)
+        {
+            Intent intent = new Intent(CustomerBookViewActivity.this, CartActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -146,6 +151,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             order.getBooksForOrders().add(booksForOrder);
             bookSupplier.setAmount(bookSupplier.getAmount()-1);
             Toast.makeText(CustomerBookViewActivity.this, "added to cart", Toast.LENGTH_LONG).show();
+            //backend.addOrder(order);
         }
         catch (Exception e)
         {
