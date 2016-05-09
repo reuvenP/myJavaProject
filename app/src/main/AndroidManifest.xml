@@ -27,7 +27,8 @@
         <activity android:name="com.example.shmulik.control.CustomerMainActivity" />
         <activity android:name="com.example.shmulik.control.CustomerBookViewActivity" />
         <activity android:name="com.example.shmulik.control.SupplierMainActivity" />
-        <activity android:name="com.example.shmulik.control.SupplierBookViewActivity"></activity>
+        <activity android:name="com.example.shmulik.control.SupplierBookViewActivity" />
+        <activity android:name="com.example.shmulik.control.AddBookActivity"></activity>
     </application>
 
 </manifest>

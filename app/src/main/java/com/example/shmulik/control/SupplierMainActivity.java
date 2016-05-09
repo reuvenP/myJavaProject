@@ -61,7 +61,7 @@ public class SupplierMainActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_logout, menu);
+        getMenuInflater().inflate(R.menu.menu_logout_add_book, menu);
         return true;
     }
 
@@ -78,6 +78,11 @@ public class SupplierMainActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             return true;
+        }
+        else if (id == R.id.action_add_book)
+        {
+            Intent intent = new Intent(SupplierMainActivity.this, AddBookActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
