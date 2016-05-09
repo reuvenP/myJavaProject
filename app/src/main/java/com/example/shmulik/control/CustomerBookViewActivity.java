@@ -129,7 +129,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             }
         }
     }
-    public void addToCart(int bookID)
+    public void addToCart(int bookID, int supplierID)
     {
         try {
             if (order == null) {
@@ -139,7 +139,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
                 orderSharedPreferences = getSharedPreferences("orderIDPre", Context.MODE_PRIVATE);
                 orderSharedPreferences.edit().putInt("orderID", order.getOrderID()).apply();
             }
-            BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(currentUser.getUserID(),bookID);
+            BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(supplierID,bookID);
             if (bookSupplier.getAmount() < 1)
                 throw new Exception("out of stock");
             BooksForOrder booksForOrder = new BooksForOrder(bookSupplier,1,false);
@@ -149,7 +149,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         }
         catch (Exception e)
         {
-            Toast.makeText(CustomerBookViewActivity.this, "Error", Toast.LENGTH_LONG).show();
+            Toast.makeText(CustomerBookViewActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
     }

@@ -19,8 +19,10 @@ import entities.BookSupplier;
  * Created by reuvenp on 5/4/2016.
  */
 public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
+    Context mContext;
     public BookSuppliersAdapter(Context context, ArrayList<BookSupplier> bookSuppliers) {
         super(context, 0,  bookSuppliers);
+        mContext = context;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_supplier_price, parent, false);
         }
-        BookSupplier bookSupplier = getItem(position);
+        final BookSupplier bookSupplier = getItem(position);
         TextView supplier_name = (TextView) convertView.findViewById(R.id.supplier_name);
         TextView supplier_address = (TextView)convertView.findViewById(R.id.supplier_address);
         TextView price = (TextView) convertView.findViewById(R.id.price);
@@ -41,7 +43,10 @@ public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (mContext instanceof CustomerBookViewActivity)
+                {
+                    ((CustomerBookViewActivity)mContext).addToCart(bookSupplier.getBook().getBookID(),bookSupplier.getSupplier().getSupplierID());
+                }
             }
         });
         return convertView;
