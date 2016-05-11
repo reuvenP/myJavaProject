@@ -33,6 +33,7 @@ public class DatabaseSQLite implements Backend {
     public DatabaseSQLite(Context context)
     {
         helper = new DBHelper(context);
+        this.open();
     }
 
     public void open() throws SQLException {
@@ -45,7 +46,14 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void addBook(Book book) throws Exception {
-        this.open();
+        ArrayList<Book> bookArrayList = this.getBookList();
+        for (Book book1 : bookArrayList)
+        {
+            if (book.getTitle().equals(book1.getTitle()) && book.getAuthor().equals(book1.getAuthor()) &&
+                    book.getYear() == book1.getYear() && book.getPages() == book1.getPages() &&
+                    book.getCategory() == book1.getCategory())
+                throw new Exception("This book already exist");
+        }
         ContentValues values = new ContentValues();
         values.put(DBHelper.BOOK_TITLE_COLUMN, book.getTitle());
         values.put(DBHelper.BOOK_AUTHOR_COLUMN, book.getAuthor());
@@ -53,7 +61,6 @@ public class DatabaseSQLite implements Backend {
         values.put(DBHelper.BOOK_YEAR_COLUMN, book.getYear());
         values.put(DBHelper.BOOK_CATEGORY_COLUMN, book.getCategory().toString());
         database.insert(DBHelper.BOOK_TABLE_NAME, null, values);
-        this.close();
     }
 
     @Override
@@ -93,12 +100,12 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void deleteBook(int bookID) throws Exception {
-
+        database.delete(DBHelper.BOOK_TABLE_NAME, DBHelper.BOOK_ID_COLUMN + "=" + Integer.toString(bookID), null);
     }
 
     @Override
     public void deleteBookFromStore(int bookID) throws Exception {
-
+        database.delete(DBHelper.BOOK_TABLE_NAME, DBHelper.BOOK_ID_COLUMN + "=" + Integer.toString(bookID), null);
     }
 
     @Override
@@ -143,7 +150,21 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void updateBook(Book book, int bookID) throws Exception {
-
+        ArrayList<Book> bookArrayList = this.getBookList();
+        for (Book book1 : bookArrayList)
+        {
+            if (book.getTitle().equals(book1.getTitle()) && book.getAuthor().equals(book1.getAuthor()) &&
+                    book.getYear() == book1.getYear() && book.getPages() == book1.getPages() &&
+                    book.getCategory() == book1.getCategory())
+                throw new Exception("This book already exist");
+        }
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.BOOK_TITLE_COLUMN, book.getTitle());
+        values.put(DBHelper.BOOK_AUTHOR_COLUMN, book.getAuthor());
+        values.put(DBHelper.BOOK_PAGES_COLUMN, book.getPages());
+        values.put(DBHelper.BOOK_YEAR_COLUMN, book.getYear());
+        values.put(DBHelper.BOOK_CATEGORY_COLUMN, book.getCategory().toString());
+        database.update(DBHelper.BOOK_TABLE_NAME,values,DBHelper.BOOK_ID_COLUMN + "=" + bookID, null);
     }
 
     @Override
@@ -188,7 +209,11 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public Book getBookByBookID(int bookID) throws Exception {
-        return null;
+        Cursor cursor = database.query(DBHelper.BOOK_TABLE_NAME, bookTableColumns,DBHelper.BOOK_ID_COLUMN+"="+bookID,null,null,null,null);
+        if (cursor == null)
+            throw new Exception("There is no such ID");
+        cursor.moveToFirst();
+        return parseBook(cursor);
     }
 
     @Override
@@ -253,7 +278,6 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public ArrayList<Book> getBookList() throws Exception {
-        this.open();
         ArrayList<Book> bookArrayList = new ArrayList<>();
         Cursor cursor = database.query(DBHelper.BOOK_TABLE_NAME,bookTableColumns,null, null, null, null, null);
         cursor.moveToFirst();
@@ -264,7 +288,6 @@ public class DatabaseSQLite implements Backend {
             cursor.moveToNext();
         }
         cursor.close();
-        this.close();
         return bookArrayList;
     }
 
@@ -295,7 +318,17 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public ArrayList<Book> getBookListByTitle(String title) throws Exception {
-        return null;
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        Cursor cursor = database.query(DBHelper.BOOK_TABLE_NAME,bookTableColumns,DBHelper.BOOK_TITLE_COLUMN+"="+title, null, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Book book = parseBook(cursor);
+            bookArrayList.add(book);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return bookArrayList;
     }
 
     @Override
@@ -320,8 +353,17 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public ArrayList<Book> getBookListByCategory(Category category) throws Exception {
-        return null;
-    }
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        Cursor cursor = database.query(DBHelper.BOOK_TABLE_NAME,bookTableColumns,DBHelper.BOOK_CATEGORY_COLUMN+"="+category.toString(),null, null, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Book book = parseBook(cursor);
+            bookArrayList.add(book);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return bookArrayList;    }
 
     @Override
     public int getBookAmountByBookID(int bookID) {
@@ -368,6 +410,7 @@ public class DatabaseSQLite implements Backend {
         String category = cursor.getString(cursor.getColumnIndex(DBHelper.BOOK_CATEGORY_COLUMN));
         Category category1 = Category.valueOf(category);
         Book book = new Book(title,year,author,pages,category1);
+        book.setBookID(id);
         return book;
     }
 

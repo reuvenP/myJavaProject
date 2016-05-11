@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         //test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         try {
-            backend.addBook(new Book("t1",1900, "a1", 10, Category.Comics));
-            backend.addBook(new Book("t2", 1901, "a2", 11, Category.Art));
+            backend.addBook(new Book("t3",1900, "a1", 10, Category.Comics));
+            backend.addBook(new Book("t4", 1901, "a2", 11, Category.Art));
             ArrayList<Book> bookArrayList = backend.getBookList();
             Toast.makeText(MainActivity.this, bookArrayList.get(0).getTitle(),Toast.LENGTH_LONG).show();
         } catch (Exception e) {
