@@ -17,9 +17,12 @@ import android.widget.Toast;
 
 import com.example.shmulik.myjavaproject.R;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import entities.Account;
+import entities.Book;
+import entities.Category;
 import entities.Customer;
 import entities.CustomerType;
 import entities.Gender;
@@ -42,6 +45,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         backend = BackendFactory.getInstance(MainActivity.this);
+
+        //test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        try {
+            backend.addBook(new Book("t1",1900, "a1", 10, Category.Comics));
+            backend.addBook(new Book("t2", 1901, "a2", 11, Category.Art));
+            ArrayList<Book> bookArrayList = backend.getBookList();
+            Toast.makeText(MainActivity.this, bookArrayList.get(0).getTitle(),Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //test end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
         currentUser = UserSingltone.getInstance();
         try {
         } catch (Exception e) {

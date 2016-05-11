@@ -1,6 +1,9 @@
 package model.datasource;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -24,15 +27,33 @@ public class DatabaseSQLite implements Backend {
 
     SQLiteDatabase database;
     DBHelper helper;
+    String[] bookTableColumns = {DBHelper.BOOK_ID_COLUMN, DBHelper.BOOK_TITLE_COLUMN, DBHelper.BOOK_AUTHOR_COLUMN,
+            DBHelper.BOOK_YEAR_COLUMN, DBHelper.BOOK_PAGES_COLUMN, DBHelper.BOOK_CATEGORY_COLUMN};
 
     public DatabaseSQLite(Context context)
     {
         helper = new DBHelper(context);
     }
 
+    public void open() throws SQLException {
+        database = helper.getWritableDatabase();
+    }
+
+    public void close() {
+        helper.close();
+    }
+
     @Override
     public void addBook(Book book) throws Exception {
-
+        this.open();
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.BOOK_TITLE_COLUMN, book.getTitle());
+        values.put(DBHelper.BOOK_AUTHOR_COLUMN, book.getAuthor());
+        values.put(DBHelper.BOOK_PAGES_COLUMN, book.getPages());
+        values.put(DBHelper.BOOK_YEAR_COLUMN, book.getYear());
+        values.put(DBHelper.BOOK_CATEGORY_COLUMN, book.getCategory().toString());
+        database.insert(DBHelper.BOOK_TABLE_NAME, null, values);
+        this.close();
     }
 
     @Override
@@ -232,7 +253,19 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public ArrayList<Book> getBookList() throws Exception {
-        return null;
+        this.open();
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        Cursor cursor = database.query(DBHelper.BOOK_TABLE_NAME,bookTableColumns,null, null, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Book book = parseBook(cursor);
+            bookArrayList.add(book);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        this.close();
+        return bookArrayList;
     }
 
     @Override
@@ -323,6 +356,19 @@ public class DatabaseSQLite implements Backend {
     @Override
     public void deleteLists() throws Exception {
 
+    }
+
+    Book parseBook(Cursor cursor)
+    {
+        int id = cursor.getInt(0);
+        String title = cursor.getString(cursor.getColumnIndex(DBHelper.BOOK_TITLE_COLUMN));
+        String author = cursor.getString(cursor.getColumnIndex(DBHelper.BOOK_AUTHOR_COLUMN));
+        int year = cursor.getInt(cursor.getColumnIndex(DBHelper.BOOK_YEAR_COLUMN));
+        int pages = cursor.getInt(cursor.getColumnIndex(DBHelper.BOOK_PAGES_COLUMN));
+        String category = cursor.getString(cursor.getColumnIndex(DBHelper.BOOK_CATEGORY_COLUMN));
+        Category category1 = Category.valueOf(category);
+        Book book = new Book(title,year,author,pages,category1);
+        return book;
     }
 
 }
