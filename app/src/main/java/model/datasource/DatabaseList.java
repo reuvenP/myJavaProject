@@ -478,7 +478,7 @@ public class DatabaseList implements Backend {
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user)throws Exception {
         try {
             User user1 = getUserByID(user.getUserID());
             user1.setOrder(user.getOrder());

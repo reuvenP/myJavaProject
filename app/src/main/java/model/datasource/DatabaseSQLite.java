@@ -3,11 +3,13 @@ package model.datasource;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import entities.Book;
 import entities.BookSupplier;
@@ -15,7 +17,11 @@ import entities.BooksForOrder;
 import entities.BooksInStore;
 import entities.Category;
 import entities.Customer;
+import entities.CustomerType;
+import entities.Gender;
 import entities.Order;
+import entities.Permission;
+import entities.Rating;
 import entities.Supplier;
 import entities.User;
 import model.backend.Backend;
@@ -29,6 +35,9 @@ public class DatabaseSQLite implements Backend {
     DBHelper helper;
     String[] bookTableColumns = {DBHelper.BOOK_ID_COLUMN, DBHelper.BOOK_TITLE_COLUMN, DBHelper.BOOK_AUTHOR_COLUMN,
             DBHelper.BOOK_YEAR_COLUMN, DBHelper.BOOK_PAGES_COLUMN, DBHelper.BOOK_CATEGORY_COLUMN};
+    String[] userTableColumns = {DBHelper.USER_ID_COLUMN,DBHelper.USER_PERMISSION_COLUMN,DBHelper.USER_NAME_COLUMN,
+            DBHelper.USER_BIRTHDAY_COLUMN ,DBHelper.USER_GENDER_COLUMN ,DBHelper.USER_ADDRESS_COLUMN,
+            DBHelper.USER_MAIL_COLUMN ,DBHelper.USER_PASSWORD_COLUMN /*,DBHelper.USER_ORDER_COLUMN*/};
 
     public DatabaseSQLite(Context context)
     {
@@ -65,12 +74,26 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public int addCustomer(Customer customer) throws Exception {
-        return 0;
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.USER_NAME_COLUMN, customer.getName());
+        values.put(DBHelper.USER_ADDRESS_COLUMN, customer.getAddress());
+        values.put(DBHelper.USER_GENDER_COLUMN, customer.getGender().toString());
+        values.put(DBHelper.USER_BIRTHDAY_COLUMN, customer.getBirthday().getTime());
+        values.put(DBHelper.USER_PERMISSION_COLUMN, Permission.CUSTOMER.toString());
+        long id = database.insert(DBHelper.USER_TABLE_NAME,null,values);
+        return (int)id;
     }
 
     @Override
     public int addSupplier(Supplier supplier) throws Exception {
-        return 0;
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.USER_NAME_COLUMN, supplier.getName());
+        values.put(DBHelper.USER_ADDRESS_COLUMN, supplier.getAddress());
+        values.put(DBHelper.USER_GENDER_COLUMN, supplier.getGender().toString());
+        values.put(DBHelper.USER_BIRTHDAY_COLUMN, supplier.getBirthday().getTime());
+        values.put(DBHelper.USER_PERMISSION_COLUMN, Permission.SUPPLIER.toString());
+        long id = database.insert(DBHelper.USER_TABLE_NAME,null,values);
+        return (int)id;
     }
 
     @Override
@@ -95,12 +118,21 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void addUser(User user) throws Exception {
-
+        ArrayList<User> userArrayList = this.getUserList();
+        for (User user1 : userArrayList)
+        {
+            if (user.getMail().equals(user1.getMail()))
+                throw new Exception("This mail already exist");
+        }
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.USER_MAIL_COLUMN, user.getMail());
+        values.put(DBHelper.USER_PASSWORD_COLUMN, user.getPassword());
+        database.update(DBHelper.USER_TABLE_NAME,values,DBHelper.USER_ID_COLUMN+"="+user.getUserID(),null);
     }
 
     @Override
     public void deleteBook(int bookID) throws Exception {
-        database.delete(DBHelper.BOOK_TABLE_NAME, DBHelper.BOOK_ID_COLUMN + "=" + Integer.toString(bookID), null);
+        database.delete(DBHelper.BOOK_TABLE_NAME, DBHelper.BOOK_ID_COLUMN + "=" + bookID, null);
     }
 
     @Override
@@ -110,12 +142,12 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void deleteCustomer(int customerID) throws Exception {
-
+        database.delete(DBHelper.USER_TABLE_NAME,DBHelper.USER_ID_COLUMN + "=" + customerID, null);
     }
 
     @Override
     public void deleteSupplier(int supplierID) throws Exception {
-
+        database.delete(DBHelper.USER_TABLE_NAME,DBHelper.USER_ID_COLUMN + "=" + supplierID, null);
     }
 
     @Override
@@ -145,7 +177,7 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void deleteUser(int UserID) throws Exception {
-
+        database.delete(DBHelper.USER_TABLE_NAME,DBHelper.USER_ID_COLUMN + "=" + UserID, null);
     }
 
     @Override
@@ -169,12 +201,24 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void updateCustomer(Customer customer, int customerID) throws Exception {
-
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.USER_NAME_COLUMN, customer.getName());
+        values.put(DBHelper.USER_ADDRESS_COLUMN, customer.getAddress());
+        values.put(DBHelper.USER_GENDER_COLUMN, customer.getGender().toString());
+        values.put(DBHelper.USER_BIRTHDAY_COLUMN, customer.getBirthday().getTime());
+        values.put(DBHelper.USER_PERMISSION_COLUMN, Permission.CUSTOMER.toString());
+        database.update(DBHelper.USER_TABLE_NAME, values, DBHelper.USER_ID_COLUMN+"="+customerID,null);
     }
 
     @Override
     public void updateSupplier(Supplier supplier, int supplierID) throws Exception {
-
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.USER_NAME_COLUMN, supplier.getName());
+        values.put(DBHelper.USER_ADDRESS_COLUMN, supplier.getAddress());
+        values.put(DBHelper.USER_GENDER_COLUMN, supplier.getGender().toString());
+        values.put(DBHelper.USER_BIRTHDAY_COLUMN, supplier.getBirthday().getTime());
+        values.put(DBHelper.USER_PERMISSION_COLUMN, Permission.SUPPLIER.toString());
+        database.update(DBHelper.USER_TABLE_NAME,values,DBHelper.USER_ID_COLUMN+"="+supplierID,null);
     }
 
     @Override
@@ -199,12 +243,23 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void resetUserPassword(int userID, String newPassword) throws Exception {
-
+        User user = this.getUserByID(userID);
+        user.setPassword(newPassword);
+        this.updateUser(user);
     }
 
     @Override
-    public void updateUser(User user) {
-
+    public void updateUser(User user) throws Exception{
+        ArrayList<User> userArrayList = this.getUserList();
+        for (User user1 : userArrayList)
+        {
+            if (user.getMail().equals(user1.getMail()))
+                throw new Exception("This mail already exist");
+        }
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.USER_MAIL_COLUMN, user.getMail());
+        values.put(DBHelper.USER_PASSWORD_COLUMN, user.getPassword());
+        database.update(DBHelper.USER_TABLE_NAME,values,DBHelper.USER_ID_COLUMN+"="+user.getUserID(),null);
     }
 
     @Override
@@ -218,12 +273,20 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public Customer getCustomerByCustomerID(int customerID) throws Exception {
-        return null;
+        Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,DBHelper.USER_ID_COLUMN+"="+customerID,null,null,null,null);
+        if (cursor == null)
+            throw new Exception("There is no such ID");
+        cursor.moveToFirst();
+        return parseCustomer(cursor);
     }
 
     @Override
     public Supplier getSupplierBySupplierID(int SupplierID) throws Exception {
-        return null;
+        Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,DBHelper.USER_ID_COLUMN+"="+SupplierID,null,null,null,null);
+        if (cursor == null)
+            throw new Exception("There is no such ID");
+        cursor.moveToFirst();
+        return parseSupplier(cursor);
     }
 
     @Override
@@ -268,7 +331,11 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public User getUserByID(int userID) throws Exception {
-        return null;
+        Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,DBHelper.USER_ID_COLUMN+"="+userID,null,null,null,null);
+        if (cursor == null)
+            throw new Exception("There is no such ID");
+        cursor.moveToFirst();
+        return parseUser(cursor);
     }
 
     @Override
@@ -293,12 +360,32 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public ArrayList<Customer> getCustomerList() throws Exception {
-        return null;
+        ArrayList<Customer> customerArrayList = new ArrayList<>();
+        Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,null,null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Customer customer = parseCustomer(cursor);
+            customerArrayList.add(customer);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return customerArrayList;
     }
 
     @Override
     public ArrayList<Supplier> getSupplierList() throws Exception {
-        return null;
+        ArrayList<Supplier> supplierArrayList = new ArrayList<>();
+        Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,null,null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            Supplier supplier = parseSupplier(cursor);
+            supplierArrayList.add(supplier);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return supplierArrayList;
     }
 
     @Override
@@ -348,7 +435,17 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public ArrayList<User> getUserList() throws Exception {
-        return null;
+        ArrayList<User> userArrayList = new ArrayList<>();
+        Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,null,null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            User user = parseUser(cursor);
+            userArrayList.add(user);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return userArrayList;
     }
 
     @Override
@@ -372,6 +469,16 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public User login(String email, String password) {
+        String s = DatabaseUtils.sqlEscapeString(email);
+        Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,DBHelper.USER_MAIL_COLUMN+"="+ s,null,null,null,null);
+        if (cursor == null || cursor.getCount() < 1)
+            return null;
+        cursor.moveToFirst();
+        User user = parseUser(cursor);
+        if (user == null)
+            return null;
+        if (user.getPassword().equals(password))
+            return user;
         return null;
     }
 
@@ -412,6 +519,45 @@ public class DatabaseSQLite implements Backend {
         Book book = new Book(title,year,author,pages,category1);
         book.setBookID(id);
         return book;
+    }
+
+    Customer parseCustomer(Cursor cursor)
+    {
+        int id = cursor.getInt(0);
+        String name = cursor.getString(cursor.getColumnIndex(DBHelper.USER_NAME_COLUMN));
+        int birthdayInt = cursor.getInt(cursor.getColumnIndex(DBHelper.USER_BIRTHDAY_COLUMN));
+        Date birthday = new Date(birthdayInt);
+        String genderString = cursor.getString(cursor.getColumnIndex(DBHelper.USER_GENDER_COLUMN));
+        Gender gender = Gender.valueOf(genderString);
+        String address = cursor.getString(cursor.getColumnIndex(DBHelper.USER_ADDRESS_COLUMN));
+        Customer customer = new Customer(CustomerType.REGULAR,name,birthday,gender,address,null);
+        customer.setCustomerID(id);
+        return customer;
+    }
+
+    Supplier parseSupplier(Cursor cursor)
+    {
+        int id = cursor.getInt(0);
+        String name = cursor.getString(cursor.getColumnIndex(DBHelper.USER_NAME_COLUMN));
+        int birthdayInt = cursor.getInt(cursor.getColumnIndex(DBHelper.USER_BIRTHDAY_COLUMN));
+        Date birthday = new Date(birthdayInt);
+        String genderString = cursor.getString(cursor.getColumnIndex(DBHelper.USER_GENDER_COLUMN));
+        Gender gender = Gender.valueOf(genderString);
+        String address = cursor.getString(cursor.getColumnIndex(DBHelper.USER_ADDRESS_COLUMN));
+        Supplier supplier = new Supplier(Rating.THREE,name,birthday,gender,address,null);
+        supplier.setSupplierID(id);
+        return supplier;
+    }
+
+    User parseUser(Cursor cursor)
+    {
+        int id = cursor.getInt(0);
+        String permissionString = cursor.getString(cursor.getColumnIndex(DBHelper.USER_PERMISSION_COLUMN));
+        Permission permission = Permission.valueOf(permissionString);
+        String mail = cursor.getString(cursor.getColumnIndex(DBHelper.USER_MAIL_COLUMN));
+        String password = cursor.getString(cursor.getColumnIndex(DBHelper.USER_PASSWORD_COLUMN));
+        User user = new User(permission,mail,password,id);
+        return user;
     }
 
 }

@@ -24,6 +24,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String BOOK_PAGES_COLUMN = "bookPages";
     public static final String BOOK_CATEGORY_COLUMN = "bookCategory";
 
+    public static final String USER_ID_COLUMN = "userID";
+    public static final String USER_PERMISSION_COLUMN = "userPermission";
+    public static final String USER_NAME_COLUMN = "userName";
+    public static final String USER_BIRTHDAY_COLUMN = "userBirthday";
+    public static final String USER_GENDER_COLUMN = "userGender";
+    public static final String USER_ADDRESS_COLUMN = "userAddress";
+    public static final String USER_MAIL_COLUMN = "userMail";
+    public static final String USER_PASSWORD_COLUMN = "userPassword";
+    public static final String USER_ORDER_COLUMN = "userOrder";
 
 
     public DBHelper(Context context) {
@@ -37,6 +46,12 @@ public class DBHelper extends SQLiteOpenHelper {
         " text not null, " + BOOK_AUTHOR_COLUMN + " text not null, " +
         BOOK_YEAR_COLUMN + " integer not null, " + BOOK_PAGES_COLUMN + " integer not null, " +
         BOOK_CATEGORY_COLUMN + " text not null);");
+        db.execSQL("create table " + USER_TABLE_NAME + "(" + USER_ID_COLUMN +
+                " integer primary key autoincrement, " + USER_PERMISSION_COLUMN + " text not null, " +
+        USER_NAME_COLUMN + " text not null, " + USER_BIRTHDAY_COLUMN  + " integer not null, " +
+        USER_GENDER_COLUMN + " text not null, " + USER_ADDRESS_COLUMN + " text not null, " +
+        USER_MAIL_COLUMN + " text, " + USER_PASSWORD_COLUMN + " text, " +
+        USER_ORDER_COLUMN + "json);");
     }
 
     @Override

@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
             backend.addBook(new Book("t3",1900, "a1", 10, Category.Comics));
             backend.addBook(new Book("t4", 1901, "a2", 11, Category.Art));
             ArrayList<Book> bookArrayList = backend.getBookList();
+            int id = backend.addCustomer(new Customer(CustomerType.REGULAR,"r", new Date(), Gender.FEMALE, "bialik",null));
+            backend.addUser(new User(Permission.CUSTOMER, "a@a.com","a",id));
+            User user = backend.getUserByID(id);
             Toast.makeText(MainActivity.this, bookArrayList.get(0).getTitle(),Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
