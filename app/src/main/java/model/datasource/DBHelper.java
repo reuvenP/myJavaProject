@@ -34,6 +34,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String USER_PASSWORD_COLUMN = "userPassword";
     public static final String USER_ORDER_COLUMN = "userOrder";
 
+    public static final String BOOK_SUPPLIER_SUPPLIER_COLUMN = "bookSupplierSupplier";
+    public static final String BOOK_SUPPLIER_BOOK_COLUMN = "bookSupplierBook";
+    public static final String BOOK_SUPPLIER_PRICE_COLUMN = "bookSupplierPrice";
+    public static final String BOOK_SUPPLIER_AMOUNT_COLUMN = "bookSupplierAmount";
+
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -52,6 +57,11 @@ public class DBHelper extends SQLiteOpenHelper {
         USER_GENDER_COLUMN + " text not null, " + USER_ADDRESS_COLUMN + " text not null, " +
         USER_MAIL_COLUMN + " text, " + USER_PASSWORD_COLUMN + " text, " +
         USER_ORDER_COLUMN + "json);");
+        db.execSQL("create table " + BOOK_SUPPLIER_RELATION_NAME + "(" + BOOK_SUPPLIER_SUPPLIER_COLUMN +
+        " integer not null, " + BOOK_SUPPLIER_BOOK_COLUMN + " integer not null, " + BOOK_SUPPLIER_PRICE_COLUMN +
+        " real not null, " + BOOK_SUPPLIER_AMOUNT_COLUMN + " integer not null, FOREIGN KEY(" +
+        BOOK_SUPPLIER_SUPPLIER_COLUMN + ") REFERENCES " + USER_TABLE_NAME + " (" + USER_ID_COLUMN + "), FOREIGN KEY(" +
+        BOOK_SUPPLIER_BOOK_COLUMN + ") REFERENCES " + BOOK_TABLE_NAME + " (" + BOOK_ID_COLUMN + "));");
     }
 
     @Override

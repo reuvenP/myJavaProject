@@ -38,6 +38,8 @@ public class DatabaseSQLite implements Backend {
     String[] userTableColumns = {DBHelper.USER_ID_COLUMN,DBHelper.USER_PERMISSION_COLUMN,DBHelper.USER_NAME_COLUMN,
             DBHelper.USER_BIRTHDAY_COLUMN ,DBHelper.USER_GENDER_COLUMN ,DBHelper.USER_ADDRESS_COLUMN,
             DBHelper.USER_MAIL_COLUMN ,DBHelper.USER_PASSWORD_COLUMN /*,DBHelper.USER_ORDER_COLUMN*/};
+    String[] bookSupplierColumns = {DBHelper.BOOK_SUPPLIER_SUPPLIER_COLUMN, DBHelper.BOOK_SUPPLIER_BOOK_COLUMN,
+            DBHelper.BOOK_SUPPLIER_PRICE_COLUMN, DBHelper.BOOK_SUPPLIER_AMOUNT_COLUMN};
 
     public DatabaseSQLite(Context context)
     {
@@ -113,7 +115,12 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void addBookSupplier(BookSupplier bookSupplier) throws Exception {
-
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.BOOK_SUPPLIER_SUPPLIER_COLUMN, bookSupplier.getSupplier().getSupplierID());
+        values.put(DBHelper.BOOK_SUPPLIER_BOOK_COLUMN, bookSupplier.getBook().getBookID());
+        values.put(DBHelper.BOOK_SUPPLIER_PRICE_COLUMN, bookSupplier.getPrice());
+        values.put(DBHelper.BOOK_SUPPLIER_AMOUNT_COLUMN, bookSupplier.getAmount());
+        database.insert(DBHelper.BOOK_SUPPLIER_RELATION_NAME,null,values);
     }
 
     @Override
@@ -172,7 +179,7 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void deleteBookSupplier(int bookID, int supplierID) throws Exception {
-
+        database.delete(DBHelper.BOOK_SUPPLIER_RELATION_NAME,DBHelper.BOOK_SUPPLIER_SUPPLIER_COLUMN+"="+supplierID + " and " +DBHelper.BOOK_SUPPLIER_BOOK_COLUMN + "=" + bookID,null);
     }
 
     @Override
@@ -233,7 +240,12 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void updateBookSupplier(BookSupplier bookSupplier) throws Exception {
-
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.BOOK_SUPPLIER_SUPPLIER_COLUMN, bookSupplier.getSupplier().getSupplierID());
+        values.put(DBHelper.BOOK_SUPPLIER_BOOK_COLUMN, bookSupplier.getBook().getBookID());
+        values.put(DBHelper.BOOK_SUPPLIER_PRICE_COLUMN, bookSupplier.getPrice());
+        values.put(DBHelper.BOOK_SUPPLIER_AMOUNT_COLUMN, bookSupplier.getAmount());
+        database.update(DBHelper.BOOK_SUPPLIER_RELATION_NAME,values,DBHelper.BOOK_SUPPLIER_SUPPLIER_COLUMN+"="+bookSupplier.getSupplier().getSupplierID() + " and " +DBHelper.BOOK_SUPPLIER_BOOK_COLUMN + "=" + bookSupplier.getBook().getBookID(),null);
     }
 
     @Override
@@ -265,7 +277,7 @@ public class DatabaseSQLite implements Backend {
     @Override
     public Book getBookByBookID(int bookID) throws Exception {
         Cursor cursor = database.query(DBHelper.BOOK_TABLE_NAME, bookTableColumns,DBHelper.BOOK_ID_COLUMN+"="+bookID,null,null,null,null);
-        if (cursor == null)
+        if (cursor == null || cursor.getCount() == 0)
             throw new Exception("There is no such ID");
         cursor.moveToFirst();
         return parseBook(cursor);
@@ -274,7 +286,7 @@ public class DatabaseSQLite implements Backend {
     @Override
     public Customer getCustomerByCustomerID(int customerID) throws Exception {
         Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,DBHelper.USER_ID_COLUMN+"="+customerID,null,null,null,null);
-        if (cursor == null)
+        if (cursor == null || cursor.getCount() == 0)
             throw new Exception("There is no such ID");
         cursor.moveToFirst();
         return parseCustomer(cursor);
@@ -283,7 +295,7 @@ public class DatabaseSQLite implements Backend {
     @Override
     public Supplier getSupplierBySupplierID(int SupplierID) throws Exception {
         Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,DBHelper.USER_ID_COLUMN+"="+SupplierID,null,null,null,null);
-        if (cursor == null)
+        if (cursor == null || cursor.getCount() == 0)
             throw new Exception("There is no such ID");
         cursor.moveToFirst();
         return parseSupplier(cursor);
@@ -316,23 +328,47 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public BookSupplier getBookSupplierBySupplierIDAndByBookID(int supplierID, int bookID) throws Exception {
-        return null;
+        Cursor cursor = database.query(DBHelper.BOOK_SUPPLIER_RELATION_NAME,bookSupplierColumns,DBHelper.BOOK_SUPPLIER_SUPPLIER_COLUMN+"="+supplierID + " and " +DBHelper.BOOK_SUPPLIER_BOOK_COLUMN + "=" + bookID,null,null,null,null);
+        if (cursor == null || cursor.getCount() == 0)
+            throw new Exception("There is no such ID");
+        cursor.moveToFirst();
+        return parseBookSupplier(cursor);
     }
 
     @Override
     public ArrayList<BookSupplier> getBookSupplierByBookID(int bookID) throws Exception {
-        return null;
+        ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
+        Cursor cursor = database.query(DBHelper.BOOK_SUPPLIER_RELATION_NAME,bookSupplierColumns,DBHelper.BOOK_SUPPLIER_BOOK_COLUMN+"="+bookID,null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            BookSupplier bookSupplier = parseBookSupplier(cursor);
+            bookSupplierArrayList.add(bookSupplier);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return bookSupplierArrayList;
     }
 
     @Override
     public ArrayList<BookSupplier> getBookSupplierBySupplierID(int supplierID) throws Exception {
-        return null;
+        ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
+        Cursor cursor = database.query(DBHelper.BOOK_SUPPLIER_RELATION_NAME,bookSupplierColumns,DBHelper.BOOK_SUPPLIER_SUPPLIER_COLUMN+"="+supplierID,null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            BookSupplier bookSupplier = parseBookSupplier(cursor);
+            bookSupplierArrayList.add(bookSupplier);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return bookSupplierArrayList;
     }
 
     @Override
     public User getUserByID(int userID) throws Exception {
         Cursor cursor = database.query(DBHelper.USER_TABLE_NAME, userTableColumns,DBHelper.USER_ID_COLUMN+"="+userID,null,null,null,null);
-        if (cursor == null)
+        if (cursor == null || cursor.getCount() == 0)
             throw new Exception("There is no such ID");
         cursor.moveToFirst();
         return parseUser(cursor);
@@ -340,7 +376,17 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public ArrayList<Book> getBookListBySupplier(int supplierID) {
-        return null;
+        ArrayList<Book> bookArrayList = new ArrayList<>();
+        try {
+            ArrayList<BookSupplier> bookSupplierArrayList = this.getBookSupplierBySupplierID(supplierID);
+            for (BookSupplier bookSupplier : bookSupplierArrayList)
+            {
+                bookArrayList.add(bookSupplier.getBook());
+            }
+            return bookArrayList;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -400,7 +446,17 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public ArrayList<BookSupplier> getBookSupplierList() throws Exception {
-        return null;
+        ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
+        Cursor cursor = database.query(DBHelper.BOOK_SUPPLIER_RELATION_NAME,bookSupplierColumns,null,null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast())
+        {
+            BookSupplier bookSupplier = parseBookSupplier(cursor);
+            bookSupplierArrayList.add(bookSupplier);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return bookSupplierArrayList;
     }
 
     @Override
@@ -464,7 +520,17 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public int getBookAmountByBookID(int bookID) {
-        return 0;
+        try {
+            ArrayList<BookSupplier> bookSupplierArrayList = this.getBookSupplierByBookID(bookID);
+            int sum = 0;
+            for (BookSupplier bookSupplier : bookSupplierArrayList)
+            {
+                sum += bookSupplier.getAmount();
+            }
+            return sum;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     @Override
@@ -558,6 +624,22 @@ public class DatabaseSQLite implements Backend {
         String password = cursor.getString(cursor.getColumnIndex(DBHelper.USER_PASSWORD_COLUMN));
         User user = new User(permission,mail,password,id);
         return user;
+    }
+
+    BookSupplier parseBookSupplier(Cursor cursor)
+    {
+        int bookID = cursor.getInt(cursor.getColumnIndex(DBHelper.BOOK_SUPPLIER_BOOK_COLUMN));
+        int supplierID = cursor.getInt(cursor.getColumnIndex(DBHelper.BOOK_SUPPLIER_SUPPLIER_COLUMN));
+        float price = cursor.getFloat(cursor.getColumnIndex(DBHelper.BOOK_SUPPLIER_PRICE_COLUMN));
+        int amount = cursor.getInt(cursor.getColumnIndex(DBHelper.BOOK_SUPPLIER_AMOUNT_COLUMN));
+        try {
+            Book book = this.getBookByBookID(bookID);
+            Supplier supplier = this.getSupplierBySupplierID(supplierID);
+            BookSupplier bookSupplier = new BookSupplier(supplier,book,price,amount);
+            return bookSupplier;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
