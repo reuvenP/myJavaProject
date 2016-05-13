@@ -7,6 +7,10 @@ import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -189,14 +193,6 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void updateBook(Book book, int bookID) throws Exception {
-        ArrayList<Book> bookArrayList = this.getBookList();
-        for (Book book1 : bookArrayList)
-        {
-            if (book.getTitle().equals(book1.getTitle()) && book.getAuthor().equals(book1.getAuthor()) &&
-                    book.getYear() == book1.getYear() && book.getPages() == book1.getPages() &&
-                    book.getCategory() == book1.getCategory())
-                throw new Exception("This book already exist");
-        }
         ContentValues values = new ContentValues();
         values.put(DBHelper.BOOK_TITLE_COLUMN, book.getTitle());
         values.put(DBHelper.BOOK_AUTHOR_COLUMN, book.getAuthor());
@@ -262,15 +258,10 @@ public class DatabaseSQLite implements Backend {
 
     @Override
     public void updateUser(User user) throws Exception{
-        ArrayList<User> userArrayList = this.getUserList();
-        for (User user1 : userArrayList)
-        {
-            if (user.getMail().equals(user1.getMail()))
-                throw new Exception("This mail already exist");
-        }
         ContentValues values = new ContentValues();
         values.put(DBHelper.USER_MAIL_COLUMN, user.getMail());
         values.put(DBHelper.USER_PASSWORD_COLUMN, user.getPassword());
+        values.put(DBHelper.USER_ORDER_COLUMN, bookSupplierListToString(user.getOrder()));
         database.update(DBHelper.USER_TABLE_NAME,values,DBHelper.USER_ID_COLUMN+"="+user.getUserID(),null);
     }
 
@@ -619,7 +610,9 @@ public class DatabaseSQLite implements Backend {
         Permission permission = Permission.valueOf(permissionString);
         String mail = cursor.getString(cursor.getColumnIndex(DBHelper.USER_MAIL_COLUMN));
         String password = cursor.getString(cursor.getColumnIndex(DBHelper.USER_PASSWORD_COLUMN));
+        ArrayList<BookSupplier> bookSuppliers = bookSupplierStringToList(cursor.getString(cursor.getColumnIndex(DBHelper.USER_ORDER_COLUMN)));
         User user = new User(permission,mail,password,id);
+        user.setOrder(bookSuppliers);
         return user;
     }
 
@@ -639,4 +632,47 @@ public class DatabaseSQLite implements Backend {
         }
     }
 
+    String bookSupplierListToString(ArrayList<BookSupplier> bookSuppliers)
+    {
+        try {
+        JSONArray jsonArray = new JSONArray();
+        for (BookSupplier bookSupplier : bookSuppliers)
+        {
+            JSONObject object = new JSONObject();
+            object.put("bookID",bookSupplier.getBook().getBookID());
+            object.put("supplierID",bookSupplier.getSupplier().getSupplierID());
+            jsonArray.put(object);
+        }
+        JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("bsa",jsonArray);
+            return jsonObject.toString();
+        } catch (JSONException e) {
+            return null;
+        }
+    }
+    ArrayList<BookSupplier> bookSupplierStringToList(String bookSuppliers)
+    {
+        if (bookSuppliers == null || bookSuppliers.equals(""))
+            return null;
+        ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(bookSuppliers);
+            JSONArray jsonArray = jsonObject.optJSONArray("bsa");
+            for (int i=0; i< jsonArray.length();i++)
+            {
+                JSONObject object = jsonArray.getJSONObject(i);
+                int bookID = object.getInt("bookID");
+                int supplierID = object.getInt("supplierID");
+                try {
+                    bookSupplierArrayList.add(this.getBookSupplierBySupplierIDAndByBookID(supplierID,bookID));
+                } catch (Exception e) {
+
+                }
+            }
+            return bookSupplierArrayList;
+        } catch (JSONException e) {
+            return null;
+        }
+    }
 }

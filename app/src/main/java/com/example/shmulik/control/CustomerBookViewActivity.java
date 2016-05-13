@@ -120,6 +120,11 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             if (bookSupplier.getAmount() < 1)
                 throw new Exception("out of stock");
             bookSupplier.setAmount(bookSupplier.getAmount()-1);
+            if (currentUser.getOrder() == null)
+            {
+                ArrayList<BookSupplier> order = new ArrayList<>();
+                currentUser.setOrder(order);
+            }
             currentUser.getOrder().add(bookSupplier);
             backend.updateBookSupplier(bookSupplier);
             backend.updateUser(currentUser);
