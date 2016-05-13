@@ -79,9 +79,10 @@ public class AddBookActivity extends AppCompatActivity {
                     Book book = new Book(title.getText().toString(), Integer.parseInt(year.getText().toString()),
                            author.getText().toString(), Integer.parseInt(pages.getText().toString()),
                             Category.valueOf(list.get(category.getSelectedItemPosition())));
+                    int id = backend.addBook(book);
+                    book.setBookID(id);
                     bookSupplier = new BookSupplier(backend.getSupplierBySupplierID(currentUser.getUserID()),
                             book, Float.valueOf(price.getText().toString()), amount.getValue());
-                    backend.addBook(book);
                     backend.addBookSupplier(bookSupplier);
                     Toast.makeText(AddBookActivity.this,"Added",Toast.LENGTH_LONG).show();
                 }

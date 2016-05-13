@@ -18,7 +18,7 @@ import entities.User;
 public interface Backend {
 
     /*1)*/
-    public void addBook(Book book) throws Exception;// add book to bookList.
+    public int addBook(Book book) throws Exception;// add book to bookList.
     public int addCustomer(Customer customer) throws Exception;// add customer to customerList.
     public int addSupplier(Supplier supplier) throws Exception;// add supplier to supplierList.
     public void addBooksInStore(BooksInStore booksInStore) throws Exception;// add booksInStore to booksInStoreList.

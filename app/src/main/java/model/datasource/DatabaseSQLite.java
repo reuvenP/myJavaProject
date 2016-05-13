@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +55,7 @@ public class DatabaseSQLite implements Backend {
     }
 
     @Override
-    public void addBook(Book book) throws Exception {
+    public int addBook(Book book) throws Exception {
         ArrayList<Book> bookArrayList = this.getBookList();
         for (Book book1 : bookArrayList)
         {
@@ -71,7 +70,8 @@ public class DatabaseSQLite implements Backend {
         values.put(DBHelper.BOOK_PAGES_COLUMN, book.getPages());
         values.put(DBHelper.BOOK_YEAR_COLUMN, book.getYear());
         values.put(DBHelper.BOOK_CATEGORY_COLUMN, book.getCategory().toString());
-        database.insert(DBHelper.BOOK_TABLE_NAME, null, values);
+        long id = database.insert(DBHelper.BOOK_TABLE_NAME, null, values);
+        return (int)id;
     }
 
     @Override
@@ -507,7 +507,7 @@ public class DatabaseSQLite implements Backend {
     @Override
     public ArrayList<Book> getBookListByCategory(Category category) throws Exception {
         ArrayList<Book> bookArrayList = new ArrayList<>();
-        Cursor cursor = database.query(DBHelper.BOOK_TABLE_NAME,bookTableColumns,DBHelper.BOOK_CATEGORY_COLUMN+"="+category.toString(),null, null, null, null, null);
+       /* Cursor cursor = database.query(DBHelper.BOOK_TABLE_NAME,bookTableColumns,DBHelper.BOOK_CATEGORY_COLUMN+"="+category,null, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast())
         {
@@ -515,7 +515,13 @@ public class DatabaseSQLite implements Backend {
             bookArrayList.add(book);
             cursor.moveToNext();
         }
-        cursor.close();
+        cursor.close();*/
+        ArrayList<Book> bookArrayList1 = this.getBookList();
+        for (Book book : bookArrayList1)
+        {
+            if (book.getCategory() == category)
+                bookArrayList.add(book);
+        }
         return bookArrayList;    }
 
     @Override

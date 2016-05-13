@@ -69,7 +69,7 @@ public class DatabaseList implements Backend {
 
     @Override
     // add book to bookList.
-    public void addBook (Book book) throws Exception {
+    public int addBook (Book book) throws Exception {
         for (Book bookTemp : bookList) {
             if(bookTemp.getBookID() == book.getBookID()) {
                 throw new Exception("This book(" + book.getBookID() + " " + book.getTitle() + ") already exists");
@@ -80,6 +80,7 @@ public class DatabaseList implements Backend {
 //        }
         book.setBookID(bookIDGenerator++);
         bookList.add(book);
+        return book.getBookID();
     }
 
     @Override
