@@ -56,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
         USER_NAME_COLUMN + " text not null, " + USER_BIRTHDAY_COLUMN  + " integer not null, " +
         USER_GENDER_COLUMN + " text not null, " + USER_ADDRESS_COLUMN + " text not null, " +
         USER_MAIL_COLUMN + " text, " + USER_PASSWORD_COLUMN + " text, " +
-        USER_ORDER_COLUMN + "json);");
+        USER_ORDER_COLUMN + " text);");
         db.execSQL("create table " + BOOK_SUPPLIER_RELATION_NAME + "(" + BOOK_SUPPLIER_SUPPLIER_COLUMN +
         " integer not null, " + BOOK_SUPPLIER_BOOK_COLUMN + " integer not null, " + BOOK_SUPPLIER_PRICE_COLUMN +
         " real not null, " + BOOK_SUPPLIER_AMOUNT_COLUMN + " integer not null, FOREIGN KEY(" +

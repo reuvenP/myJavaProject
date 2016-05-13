@@ -36,7 +36,7 @@ public class DatabaseSQLite implements Backend {
             DBHelper.BOOK_YEAR_COLUMN, DBHelper.BOOK_PAGES_COLUMN, DBHelper.BOOK_CATEGORY_COLUMN};
     String[] userTableColumns = {DBHelper.USER_ID_COLUMN,DBHelper.USER_PERMISSION_COLUMN,DBHelper.USER_NAME_COLUMN,
             DBHelper.USER_BIRTHDAY_COLUMN ,DBHelper.USER_GENDER_COLUMN ,DBHelper.USER_ADDRESS_COLUMN,
-            DBHelper.USER_MAIL_COLUMN ,DBHelper.USER_PASSWORD_COLUMN /*,DBHelper.USER_ORDER_COLUMN*/};
+            DBHelper.USER_MAIL_COLUMN ,DBHelper.USER_PASSWORD_COLUMN,DBHelper.USER_ORDER_COLUMN};
     String[] bookSupplierColumns = {DBHelper.BOOK_SUPPLIER_SUPPLIER_COLUMN, DBHelper.BOOK_SUPPLIER_BOOK_COLUMN,
             DBHelper.BOOK_SUPPLIER_PRICE_COLUMN, DBHelper.BOOK_SUPPLIER_AMOUNT_COLUMN};
 
@@ -507,15 +507,6 @@ public class DatabaseSQLite implements Backend {
     @Override
     public ArrayList<Book> getBookListByCategory(Category category) throws Exception {
         ArrayList<Book> bookArrayList = new ArrayList<>();
-       /* Cursor cursor = database.query(DBHelper.BOOK_TABLE_NAME,bookTableColumns,DBHelper.BOOK_CATEGORY_COLUMN+"="+category,null, null, null, null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast())
-        {
-            Book book = parseBook(cursor);
-            bookArrayList.add(book);
-            cursor.moveToNext();
-        }
-        cursor.close();*/
         ArrayList<Book> bookArrayList1 = this.getBookList();
         for (Book book : bookArrayList1)
         {

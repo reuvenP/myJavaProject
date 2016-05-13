@@ -46,32 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         backend = BackendFactory.getInstance(MainActivity.this);
-
-        //test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        try {
-            backend.addBook(new Book("t3",1900, "a1", 10, Category.Comics));
-            backend.addBook(new Book("t4", 1901, "a2", 11, Category.Art));
-            ArrayList<Book> bookArrayList = backend.getBookList();
-            int id = backend.addCustomer(new Customer(CustomerType.REGULAR,"r", new Date(), Gender.FEMALE, "bialik",null));
-            backend.addUser(new User(Permission.CUSTOMER, "a@a.com","a",id));
-            id = backend.addSupplier(new Supplier(null,"t",new Date(),Gender.MALE, "bb",null));
-            backend.addUser(new User(Permission.SUPPLIER,"b@b.com","b",id));
-            User user = backend.getUserByID(id);
-            Toast.makeText(MainActivity.this, bookArrayList.get(0).getTitle(),Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        //test end!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
         currentUser = UserSingltone.getInstance();
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         loginBT = (Button) findViewById(R.id.login_mainBT);
