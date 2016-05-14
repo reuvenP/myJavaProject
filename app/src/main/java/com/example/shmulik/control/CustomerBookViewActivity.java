@@ -125,6 +125,12 @@ public class CustomerBookViewActivity extends AppCompatActivity {
                 ArrayList<BookSupplier> order = new ArrayList<>();
                 currentUser.setOrder(order);
             }
+            for (BookSupplier bookSupplier1 : currentUser.getOrder())
+            {
+                if (bookSupplier1.getBook().getBookID() == bookSupplier.getBook().getBookID() &&
+                        bookSupplier1.getSupplier().getSupplierID() == bookSupplier.getSupplier().getSupplierID())
+                    bookSupplier1.setAmount(bookSupplier.getAmount());
+            }
             currentUser.getOrder().add(bookSupplier);
             backend.updateBookSupplier(bookSupplier);
             backend.updateUser(currentUser);

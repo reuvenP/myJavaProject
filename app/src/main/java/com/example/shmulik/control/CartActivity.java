@@ -90,6 +90,12 @@ public class CartActivity extends AppCompatActivity {
         try {
             BookSupplier bookSupplier = currentUser.getOrder().get(position);
             bookSupplier.setAmount(bookSupplier.getAmount()+1);
+            for (BookSupplier bookSupplier1 : currentUser.getOrder())
+            {
+                if (bookSupplier.getBook().getBookID() == bookSupplier1.getBook().getBookID() &&
+                        bookSupplier.getSupplier().getSupplierID() == bookSupplier1.getSupplier().getSupplierID())
+                    bookSupplier1.setAmount(bookSupplier.getAmount());
+            }
             currentUser.getOrder().remove(position);
             backend.updateBookSupplier(bookSupplier);
             backend.updateUser(currentUser);
@@ -111,6 +117,12 @@ public class CartActivity extends AppCompatActivity {
         try {
             for (BookSupplier bookSupplier : currentUser.getOrder()) {
                 bookSupplier.setAmount(bookSupplier.getAmount()+1);
+                for (BookSupplier bookSupplier1 : currentUser.getOrder())
+                {
+                    if (bookSupplier.getBook().getBookID() == bookSupplier1.getBook().getBookID() &&
+                            bookSupplier.getSupplier().getSupplierID() == bookSupplier1.getSupplier().getSupplierID())
+                        bookSupplier1.setAmount(bookSupplier.getAmount());
+                }
                 backend.updateBookSupplier(bookSupplier);
             }
             currentUser.getOrder().clear();
