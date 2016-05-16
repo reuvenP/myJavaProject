@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@mipmap/book_store"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.shmulik.control.MainActivity"
     tools:showIn="@layout/activity_main">
@@ -20,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Login"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:background="#54dcc1" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +30,8 @@
         android:layout_marginTop="16dp"
         android:textSize="25dp"
 
-        android:text="Or"/>
+        android:text="Or"
+        android:textColor="@color/colorPrimaryDark" />
     <Button
         android:id="@+id/signup_mainBT"
         style="?android:textAppearanceSmall"
@@ -36,5 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Register"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:background="#ecf00c" />
 </LinearLayout>

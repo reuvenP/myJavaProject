@@ -13,24 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="SUBMIT"
-        android:id="@+id/cart_submit_BTN"/>
+        android:id="@+id/cart_submit_BTN"
+        android:background="#1520f1" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="CLEAR"
-        android:id="@+id/cart_clear_BTN"/>
+        android:id="@+id/cart_clear_BTN"
+        android:background="#ee1b1b" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cart_total"
         android:textSize="20dp"
         android:paddingTop="10dp"
-        android:text="Total: "/>
+        android:text="Total: "
+        android:textColor="#ee2e07"
+        android:textStyle="bold"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="20dp"
+        android:background="@mipmap/cart"
         android:id="@+id/cart_LV"></ListView>
 
 </LinearLayout>
