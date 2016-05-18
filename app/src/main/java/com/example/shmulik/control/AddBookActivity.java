@@ -85,6 +85,8 @@ public class AddBookActivity extends AppCompatActivity {
                             book, Float.valueOf(price.getText().toString()), amount.getValue());
                     backend.addBookSupplier(bookSupplier);
                     Toast.makeText(AddBookActivity.this,"Added",Toast.LENGTH_LONG).show();
+                    finish();
+                    startActivity(getIntent());
                 }
                 catch (Exception e)
                 {
