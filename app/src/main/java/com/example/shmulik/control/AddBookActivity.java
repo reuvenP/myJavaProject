@@ -66,7 +66,7 @@ public class AddBookActivity extends AppCompatActivity {
 
         List<Category> categoryList = Arrays.asList(Category.values());
         final ArrayList<String> list = new ArrayList<>();
-        for (int i=0; i<categoryList.size();i++)
+        for (int i = 0; i < categoryList.size();i++)
         {
             list.add(categoryList.get(i).toString());
         }
@@ -91,7 +91,6 @@ public class AddBookActivity extends AppCompatActivity {
                 catch (Exception e)
                 {
                     Toast.makeText(AddBookActivity.this,"Error",Toast.LENGTH_LONG).show();
-
                 }
             }
         });

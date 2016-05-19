@@ -61,4 +61,23 @@
         android:paddingTop="15dp"></ListView>
 
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <AutoCompleteTextView
+            android:layout_width="116dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:id="@+id/addBookAmountTextView"
+            android:layout_gravity="center_horizontal"
+            android:textSize="15dp"
+            android:inputType="number"
+            android:textColor="#29d307"
+            android:textStyle="bold"
+            android:textColorHint="#edda01"
+            android:hint=" Amount:" />
+
+    </android.support.design.widget.TextInputLayout>
+
 </LinearLayout>
