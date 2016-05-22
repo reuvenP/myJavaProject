@@ -1,6 +1,21 @@
 package model.datasource;
 
+import android.os.AsyncTask;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import entities.Book;
 import entities.BookSupplier;
@@ -20,7 +35,37 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public int addBook(Book book) throws Exception {
-        return 0;
+        final Map<String, Object> params2 = new LinkedHashMap<>();
+        final String[] ID = new String[1];
+        params2.put("year",book.getYear());
+        params2.put("author", book.getAuthor());
+        params2.put("title", book.getTitle());
+        params2.put("pages", book.getPages());
+        params2.put("category", book.getCategory().toString());
+        try
+        {
+            new AsyncTask<Void, Void, Void>(){
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try
+                    {
+                        ID[0] = POST("http://plevinsk.vlab.jct.ac.il/addBook.php",params2);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    return  null;
+                }
+            }.execute().get();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        int id = Integer.parseInt(ID[0].substring(0,ID[0].length()-1));
+        if (id == 0)
+            throw new Exception("Error in add book");
+        return id;
     }
 
     @Override
@@ -220,7 +265,38 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public ArrayList<Book> getBookList() throws Exception {
-        return null;
+        final ArrayList<Book> bookArrayList = new ArrayList<>();
+        try{
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try{
+                        JSONArray books = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getBookList.php")).getJSONArray("books");
+                        for (int i = 0; i<books.length();i++){
+                            Book book = jsonToBook(books.getJSONObject(i));
+                            if (book != null)
+                                bookArrayList.add(book);
+                        }
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPreExecute() {
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                }
+            }.execute().get();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return bookArrayList;
     }
 
     @Override
@@ -311,5 +387,73 @@ public class DatabaseMySQL implements Backend {
     @Override
     public void deleteLists() throws Exception {
 
+    }
+
+    private static String GET(String url) throws Exception {
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+                }
+            in.close();
+            // print result
+            return response.toString();
+        }
+        else {
+            return "";
+        }
+    }
+
+    private static String POST(String url, Map<String,Object> params) throws IOException {
+        //Convert Map<String,Object> into key=value&key=value pairs.
+        StringBuilder postData = new StringBuilder();
+        for (Map.Entry<String,Object> param : params.entrySet()) {
+            if (postData.length() != 0)
+                postData.append('&');
+            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+            postData.append('=');
+            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+        }
+
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("POST");
+        // For POST only - START
+        con.setDoOutput(true);
+        OutputStream os = con.getOutputStream();
+        os.write(postData.toString().getBytes("UTF-8"));
+        os.flush();
+        os.close();
+        // For POST only - END
+        int responseCode = con.getResponseCode();
+        System.out.println("POST Response Code :: " + responseCode);
+        if (responseCode == HttpURLConnection.HTTP_OK) { //success
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            return response.toString();
+        }
+        else
+            return "";
+    }
+
+    Book jsonToBook(JSONObject object)
+    {
+        try {
+            Book book = new Book(object.getString("title"), object.getInt("year"),object.getString("author"), object.getInt("pages"), Category.valueOf(object.getString("category")));
+            book.setBookID(object.getInt("bookID"));
+            return book;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 }

@@ -31,5 +31,6 @@
         <activity android:name="com.example.shmulik.control.AddBookActivity" />
         <activity android:name="com.example.shmulik.control.CartActivity"></activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
