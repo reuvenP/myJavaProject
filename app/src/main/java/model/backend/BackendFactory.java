@@ -25,13 +25,13 @@ public class BackendFactory {
             if (instance == null) instance = new model.datasource.DatabaseSQLite(context);
             return instance;
         }
-//
-//        /*3.3)*/
-//        if (mode == "Service") {
-//            if (instance == null) instance = new model.datasource.DatabeseService();
-//            return instance;
-//        }
-    else {
+
+        /*3.3)*/
+        if (mode == "service") {
+            if (instance == null) instance = new model.datasource.DatabaseMySQL();
+            return instance;
+        }
+        else {
             return null;
         }
     }
