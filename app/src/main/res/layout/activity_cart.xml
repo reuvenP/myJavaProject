@@ -37,5 +37,4 @@
         android:paddingTop="20dp"
         android:background="@mipmap/cart"
         android:id="@+id/cart_LV"></ListView>
-
 </LinearLayout>
