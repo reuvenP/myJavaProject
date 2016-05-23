@@ -39,34 +39,20 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public int addBook(Book book) throws Exception {
-        final Map<String, Object> params2 = new LinkedHashMap<>();
-        final String[] ID = new String[1];
-        params2.put("year",book.getYear());
-        params2.put("author", book.getAuthor());
-        params2.put("title", book.getTitle());
-        params2.put("pages", book.getPages());
-        params2.put("category", book.getCategory().toString());
-        try
-        {
-            new AsyncTask<Void, Void, Void>(){
-                @Override
-                protected Void doInBackground(Void... params) {
-                    try
-                    {
-                        ID[0] = POST("http://plevinsk.vlab.jct.ac.il/addBook.php",params2);
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    return  null;
-                }
-            }.execute().get();
-        }
-        catch (Exception e)
-        {
+        final Map<String, Object> params = new LinkedHashMap<>();
+        String ID = "";
+        params.put("year", book.getYear());
+        params.put("author", book.getAuthor());
+        params.put("title", book.getTitle());
+        params.put("pages", book.getPages());
+        params.put("category", book.getCategory().toString());
+        try {
+            ID = POST("http://plevinsk.vlab.jct.ac.il/addBook.php", params);
+        } catch (Exception e) {
             e.printStackTrace();
+            throw new Exception(e.getMessage());
         }
-        int id = Integer.parseInt(ID[0].substring(0,ID[0].length()-1));
+        int id = Integer.parseInt(ID.substring(0, ID.length() - 1));
         if (id == 0)
             throw new Exception("Error in add book");
         return id;
@@ -74,12 +60,44 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public int addCustomer(Customer customer) throws Exception {
-        return 0;
+        final Map<String, Object> params = new LinkedHashMap<>();
+        String ID = "";
+        params.put("userPermission", Permission.CUSTOMER.toString());
+        params.put("userName", customer.getName());
+        params.put("userBirthday", customer.getBirthday());
+        params.put("userGender", customer.getGender().toString());
+        params.put("userAddress", customer.getAddress());
+        try {
+            ID = POST("http://plevinsk.vlab.jct.ac.il/addCustomerSupplier.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
+        int id = Integer.parseInt(ID.substring(0, ID.length() - 1));
+        if (id == 0)
+            throw new Exception("Error in add customer");
+        return id;
     }
 
     @Override
     public int addSupplier(Supplier supplier) throws Exception {
-        return 0;
+        final Map<String, Object> params = new LinkedHashMap<>();
+        String ID = "";
+        params.put("userPermission", Permission.SUPPLIER.toString());
+        params.put("userName", supplier.getName());
+        params.put("userBirthday", supplier.getBirthday());
+        params.put("userGender", supplier.getGender().toString());
+        params.put("userAddress", supplier.getAddress());
+        try {
+            ID = POST("http://plevinsk.vlab.jct.ac.il/addCustomerSupplier.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
+        int id = Integer.parseInt(ID.substring(0, ID.length() - 1));
+        if (id == 0)
+            throw new Exception("Error in add supplier");
+        return id;
     }
 
     @Override
@@ -270,35 +288,16 @@ public class DatabaseMySQL implements Backend {
     @Override
     public ArrayList<Book> getBookList() throws Exception {
         final ArrayList<Book> bookArrayList = new ArrayList<>();
-        try{
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    try{
-                        JSONArray books = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getBookList.php")).getJSONArray("books");
-                        for (int i = 0; i<books.length();i++){
-                            Book book = jsonToBook(books.getJSONObject(i));
-                            if (book != null)
-                                bookArrayList.add(book);
-                        }
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPreExecute() {
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                }
-            }.execute().get();
-        }
-        catch (Exception e){
+        try {
+            JSONArray books = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getBookList.php")).getJSONArray("books");
+            for (int i = 0; i < books.length(); i++) {
+                Book book = jsonToBook(books.getJSONObject(i));
+                if (book != null)
+                    bookArrayList.add(book);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         return bookArrayList;
     }
@@ -306,35 +305,16 @@ public class DatabaseMySQL implements Backend {
     @Override
     public ArrayList<Customer> getCustomerList() throws Exception {
         final ArrayList<Customer> customerArrayList = new ArrayList<>();
-        try{
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    try{
-                        JSONArray customers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getCustomerList.php")).getJSONArray("customers");
-                        for (int i = 0; i<customers.length();i++){
-                            Customer customer = jsonToCustomer(customers.getJSONObject(i));
-                            if (customer != null)
-                                customerArrayList.add(customer);
-                        }
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPreExecute() {
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                }
-            }.execute().get();
-        }
-        catch (Exception e){
+        try {
+            JSONArray customers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getCustomerList.php")).getJSONArray("customers");
+            for (int i = 0; i < customers.length(); i++) {
+                Customer customer = jsonToCustomer(customers.getJSONObject(i));
+                if (customer != null)
+                    customerArrayList.add(customer);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         return customerArrayList;
     }
@@ -425,29 +405,42 @@ public class DatabaseMySQL implements Backend {
     }
 
     private static String GET(String url) throws Exception {
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("GET");
-        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+        final String[] result = {""};
+        final String url2 = url;
+        try {
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        URL obj = new URL(url2);
+                        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                        con.setRequestMethod("GET");
+                        if (con.getResponseCode() == HttpURLConnection.HTTP_OK) { // success
+                            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                            String inputLine;
+                            StringBuffer response = new StringBuffer();
+                            while ((inputLine = in.readLine()) != null) {
+                                response.append(inputLine);
+                            }
+                            in.close();
+                            result[0] = response.toString();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
                 }
-            in.close();
-            // print result
-            return response.toString();
+            }.execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else {
-            return "";
-        }
+        return result[0];
     }
 
-    private static String POST(String url, Map<String,Object> params) throws IOException {
+    private static String POST(final String url, Map<String, Object> params) throws IOException {
         //Convert Map<String,Object> into key=value&key=value pairs.
-        StringBuilder postData = new StringBuilder();
-        for (Map.Entry<String,Object> param : params.entrySet()) {
+        final StringBuilder postData = new StringBuilder();
+        for (Map.Entry<String, Object> param : params.entrySet()) {
             if (postData.length() != 0)
                 postData.append('&');
             postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
@@ -455,36 +448,50 @@ public class DatabaseMySQL implements Backend {
             postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
         }
 
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        con.setRequestMethod("POST");
-        // For POST only - START
-        con.setDoOutput(true);
-        OutputStream os = con.getOutputStream();
-        os.write(postData.toString().getBytes("UTF-8"));
-        os.flush();
-        os.close();
-        // For POST only - END
-        int responseCode = con.getResponseCode();
-        System.out.println("POST Response Code :: " + responseCode);
-        if (responseCode == HttpURLConnection.HTTP_OK) { //success
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            return response.toString();
+        final String[] result = {""};
+        final String url2 = url;
+        try {
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        URL obj = new URL(url2);
+                        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                        con.setRequestMethod("POST");
+                        // For POST only - START
+                        con.setDoOutput(true);
+                        OutputStream os = con.getOutputStream();
+                        os.write(postData.toString().getBytes("UTF-8"));
+                        os.flush();
+                        os.close();
+                        // For POST only - END
+                        int responseCode = con.getResponseCode();
+                        System.out.println("POST Response Code :: " + responseCode);
+                        if (responseCode == HttpURLConnection.HTTP_OK) { //success
+                            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                            String inputLine;
+                            StringBuffer response = new StringBuffer();
+                            while ((inputLine = in.readLine()) != null) {
+                                response.append(inputLine);
+                            }
+                            in.close();
+                            result[0] = response.toString();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }.execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else
-            return "";
+        return result[0];
     }
 
-    Book jsonToBook(JSONObject object)
-    {
+    Book jsonToBook(JSONObject object) {
         try {
-            Book book = new Book(object.getString("title"), object.getInt("year"),object.getString("author"), object.getInt("pages"), Category.valueOf(object.getString("category")));
+            Book book = new Book(object.getString("title"), object.getInt("year"), object.getString("author"), object.getInt("pages"), Category.valueOf(object.getString("category")));
             book.setBookID(object.getInt("bookID"));
             return book;
         } catch (JSONException e) {
@@ -492,20 +499,16 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
-    Customer jsonToCustomer(JSONObject object)
-    {
-        try
-        {
+    Customer jsonToCustomer(JSONObject object) {
+        try {
             if (object.getString("userPermission").equals(Permission.CUSTOMER.toString())) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Customer customer = new Customer(CustomerType.REGULAR, object.getString("userName"), sdf.parse(object.getString("userBirthday")), Gender.valueOf(object.getString("userGender")), object.getString("userAddress"), null);
                 customer.setCustomerID(object.getInt("userID"));
                 return customer;
-            }
-            else
+            } else
                 return null;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

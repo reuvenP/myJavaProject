@@ -27,6 +27,7 @@ import entities.Customer;
 import entities.CustomerType;
 import entities.Gender;
 import entities.Permission;
+import entities.Rating;
 import entities.Supplier;
 import entities.User;
 import model.backend.Backend;
@@ -49,7 +50,11 @@ public class MainActivity extends AppCompatActivity {
         currentUser = UserSingltone.getInstance();
         try
         {
+           //int id =  backend.addCustomer(new Customer(CustomerType.REGULAR,"j", new Date(), Gender.FEMALE, "nnn",null));
+            int id = backend.addSupplier(new Supplier(Rating.FIVE,"f",new Date(),Gender.MALE,"ccc",null));
             ArrayList<Customer> customerArrayList = backend.getCustomerList();
+            ArrayList<Book> bookArrayList = backend.getBookList();
+            //int id = backend.addBook(new Book("r",6,"t",7,Category.Anthology));
             Toast.makeText(MainActivity.this, customerArrayList.get(0).getName(),Toast.LENGTH_LONG).show();
         }
         catch (Exception e){e.printStackTrace();}
