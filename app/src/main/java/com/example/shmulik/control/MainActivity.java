@@ -47,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         backend = BackendFactory.getInstance(MainActivity.this);
         currentUser = UserSingltone.getInstance();
+        try
+        {
+            ArrayList<Customer> customerArrayList = backend.getCustomerList();
+            Toast.makeText(MainActivity.this, customerArrayList.get(0).getName(),Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e){e.printStackTrace();}
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         loginBT = (Button) findViewById(R.id.login_mainBT);

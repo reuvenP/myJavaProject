@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,7 +24,10 @@ import entities.BooksForOrder;
 import entities.BooksInStore;
 import entities.Category;
 import entities.Customer;
+import entities.CustomerType;
+import entities.Gender;
 import entities.Order;
+import entities.Permission;
 import entities.Supplier;
 import entities.User;
 import model.backend.Backend;
@@ -301,7 +305,38 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public ArrayList<Customer> getCustomerList() throws Exception {
-        return null;
+        final ArrayList<Customer> customerArrayList = new ArrayList<>();
+        try{
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try{
+                        JSONArray customers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getCustomerList.php")).getJSONArray("customers");
+                        for (int i = 0; i<customers.length();i++){
+                            Customer customer = jsonToCustomer(customers.getJSONObject(i));
+                            if (customer != null)
+                                customerArrayList.add(customer);
+                        }
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPreExecute() {
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                }
+            }.execute().get();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return customerArrayList;
     }
 
     @Override
@@ -453,6 +488,25 @@ public class DatabaseMySQL implements Backend {
             book.setBookID(object.getInt("bookID"));
             return book;
         } catch (JSONException e) {
+            return null;
+        }
+    }
+
+    Customer jsonToCustomer(JSONObject object)
+    {
+        try
+        {
+            if (object.getString("userPermission").equals(Permission.CUSTOMER.toString())) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Customer customer = new Customer(CustomerType.REGULAR, object.getString("userName"), sdf.parse(object.getString("userBirthday")), Gender.valueOf(object.getString("userGender")), object.getString("userAddress"), null);
+                customer.setCustomerID(object.getInt("userID"));
+                return customer;
+            }
+            else
+                return null;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
