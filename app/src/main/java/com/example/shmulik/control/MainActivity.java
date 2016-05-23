@@ -49,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         backend = BackendFactory.getInstance(MainActivity.this);
         currentUser = UserSingltone.getInstance();
-       /* try
+        try
         {
+            /*
            //int id =  backend.addCustomer(new Customer(CustomerType.REGULAR,"avi", new Date(), Gender.MALE, "bialik 21",null));
             //backend.addUser(new User(Permission.CUSTOMER,"a@a.com","a",id));
             //id = backend.addSupplier(new Supplier(Rating.FIVE,"vivi",new Date(),Gender.FEMALE,"herzl 44",null));
@@ -67,9 +68,12 @@ public class MainActivity extends AppCompatActivity {
             //backend.addBookSupplier(new BookSupplier(supplierArrayList.get(0),bookArrayList.get(0),(float)98.5,10));
             //backend.deleteBook(bookArrayList.get(2).getBookID());
             //int id = backend.addBook(new Book("r",6,"t",7,Category.Anthology));
-            Toast.makeText(MainActivity.this, customerArrayList.get(0).getName(),Toast.LENGTH_LONG).show();
+            */
+            ArrayList<BookSupplier> bookSupplierArrayList = backend.getBookSupplierBySupplierID(14);
+
+            Toast.makeText(MainActivity.this, bookSupplierArrayList.get(0).getBook().getTitle(),Toast.LENGTH_LONG).show();
         }
-        catch (Exception e){e.printStackTrace();}*/
+        catch (Exception e){e.printStackTrace();}
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         loginBT = (Button) findViewById(R.id.login_mainBT);
