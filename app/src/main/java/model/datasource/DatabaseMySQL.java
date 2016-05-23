@@ -1,6 +1,7 @@
 package model.datasource;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -300,6 +301,7 @@ public class DatabaseMySQL implements Backend {
         params.put("userID", user.getUserID());
         params.put("userMail", user.getMail());
         params.put("userPassword", user.getPassword());
+        params.put("userOrder", bookSupplierListToString(user.getOrder()));
         try {
             result = POST("http://plevinsk.vlab.jct.ac.il/updateUser.php", params);
         } catch (Exception e) {
@@ -764,6 +766,8 @@ public class DatabaseMySQL implements Backend {
     User jsonToUser(JSONObject object) {
         try {
             User user = new User(Permission.valueOf(object.getString("userPermission")), object.getString("userMail"), object.getString("userPassword"), object.getInt("userID"));
+            ArrayList<BookSupplier> order = bookSupplierStringToList(object.getString("userOrder"));
+            user.setOrder(order);
             return user;
         } catch (Exception e) {
             e.printStackTrace();
@@ -783,6 +787,50 @@ public class DatabaseMySQL implements Backend {
             return bookSupplier;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    String bookSupplierListToString(ArrayList<BookSupplier> bookSuppliers)
+    {
+        try {
+            JSONArray jsonArray = new JSONArray();
+            for (BookSupplier bookSupplier : bookSuppliers)
+            {
+                JSONObject object = new JSONObject();
+                object.put("bookID",bookSupplier.getBook().getBookID());
+                object.put("supplierID",bookSupplier.getSupplier().getSupplierID());
+                jsonArray.put(object);
+            }
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("bsa",jsonArray);
+            return jsonObject.toString();
+        } catch (JSONException e) {
+            return "";
+        }
+    }
+    ArrayList<BookSupplier> bookSupplierStringToList(String bookSuppliers)
+    {
+        if (bookSuppliers == null || bookSuppliers.equals(""))
+            return null;
+        ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(bookSuppliers);
+            JSONArray jsonArray = jsonObject.optJSONArray("bsa");
+            for (int i=0; i< jsonArray.length();i++)
+            {
+                JSONObject object = jsonArray.getJSONObject(i);
+                int bookID = object.getInt("bookID");
+                int supplierID = object.getInt("supplierID");
+                try {
+                    bookSupplierArrayList.add(this.getBookSupplierBySupplierIDAndByBookID(supplierID,bookID));
+                } catch (Exception e) {
+
+                }
+            }
+            return bookSupplierArrayList;
+        } catch (JSONException e) {
             return null;
         }
     }
