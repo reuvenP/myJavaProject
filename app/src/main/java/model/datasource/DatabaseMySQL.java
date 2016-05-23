@@ -65,7 +65,7 @@ public class DatabaseMySQL implements Backend {
         String ID = "";
         params.put("userPermission", Permission.CUSTOMER.toString());
         params.put("userName", customer.getName());
-        params.put("userBirthday", customer.getBirthday());
+        params.put("userBirthday", new SimpleDateFormat("yyyy-MM-dd").format(customer.getBirthday()));
         params.put("userGender", customer.getGender().toString());
         params.put("userAddress", customer.getAddress());
         try {
@@ -86,7 +86,7 @@ public class DatabaseMySQL implements Backend {
         String ID = "";
         params.put("userPermission", Permission.SUPPLIER.toString());
         params.put("userName", supplier.getName());
-        params.put("userBirthday", supplier.getBirthday());
+        params.put("userBirthday", new SimpleDateFormat("yyyy-MM-dd").format(supplier.getBirthday()));
         params.put("userGender", supplier.getGender().toString());
         params.put("userAddress", supplier.getAddress());
         try {
@@ -450,7 +450,19 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public ArrayList<User> getUserList() throws Exception {
-        return null;
+        final ArrayList<User> userArrayList = new ArrayList<>();
+        try {
+            JSONArray users = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getUserList.php")).getJSONArray("users");
+            for (int i = 0; i < users.length(); i++) {
+                User user = jsonToUser(users.getJSONObject(i));
+                if (user != null)
+                    userArrayList.add(user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return userArrayList;
     }
 
     @Override
@@ -465,6 +477,16 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public User login(String email, String password) {
+        try {
+            ArrayList<User> userArrayList = this.getUserList();
+            for (User user : userArrayList) {
+                if (user.getMail().equals(email) && user.getPassword().equals(password))
+                    return user;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return null;
     }
 
@@ -618,14 +640,11 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
-    User jsonToUser(JSONObject object)
-    {
-        try
-        {
-            User user = new User(Permission.valueOf(object.getString("userPermission")),object.getString("userMail"),object.getString("userPassword"), object.getInt("userID"));
+    User jsonToUser(JSONObject object) {
+        try {
+            User user = new User(Permission.valueOf(object.getString("userPermission")), object.getString("userMail"), object.getString("userPassword"), object.getInt("userID"));
             return user;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
