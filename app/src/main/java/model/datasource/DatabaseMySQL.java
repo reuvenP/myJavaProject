@@ -28,6 +28,7 @@ import entities.CustomerType;
 import entities.Gender;
 import entities.Order;
 import entities.Permission;
+import entities.Rating;
 import entities.Supplier;
 import entities.User;
 import model.backend.Backend;
@@ -117,17 +118,45 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public void addBookSupplier(BookSupplier bookSupplier) throws Exception {
-
+        final Map<String, Object> params = new LinkedHashMap<>();
+        String result = "";
+        params.put("bookSupplierSupplier", bookSupplier.getSupplier().getSupplierID());
+        params.put("bookSupplierBook", bookSupplier.getBook().getBookID());
+        params.put("bookSupplierPrice", bookSupplier.getPrice());
+        params.put("bookSupplierAmount", bookSupplier.getAmount());
+        try {
+            result = POST("http://plevinsk.vlab.jct.ac.il/addBookSupplier.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(result);
+        }
     }
 
     @Override
     public void addUser(User user) throws Exception {
-
+        final Map<String, Object> params = new LinkedHashMap<>();
+        String result = "";
+        params.put("userID", user.getUserID());
+        params.put("userMail", user.getMail());
+        params.put("userPassword", user.getPassword());
+        try {
+            result = POST("http://plevinsk.vlab.jct.ac.il/addUser.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(result);
+        }
     }
 
     @Override
     public void deleteBook(int bookID) throws Exception {
-
+        final Map<String, Object> params = new LinkedHashMap<>();
+        params.put("bookID", bookID);
+        try {
+            POST("http://plevinsk.vlab.jct.ac.il/deleteBook.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
@@ -177,7 +206,19 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public void updateBook(Book book, int bookID) throws Exception {
-
+        final Map<String, Object> params = new LinkedHashMap<>();
+        params.put("bookID", bookID);
+        params.put("year", book.getYear());
+        params.put("author", book.getAuthor());
+        params.put("title", book.getTitle());
+        params.put("pages", book.getPages());
+        params.put("category", book.getCategory().toString());
+        try {
+            POST("http://plevinsk.vlab.jct.ac.il/updateBook.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
@@ -222,16 +263,43 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public Book getBookByBookID(int bookID) throws Exception {
+        try {
+            JSONArray books = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getBookByBookID.php?bookID=" + bookID)).getJSONArray("books");
+            Book book = jsonToBook(books.getJSONObject(0));
+            if (book != null)
+                return book;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return null;
     }
 
     @Override
     public Customer getCustomerByCustomerID(int customerID) throws Exception {
+        try {
+            JSONArray customers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getUserByUserID.php?userID=" + customerID)).getJSONArray("users");
+            Customer customer = jsonToCustomer(customers.getJSONObject(0));
+            if (customer != null)
+                return customer;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return null;
     }
 
     @Override
     public Supplier getSupplierBySupplierID(int SupplierID) throws Exception {
+        try {
+            JSONArray suppliers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getUserByUserID.php?userID=" + SupplierID)).getJSONArray("users");
+            Supplier supplier = jsonToSupplier(suppliers.getJSONObject(0));
+            if (supplier != null)
+                return supplier;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return null;
     }
 
@@ -277,6 +345,15 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public User getUserByID(int userID) throws Exception {
+        try {
+            JSONArray users = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getUserByUserID.php?userID=" + userID)).getJSONArray("users");
+            User user = jsonToUser(users.getJSONObject(0));
+            if (user != null)
+                return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return null;
     }
 
@@ -321,7 +398,19 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public ArrayList<Supplier> getSupplierList() throws Exception {
-        return null;
+        final ArrayList<Supplier> supplierArrayList = new ArrayList<>();
+        try {
+            JSONArray suppliers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getSupplierList.php")).getJSONArray("suppliers");
+            for (int i = 0; i < suppliers.length(); i++) {
+                Supplier supplier = jsonToSupplier(suppliers.getJSONObject(i));
+                if (supplier != null)
+                    supplierArrayList.add(supplier);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return supplierArrayList;
     }
 
     @Override
@@ -509,6 +598,34 @@ public class DatabaseMySQL implements Backend {
             } else
                 return null;
         } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    Supplier jsonToSupplier(JSONObject object) {
+        try {
+            if (object.getString("userPermission").equals(Permission.SUPPLIER.toString())) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Supplier supplier = new Supplier(Rating.FIVE, object.getString("userName"), sdf.parse(object.getString("userBirthday")), Gender.valueOf(object.getString("userGender")), object.getString("userAddress"), null);
+                supplier.setSupplierID(object.getInt("userID"));
+                return supplier;
+            } else
+                return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    User jsonToUser(JSONObject object)
+    {
+        try
+        {
+            User user = new User(Permission.valueOf(object.getString("userPermission")),object.getString("userMail"),object.getString("userPassword"), object.getInt("userID"));
+            return user;
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }

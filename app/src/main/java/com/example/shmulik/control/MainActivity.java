@@ -22,6 +22,7 @@ import java.util.Date;
 
 import entities.Account;
 import entities.Book;
+import entities.BookSupplier;
 import entities.Category;
 import entities.Customer;
 import entities.CustomerType;
@@ -50,10 +51,20 @@ public class MainActivity extends AppCompatActivity {
         currentUser = UserSingltone.getInstance();
         try
         {
-           //int id =  backend.addCustomer(new Customer(CustomerType.REGULAR,"j", new Date(), Gender.FEMALE, "nnn",null));
-            int id = backend.addSupplier(new Supplier(Rating.FIVE,"f",new Date(),Gender.MALE,"ccc",null));
+           //int id =  backend.addCustomer(new Customer(CustomerType.REGULAR,"avi", new Date(), Gender.MALE, "bialik 21",null));
+            //backend.addUser(new User(Permission.CUSTOMER,"a@a.com","a",id));
+            //id = backend.addSupplier(new Supplier(Rating.FIVE,"vivi",new Date(),Gender.FEMALE,"herzl 44",null));
+            //backend.addUser(new User(Permission.SUPPLIER,"v@v.com","v",id));
             ArrayList<Customer> customerArrayList = backend.getCustomerList();
             ArrayList<Book> bookArrayList = backend.getBookList();
+            ArrayList<Supplier> supplierArrayList = backend.getSupplierList();
+            Book book = backend.getBookByBookID(3);
+            Customer customer = backend.getCustomerByCustomerID(13);
+            Supplier supplier = backend.getSupplierBySupplierID(14);
+            User user = backend.getUserByID(13);
+            //backend.updateBook(book, book.getBookID());
+            //backend.addBookSupplier(new BookSupplier(supplierArrayList.get(0),bookArrayList.get(0),(float)98.5,10));
+            //backend.deleteBook(bookArrayList.get(2).getBookID());
             //int id = backend.addBook(new Book("r",6,"t",7,Category.Anthology));
             Toast.makeText(MainActivity.this, customerArrayList.get(0).getName(),Toast.LENGTH_LONG).show();
         }
