@@ -223,12 +223,36 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public void updateCustomer(Customer customer, int customerID) throws Exception {
-
+        final Map<String, Object> params = new LinkedHashMap<>();
+        params.put("userID", customer.getCustomerID());
+        params.put("userPermission", Permission.CUSTOMER.toString());
+        params.put("userName", customer.getName());
+        params.put("userBirthday", new SimpleDateFormat("yyyy-MM-dd").format(customer.getBirthday()));
+        params.put("userGender", customer.getGender().toString());
+        params.put("userAddress", customer.getAddress());
+        try {
+            POST("http://plevinsk.vlab.jct.ac.il/updateCustomerSupplier.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
     public void updateSupplier(Supplier supplier, int supplierID) throws Exception {
-
+        final Map<String, Object> params = new LinkedHashMap<>();
+        params.put("userID", supplier.getSupplierID());
+        params.put("userPermission", Permission.SUPPLIER.toString());
+        params.put("userName", supplier.getName());
+        params.put("userBirthday", new SimpleDateFormat("yyyy-MM-dd").format(supplier.getBirthday()));
+        params.put("userGender", supplier.getGender().toString());
+        params.put("userAddress", supplier.getAddress());
+        try {
+            POST("http://plevinsk.vlab.jct.ac.il/updateCustomerSupplier.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
@@ -243,7 +267,18 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public void updateBookSupplier(BookSupplier bookSupplier) throws Exception {
-
+        final Map<String, Object> params = new LinkedHashMap<>();
+        String result = "";
+        params.put("bookSupplierSupplier", bookSupplier.getSupplier().getSupplierID());
+        params.put("bookSupplierBook", bookSupplier.getBook().getBookID());
+        params.put("bookSupplierPrice", bookSupplier.getPrice());
+        params.put("bookSupplierAmount", bookSupplier.getAmount());
+        try {
+            result = POST("http://plevinsk.vlab.jct.ac.il/updateBookSupplier.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(result);
+        }
     }
 
     @Override
@@ -260,7 +295,17 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public void updateUser(User user) throws Exception {
-
+        final Map<String, Object> params = new LinkedHashMap<>();
+        String result = "";
+        params.put("userID", user.getUserID());
+        params.put("userMail", user.getMail());
+        params.put("userPassword", user.getPassword());
+        try {
+            result = POST("http://plevinsk.vlab.jct.ac.il/updateUser.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(result);
+        }
     }
 
     @Override
@@ -332,6 +377,15 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public BookSupplier getBookSupplierBySupplierIDAndByBookID(int supplierID, int bookID) throws Exception {
+        try {
+            JSONArray bookSuppliers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getBookSupplierBySupplierIDAndByBookID.php?bookID=" + bookID + "&supplierID=" + supplierID)).getJSONArray("bookSuppliers");
+            BookSupplier bookSupplier = jsonToBookSupplier(bookSuppliers.getJSONObject(0));
+            if (bookSupplier != null)
+                return bookSupplier;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return null;
     }
 
@@ -385,7 +439,16 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public ArrayList<Book> getBookListBySupplier(int supplierID) {
-        return null;
+        try {
+            ArrayList<BookSupplier> bookSupplierArrayList = this.getBookSupplierBySupplierID(supplierID);
+            ArrayList<Book> bookArrayList = new ArrayList<>();
+            for (BookSupplier bookSupplier : bookSupplierArrayList)
+                bookArrayList.add(bookSupplier.getBook());
+            return bookArrayList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -505,12 +568,32 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public ArrayList<Book> getBookListByCategory(Category category) throws Exception {
-        return null;
+        final ArrayList<Book> bookArrayList = new ArrayList<>();
+        try {
+            JSONArray books = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getBookListByCategory.php?category=" + category.toString())).getJSONArray("books");
+            for (int i = 0; i < books.length(); i++) {
+                Book book = jsonToBook(books.getJSONObject(i));
+                if (book != null)
+                    bookArrayList.add(book);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return bookArrayList;
+        }
+        return bookArrayList;
     }
 
     @Override
     public int getBookAmountByBookID(int bookID) {
-        return 0;
+        int amount = 0;
+        try
+        {
+            ArrayList<BookSupplier> bookSupplierArrayList = this.getBookSupplierByBookID(bookID);
+            for (BookSupplier bookSupplier : bookSupplierArrayList)
+                amount += bookSupplier.getAmount();
+        }
+        catch (Exception e){e.printStackTrace(); return amount;}
+        return amount;
     }
 
     @Override

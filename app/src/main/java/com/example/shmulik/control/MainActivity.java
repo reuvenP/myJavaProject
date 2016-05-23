@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
             //backend.deleteBook(bookArrayList.get(2).getBookID());
             //int id = backend.addBook(new Book("r",6,"t",7,Category.Anthology));
             */
-            ArrayList<BookSupplier> bookSupplierArrayList = backend.getBookSupplierBySupplierID(14);
-
-            Toast.makeText(MainActivity.this, bookSupplierArrayList.get(0).getBook().getTitle(),Toast.LENGTH_LONG).show();
+           // ArrayList<BookSupplier> bookSupplierArrayList = backend.getBookSupplierBySupplierID(14);
+           // BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(14,3);
+           // Toast.makeText(MainActivity.this, bookSupplier.getBook().getTitle(),Toast.LENGTH_LONG).show();
         }
         catch (Exception e){e.printStackTrace();}
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
