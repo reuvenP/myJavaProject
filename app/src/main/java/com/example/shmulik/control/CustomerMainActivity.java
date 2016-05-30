@@ -142,6 +142,16 @@ public class CustomerMainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setCustomerLV();
+        if (categorySpinner == null)
+            setCustomerLV();
+        else
+        {
+            if (categorySpinner.getSelectedItem().toString().equals("All"))
+                setCustomerLV();
+            else
+            {
+                setCustomerLV(Category.valueOf(categorySpinner.getSelectedItem().toString()));
+            }
+        }
     }
 }

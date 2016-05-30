@@ -403,7 +403,7 @@ public class DatabaseMySQL implements Backend {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return bookSupplierArrayList;
         }
         return bookSupplierArrayList;
     }
@@ -420,7 +420,7 @@ public class DatabaseMySQL implements Backend {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return bookSupplierArrayList;
         }
         return bookSupplierArrayList;
     }
@@ -441,15 +441,15 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public ArrayList<Book> getBookListBySupplier(int supplierID) {
+        ArrayList<Book> bookArrayList = new ArrayList<>();
         try {
             ArrayList<BookSupplier> bookSupplierArrayList = this.getBookSupplierBySupplierID(supplierID);
-            ArrayList<Book> bookArrayList = new ArrayList<>();
             for (BookSupplier bookSupplier : bookSupplierArrayList)
                 bookArrayList.add(bookSupplier.getBook());
             return bookArrayList;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return bookArrayList;
         }
     }
 
@@ -465,7 +465,7 @@ public class DatabaseMySQL implements Backend {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return bookArrayList;
         }
         return bookArrayList;
     }
@@ -482,7 +482,7 @@ public class DatabaseMySQL implements Backend {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return customerArrayList;
         }
         return customerArrayList;
     }
@@ -499,7 +499,7 @@ public class DatabaseMySQL implements Backend {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return supplierArrayList;
         }
         return supplierArrayList;
     }
@@ -526,7 +526,7 @@ public class DatabaseMySQL implements Backend {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return bookSupplierArrayList;
         }
         return bookSupplierArrayList;
     }
@@ -563,7 +563,7 @@ public class DatabaseMySQL implements Backend {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return userArrayList;
         }
         return userArrayList;
     }
