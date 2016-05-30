@@ -87,4 +87,5 @@ public interface Backend {
     public ArrayList<BooksForOrder> getBooksForOrderArrayList() throws Exception;
     public void updateLists() throws Exception;
     public void deleteLists() throws Exception;
+    public void submit(Order order) throws Exception;
 }

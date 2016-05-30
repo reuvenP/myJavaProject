@@ -3,6 +3,7 @@ package com.example.shmulik.control;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -49,6 +50,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         backend = BackendFactory.getInstance(MainActivity.this);
         currentUser = UserSingltone.getInstance();
+        /*new AsyncTask<Void, Void, Void>()
+        {
+            @Override
+            protected Void doInBackground(Void... params) {
+                Mail m = new Mail("javaproject2016sr@gmail.com", "shmulikreuven");
+                String[] toArr = {"reuvenhn@gmail.com"}; // This is an array, you can add more emails, just separate them with a coma
+                m.setTo(toArr); // load array to setTo function
+                m.setFrom("javaproject2016sr@gmail.com"); // who is sending the email
+                m.setSubject("New Order [#7689]");
+                m.setBody("Hi Shmulik! You have a new Order");
+
+                try {
+                    //m.addAttachment("/sdcard/myPicture.jpg");  // path to file you want to attach
+                    if(m.send()) {
+                        // success
+                        //Toast.makeText(MainActivity.this, "Email was sent successfully.", Toast.LENGTH_LONG).show();
+                    } else {
+                        // failure
+                       // Toast.makeText(MainActivity.this, "Email was not sent.", Toast.LENGTH_LONG).show();
+                    }
+                } catch(Exception e) {
+                    // some other problem
+                    //Toast.makeText(MainActivity.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show();
+                }
+                return null;
+            }
+        }.execute();*/
         try
         {
             /*

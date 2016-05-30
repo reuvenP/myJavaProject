@@ -1016,6 +1016,11 @@ public class DatabaseList implements Backend {
         this.deleteCustomer(2);
     }
 
+    @Override
+    public void submit(Order order) throws Exception {
+
+    }
+
     ArrayList<BooksForOrder> booksForOrderArrayList = new ArrayList<BooksForOrder>();
     @Override
     public ArrayList<BooksForOrder> getBooksForOrderArrayList() throws Exception {

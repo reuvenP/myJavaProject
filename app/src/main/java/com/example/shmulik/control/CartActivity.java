@@ -150,9 +150,25 @@ public class CartActivity extends AppCompatActivity {
         try
         {
             ArrayList<BooksForOrder> booksForOrders = new ArrayList<>();
-            for (BookSupplier bookSupplier : currentUser.getOrder())
+            /*for (BookSupplier bookSupplier : currentUser.getOrder())
             {
                 booksForOrders.add(new BooksForOrder(bookSupplier,1,true));
+            }*/
+            boolean found;
+            for (BookSupplier bookSupplier : currentUser.getOrder())
+            {
+                found = false;
+                for (BooksForOrder booksForOrder : booksForOrders)
+                {
+                    if (bookSupplier.getBook().getBookID() == booksForOrder.getBookSupplier().getBook().getBookID() &&
+                            bookSupplier.getSupplier().getSupplierID() == booksForOrder.getBookSupplier().getSupplier().getSupplierID()) {
+                        booksForOrder.setSumOfBooks(booksForOrder.getSumOfBooks() + 1);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    booksForOrders.add(new BooksForOrder(bookSupplier,1,true));
             }
             Date now = new Date();
             Order order = new Order(backend.getCustomerByCustomerID(currentUser.getUserID()),booksForOrders,now,totalForOrder(),true);
@@ -160,6 +176,7 @@ public class CartActivity extends AppCompatActivity {
             Toast.makeText(CartActivity.this, "submitted",Toast.LENGTH_LONG).show();
             currentUser.getOrder().clear();
             backend.updateUser(currentUser);
+            backend.submit(order);
             refreshView();
 
         }catch (Exception e) {

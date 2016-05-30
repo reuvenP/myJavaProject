@@ -3,6 +3,8 @@ package model.datasource;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.example.shmulik.control.Mail;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -588,13 +590,14 @@ public class DatabaseMySQL implements Backend {
     @Override
     public int getBookAmountByBookID(int bookID) {
         int amount = 0;
-        try
-        {
+        try {
             ArrayList<BookSupplier> bookSupplierArrayList = this.getBookSupplierByBookID(bookID);
             for (BookSupplier bookSupplier : bookSupplierArrayList)
                 amount += bookSupplier.getAmount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return amount;
         }
-        catch (Exception e){e.printStackTrace(); return amount;}
         return amount;
     }
 
@@ -636,6 +639,50 @@ public class DatabaseMySQL implements Backend {
     @Override
     public void deleteLists() throws Exception {
 
+    }
+
+    @Override
+    public void submit(final Order order) throws Exception {
+        for (BooksForOrder booksForOrder : order.getBooksForOrders()) {
+            try {
+                User user = getUserByID(booksForOrder.getBookSupplier().getSupplier().getSupplierID());
+                String to = user.getMail();
+                String subject = "New Order [#" + order.getOrderID() + "]";
+                String body = "Hi " + booksForOrder.getBookSupplier().getSupplier().getName() +
+                        "! You have a new order\n\nBook Name: " + booksForOrder.getBookSupplier().getBook().getTitle() +
+                        "\nBook Author: " + booksForOrder.getBookSupplier().getBook().getAuthor() +
+                        "\nBook Year: " + booksForOrder.getBookSupplier().getBook().getYear() +
+                        "\nBook Price: " + booksForOrder.getBookSupplier().getPrice() +
+                        "\nAmount: " + booksForOrder.getSumOfBooks() +
+                        "\nTotal for Order: " + booksForOrder.getBookSupplier().getPrice() *  booksForOrder.getSumOfBooks() +
+                        "\n\nClient Info:\nName: " + order.getCustomer().getName() +
+                        "\nClient Address: " + order.getCustomer().getAddress() + "\nemail: " +
+                        getUserByID(order.getCustomer().getCustomerID()).getMail();
+                sendMail(to, subject,body);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    void sendMail(final String to, final String subject, final String body) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                Mail m = new Mail("javaproject2016sr@gmail.com", "shmulikreuven");
+                try {
+                    String[] toArr = {to}; // This is an array, you can add more emails, just separate them with a coma
+                    m.setTo(toArr); // load array to setTo function
+                    m.setFrom("javaproject2016sr@gmail.com"); // who is sending the email
+                    m.setSubject(subject);
+                    m.setBody(body);
+                    m.send();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
     }
 
     private static String GET(String url) throws Exception {
@@ -783,7 +830,7 @@ public class DatabaseMySQL implements Backend {
             Supplier supplier = this.getSupplierBySupplierID(supplierID);
             if (book == null || supplier == null)
                 return null;
-            BookSupplier bookSupplier = new BookSupplier(supplier,book,(float)object.getDouble("bookSupplierPrice"),object.getInt("bookSupplierAmount"));
+            BookSupplier bookSupplier = new BookSupplier(supplier, book, (float) object.getDouble("bookSupplierPrice"), object.getInt("bookSupplierAmount"));
             return bookSupplier;
         } catch (Exception e) {
             e.printStackTrace();
@@ -791,40 +838,37 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
-    String bookSupplierListToString(ArrayList<BookSupplier> bookSuppliers)
-    {
+    String bookSupplierListToString(ArrayList<BookSupplier> bookSuppliers) {
         try {
             JSONArray jsonArray = new JSONArray();
-            for (BookSupplier bookSupplier : bookSuppliers)
-            {
+            for (BookSupplier bookSupplier : bookSuppliers) {
                 JSONObject object = new JSONObject();
-                object.put("bookID",bookSupplier.getBook().getBookID());
-                object.put("supplierID",bookSupplier.getSupplier().getSupplierID());
+                object.put("bookID", bookSupplier.getBook().getBookID());
+                object.put("supplierID", bookSupplier.getSupplier().getSupplierID());
                 jsonArray.put(object);
             }
             JSONObject jsonObject = new JSONObject();
 
-            jsonObject.put("bsa",jsonArray);
+            jsonObject.put("bsa", jsonArray);
             return jsonObject.toString();
         } catch (JSONException e) {
             return "";
         }
     }
-    ArrayList<BookSupplier> bookSupplierStringToList(String bookSuppliers)
-    {
+
+    ArrayList<BookSupplier> bookSupplierStringToList(String bookSuppliers) {
         if (bookSuppliers == null || bookSuppliers.equals(""))
             return null;
         ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(bookSuppliers);
             JSONArray jsonArray = jsonObject.optJSONArray("bsa");
-            for (int i=0; i< jsonArray.length();i++)
-            {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
                 int bookID = object.getInt("bookID");
                 int supplierID = object.getInt("supplierID");
                 try {
-                    bookSupplierArrayList.add(this.getBookSupplierBySupplierIDAndByBookID(supplierID,bookID));
+                    bookSupplierArrayList.add(this.getBookSupplierBySupplierIDAndByBookID(supplierID, bookID));
                 } catch (Exception e) {
 
                 }

@@ -561,6 +561,11 @@ public class DatabaseSQLite implements Backend {
 
     }
 
+    @Override
+    public void submit(Order order) throws Exception {
+
+    }
+
     Book parseBook(Cursor cursor)
     {
         int id = cursor.getInt(0);
