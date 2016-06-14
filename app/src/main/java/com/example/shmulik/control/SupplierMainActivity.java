@@ -1,8 +1,11 @@
 package com.example.shmulik.control;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.DialogPreference;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -56,6 +59,27 @@ public class SupplierMainActivity extends AppCompatActivity {
                 Intent intent = new Intent(SupplierMainActivity.this, SupplierBookViewActivity.class);
                 intent.putExtra("bookID", bookToShow.getBookID());
                 startActivity(intent);
+            }
+        });
+        supplierLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                new AlertDialog.Builder(SupplierMainActivity.this)
+                        .setTitle("Are you sure?")
+                        .setMessage("Are you sure to delete?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    backend.deleteBookSupplier(((Book)supplierLV.getItemAtPosition(position)).getBookID(),currentUser.getUserID());
+                                    refreshListView();
+                                } catch (Exception e) {
+
+                                }
+                            }
+                        })
+                        .show();
+                return true;
             }
         });
     }
