@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shmulik.myjavaproject.R;
@@ -18,6 +20,7 @@ import com.example.shmulik.myjavaproject.R;
 import java.util.ArrayList;
 
 import entities.Book;
+import entities.BookSupplier;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
@@ -35,7 +38,6 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_supplier_add_book_from_list);
         listView = (ListView) findViewById(R.id.add_book_from_list_LV);
         try {
-
             backend = BackendFactory.getInstance(SupplierAddBookFromListActivity.this);
             currentUser = UserSingltone.getInstance();
             bookArrayList = backend.getBookList();
@@ -43,8 +45,49 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Dialog dialog = new Dialog(SupplierAddBookFromListActivity.this);
+                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                    final Dialog dialog = new Dialog(SupplierAddBookFromListActivity.this);
+                    dialog.setContentView(R.layout.dialog_add_price_amount);
+                    dialog.setTitle("Confirm Adding Book:");
+                    Button submit = (Button) dialog.findViewById(R.id.submit_add_from_list);
+                    submit.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Book book = bookArrayList.get(position);
+                            try {
+                                BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(currentUser.getUserID(),book.getBookID());
+                                if (bookSupplier != null)
+                                {
+                                    Toast.makeText(SupplierAddBookFromListActivity.this, "You have this book already", Toast.LENGTH_LONG).show();
+                                    dialog.dismiss();
+                                }
+                                else
+                                {
+                                    TextView price = (TextView)dialog.findViewById(R.id.price_add_from_list);
+                                    TextView amount = (TextView)dialog.findViewById(R.id.amount_add_from_list);
+                                    if (amount == null || price == null || amount.getText().equals("") || price.getText().equals(""))
+                                    {
+                                        Toast.makeText(SupplierAddBookFromListActivity.this, "Fill all the fields", Toast.LENGTH_LONG).show();
+                                    }
+                                    else
+                                    {
+                                        backend.addBookSupplier(new BookSupplier(backend.getSupplierBySupplierID(currentUser.getUserID()),book, Float.parseFloat(price.getText().toString()), Integer.parseInt(amount.getText().toString())));
+                                        dialog.dismiss();
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                    Button cancel = (Button)dialog.findViewById(R.id.cancel_add_from_list);
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
                     dialog.show();
                 }
             });
