@@ -84,6 +84,11 @@ public class SupplierMainActivity extends AppCompatActivity {
             Intent intent = new Intent(SupplierMainActivity.this, AddBookActivity.class);
             startActivity(intent);
         }
+        else if (id == R.id.action_add_exist_book)
+        {
+            Intent intent = new Intent(SupplierMainActivity.this, SupplierAddBookFromListActivity.class);
+            startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }

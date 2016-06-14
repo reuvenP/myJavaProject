@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.shmulik.myjavaproject">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/my_ic_launcher"
@@ -29,8 +31,8 @@
         <activity android:name="com.example.shmulik.control.SupplierMainActivity" />
         <activity android:name="com.example.shmulik.control.SupplierBookViewActivity" />
         <activity android:name="com.example.shmulik.control.AddBookActivity" />
-        <activity android:name="com.example.shmulik.control.CartActivity"></activity>
+        <activity android:name="com.example.shmulik.control.CartActivity" />
+        <activity android:name="com.example.shmulik.control.SupplierAddBookFromListActivity"></activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
