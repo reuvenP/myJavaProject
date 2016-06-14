@@ -199,7 +199,15 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public void deleteBookSupplier(int bookID, int supplierID) throws Exception {
-
+        final Map<String, Object> params = new LinkedHashMap<>();
+        params.put("bookID", bookID);
+        params.put("supplierID", supplierID);
+        try {
+            POST("http://plevinsk.vlab.jct.ac.il/deleteBookSupplier.php", params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Override
@@ -868,7 +876,9 @@ public class DatabaseMySQL implements Backend {
                 int bookID = object.getInt("bookID");
                 int supplierID = object.getInt("supplierID");
                 try {
-                    bookSupplierArrayList.add(this.getBookSupplierBySupplierIDAndByBookID(supplierID, bookID));
+                    BookSupplier bookSupplier = this.getBookSupplierBySupplierIDAndByBookID(supplierID, bookID);
+                    if (bookSupplier != null)
+                        bookSupplierArrayList.add(bookSupplier);
                 } catch (Exception e) {
 
                 }
