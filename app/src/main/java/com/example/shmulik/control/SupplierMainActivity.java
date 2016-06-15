@@ -65,17 +65,45 @@ public class SupplierMainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 new AlertDialog.Builder(SupplierMainActivity.this)
-                        .setTitle("Are you sure?")
-                        .setMessage("Are you sure to delete?")
-                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        .setTitle("Delete or Edit?")
+                        .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    backend.deleteBookSupplier(((Book)supplierLV.getItemAtPosition(position)).getBookID(),currentUser.getUserID());
+                                    bookToShow = (Book) supplierLV.getItemAtPosition(position);
+                                    Intent intent = new Intent(SupplierMainActivity.this, SupplierBookViewActivity.class);
+                                    intent.putExtra("bookID", bookToShow.getBookID());
+                                    startActivity(intent);
                                     refreshListView();
                                 } catch (Exception e) {
 
                                 }
+                            }
+                        })
+                        .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new AlertDialog.Builder(SupplierMainActivity.this)
+                                        .setTitle("Are you sure?")
+                                        .setMessage("Are you sure you want to delete?")
+                                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                try {
+                                                    backend.deleteBookSupplier(((Book) supplierLV.getItemAtPosition(position)).getBookID(), currentUser.getUserID());
+                                                    refreshListView();
+                                                } catch (Exception e) {
+
+                                                }
+                                            }
+                                        })
+                                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                return;
+                                            }
+                                        })
+                                        .show();
                             }
                         })
                         .show();
