@@ -13,8 +13,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.shmulik.control.MainActivity"
     tools:showIn="@layout/activity_main"
-    android:background="@mipmap/book_store"
-    >
+    android:baselineAligned="true">
     <Button
         android:id="@+id/login_mainBT"
         style="?android:textAppearanceSmall"
@@ -30,7 +29,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:textSize="25dp"
-
         android:text="Or"
         android:textColor="@color/colorPrimaryDark" />
     <Button

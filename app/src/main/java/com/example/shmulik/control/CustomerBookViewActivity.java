@@ -36,7 +36,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     TextView id;
     TextView amount;
     User currentUser;
-    AutoCompleteTextView addBookAmount;
+    // AutoCompleteTextView addBookAmount;
     ArrayList<BookSupplier> bookSupplierArrayList;
     BookSuppliersAdapter adapter;
     ListView LV;
@@ -67,7 +67,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         category = (TextView) findViewById(R.id.category_bookview);
         id = (TextView) findViewById(R.id.id_bookview);
         amount = (TextView) findViewById(R.id.amount_bookview);
-        addBookAmount = (AutoCompleteTextView) findViewById(R.id.addBookAmountTextView);
+        // addBookAmount = (AutoCompleteTextView) findViewById(R.id.addBookAmountTextView);
 
         bookName.setText(book.getTitle());
         year.setText("Year: " + Integer.toString(book.getYear()));
@@ -76,7 +76,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         category.setText("Category: " + book.getCategory().toString());
         id.setText("Serial Number: " + Integer.toString(book.getBookID()));
         amount.setText("Total amount in store: " + backend.getBookAmountByBookID(book.getBookID()));
-        addBookAmount.setText(Integer.toString(1));
+        // addBookAmount.setText(Integer.toString(1));
 
         try {
             bookSupplierArrayList = backend.getBookSupplierByBookID(book.getBookID());
@@ -123,9 +123,9 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(supplierID,bookID);
             if (bookSupplier.getAmount() < 1)
                 throw new Exception("out of stock");
-           if (bookSupplier.getAmount() < Integer.parseInt(addBookAmount.getText().toString()))
-                throw new Exception("There is not enough quantity");
-            bookSupplier.setAmount(bookSupplier.getAmount() - (Integer.parseInt(addBookAmount.getText().toString())));
+           //if (bookSupplier.getAmount() < Integer.parseInt(addBookAmount.getText().toString()))
+           //     throw new Exception("There is not enough quantity");
+            bookSupplier.setAmount(bookSupplier.getAmount() - 1); //(Integer.parseInt(addBookAmount.getText().toString())));
             if (currentUser.getOrder() == null)
             {
                 ArrayList<BookSupplier> order = new ArrayList<>();
