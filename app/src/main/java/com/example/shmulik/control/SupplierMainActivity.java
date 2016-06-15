@@ -164,4 +164,28 @@ public class SupplierMainActivity extends AppCompatActivity {
         super.onResume();
         refreshListView();
     }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(SupplierMainActivity.this)
+                .setTitle("Exit the store?")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            finish();
+                        } catch (Exception e) {
+
+                        }
+                    }
+                })
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                })
+                .show();
+    }
 }

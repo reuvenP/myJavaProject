@@ -1,8 +1,10 @@
 package com.example.shmulik.control;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -153,5 +155,29 @@ public class CustomerMainActivity extends AppCompatActivity {
                 setCustomerLV(Category.valueOf(categorySpinner.getSelectedItem().toString()));
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(CustomerMainActivity.this)
+                .setTitle("Exit the store?")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            finish();
+                        } catch (Exception e) {
+
+                        }
+                    }
+                })
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                })
+                .show();
     }
 }

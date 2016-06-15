@@ -104,6 +104,7 @@ public class SupplierBookViewActivity extends AppCompatActivity {
                     backend.updateBook(bookSupplier.getBook(),bookSupplier.getBook().getBookID());
                     backend.updateBookSupplier(bookSupplier);
                     Toast.makeText(SupplierBookViewActivity.this,"Update complete!",Toast.LENGTH_LONG).show();
+                    finish();
                 } catch (Exception e) {
                     Toast.makeText(SupplierBookViewActivity.this,"Error",Toast.LENGTH_LONG).show();
                 }
