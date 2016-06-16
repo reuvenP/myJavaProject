@@ -57,9 +57,9 @@ public class CustomerMainActivity extends AppCompatActivity {
         setCustomerLV();
         customerLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // on click on book from the list.
                 bookToShow = (Book) customerLV.getItemAtPosition(position);
-                Intent intent = new Intent(CustomerMainActivity.this, CustomerBookViewActivity.class);
+                Intent intent = new Intent(CustomerMainActivity.this, CustomerBookViewActivity.class); // go to CustomerBookViewActivity (to add to cart).
                 intent.putExtra("bookID", bookToShow.getBookID());
                 startActivity(intent);
             }
@@ -68,19 +68,19 @@ public class CustomerMainActivity extends AppCompatActivity {
         List<Category> categoryList = Arrays.asList(Category.values());
         final ArrayList<String> list = new ArrayList<>();
         list.add("All");
-        for (int i=0; i<categoryList.size();i++)
+        for (int i = 0; i < categoryList.size();i++) // create list of categories including "All".
         {
             list.add(categoryList.get(i).toString());
         }
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, list);
         categorySpinner.setAdapter(spinnerAdapter);
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { // act by the category in the spinner.
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0)
+                if (position == 0) // "All" category
                     setCustomerLV();
                 else
-                    setCustomerLV(Category.valueOf(list.get(position)));
+                    setCustomerLV(Category.valueOf(list.get(position))); // specific category.
             }
 
             @Override
@@ -90,7 +90,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         });
     }
 
-    void setCustomerLV(){
+    void setCustomerLV(){ // set the view of all categories.
         try {
             bookArrayList = backend.getBookList();
             BooksAdapter adapter = new BooksAdapter(this, bookArrayList);
@@ -99,7 +99,8 @@ public class CustomerMainActivity extends AppCompatActivity {
             finish();
         }
     }
-    void setCustomerLV(Category category){
+
+    void setCustomerLV(Category category){ // set the view of specific categories.
         try {
             bookArrayList = backend.getBookListByCategory(category);
             BooksAdapter adapter = new BooksAdapter(this, bookArrayList);
@@ -110,7 +111,7 @@ public class CustomerMainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { // create the menu.
         getMenuInflater().inflate(R.menu.menu_logout_cart, menu);
         return true;
     }
@@ -119,19 +120,20 @@ public class CustomerMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            User user = new User();
+        if (id == R.id.action_logout) { // choose to logout.
+            User user = new User(); // reset the user...
             userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
-            Intent intent = new Intent(CustomerMainActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent intent = new Intent(CustomerMainActivity.this, MainActivity.class); // go to main activity.
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
             startActivity(intent);
             return true;
         }
-        else if (id == R.id.action_cart)
+
+        else if (id == R.id.action_cart) // choose to go to cart.
         {
-            Intent intent = new Intent(CustomerMainActivity.this, CartActivity.class);
+            Intent intent = new Intent(CustomerMainActivity.this, CartActivity.class); // go to cart activity.
             startActivity(intent);
         }
 
@@ -161,7 +163,7 @@ public class CustomerMainActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to exit?")
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) { // choose yes...
                         try {
                             finish();
                         } catch (Exception e) {
@@ -169,7 +171,7 @@ public class CustomerMainActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() { // choose no...
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         return;

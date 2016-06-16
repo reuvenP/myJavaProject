@@ -89,7 +89,7 @@ public class SupplierMainActivity extends AppCompatActivity {
                                         .setMessage("Are you sure you want to delete?")
                                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                             @Override
-                                            public void onClick(DialogInterface dialog, int which) {
+                                            public void onClick(DialogInterface dialog, int which) { // choose yes...
                                                 try {
                                                     backend.deleteBookSupplier(((Book) supplierLV.getItemAtPosition(position)).getBookID(), currentUser.getUserID()); // delete the book from the supplier.
                                                     refreshListView(); // refresh LV with the new changes.
@@ -101,7 +101,7 @@ public class SupplierMainActivity extends AppCompatActivity {
                                         })
                                         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                                             @Override
-                                            public void onClick(DialogInterface dialog, int which) {
+                                            public void onClick(DialogInterface dialog, int which) { // choose no...
                                                 return;
                                             }
                                         })
@@ -114,7 +114,7 @@ public class SupplierMainActivity extends AppCompatActivity {
         });
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { // create the menu
         getMenuInflater().inflate(R.menu.menu_logout_add_book, menu);
         return true;
     }
@@ -123,31 +123,33 @@ public class SupplierMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            User user = new User();
+        if (id == R.id.action_logout) { // choose to logout.
+            User user = new User(); // reset the user...
             userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
-            Intent intent = new Intent(SupplierMainActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent intent = new Intent(SupplierMainActivity.this, MainActivity.class); // go to main activity.
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
             startActivity(intent);
             return true;
         }
-        else if (id == R.id.action_add_book)
+
+        else if (id == R.id.action_add_book) // choose to add a new book to sell.
         {
-            Intent intent = new Intent(SupplierMainActivity.this, AddBookActivity.class);
+            Intent intent = new Intent(SupplierMainActivity.this, AddBookActivity.class); // go to add book activity.
             startActivity(intent);
         }
-        else if (id == R.id.action_add_exist_book)
+
+        else if (id == R.id.action_add_exist_book) // choose to add an a exist book to sell.
         {
-            Intent intent = new Intent(SupplierMainActivity.this, SupplierAddBookFromListActivity.class);
+            Intent intent = new Intent(SupplierMainActivity.this, SupplierAddBookFromListActivity.class); // go to add book from list activity.
             startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    void refreshListView()
+    void refreshListView() // refresh the view.
     {
         try
         {
@@ -174,7 +176,7 @@ public class SupplierMainActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to exit?")
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) { // choose yes...
                         try {
                             finish();
                         } catch (Exception e) {
@@ -182,7 +184,7 @@ public class SupplierMainActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() { // choose no...
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         return;
