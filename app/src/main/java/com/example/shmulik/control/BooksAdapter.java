@@ -34,6 +34,12 @@ public class BooksAdapter extends ArrayAdapter<Book> {
         book_id.setText("Serial Number: " + Integer.toString(book.getBookID()));
         book_name.setText(book.getTitle());
         book_category.setText("Category: " + book.getCategory().toString());
+        if ((position % 2) == 0) {
+            convertView.setBackgroundResource(R.color.colorEven);
+        }
+        else {
+            convertView.setBackgroundResource(R.color.colorOdd);
+        }
         return convertView;
     }
 }

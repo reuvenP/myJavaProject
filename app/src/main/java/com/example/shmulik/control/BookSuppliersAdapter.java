@@ -49,6 +49,12 @@ public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
                 }
             }
         });
+        if ((position % 2) == 0) {
+            convertView.setBackgroundResource(R.color.colorEven1);
+        }
+        else {
+            convertView.setBackgroundResource(R.color.colorOdd1);
+        }
         return convertView;
     }
 }
