@@ -6,7 +6,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/book_id_row_add"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,5 +26,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/book_pages_row_add"/>
+    <View
+        android:id="@+id/textSpacerNoButtons"
+        android:layout_width="match_parent"
+        android:layout_height="1mm"
+        android:background="#ffffff"
+        />
 
 </LinearLayout>
