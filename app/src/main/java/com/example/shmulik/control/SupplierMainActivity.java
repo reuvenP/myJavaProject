@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.DialogPreference;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,10 +22,11 @@ import entities.Book;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
-import model.backend.UserSingltone;
+import model.backend.userSingleton;
 
+
+// class to manage supplier main activity.
 public class SupplierMainActivity extends AppCompatActivity {
-
     Backend backend;
     ListView supplierLV;
     ArrayList<Book> bookArrayList;
@@ -39,10 +39,9 @@ public class SupplierMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_supplier_main);
         supplierLV = (ListView) findViewById(R.id.supplier_LV);
         try {
-
-            backend = BackendFactory.getInstance(SupplierMainActivity.this);
-            currentUser = UserSingltone.getInstance();
-            bookArrayList = backend.getBookListBySupplier(currentUser.getUserID());
+            backend = BackendFactory.getInstance(SupplierMainActivity.this); // get the current backend.
+            currentUser = userSingleton.getInstance(); // get the current user.
+            bookArrayList = backend.getBookListBySupplier(currentUser.getUserID()); // get the supplier book list. (by supplier ID)
             BooksAdapter adapter = new BooksAdapter(this, bookArrayList);
             supplierLV.setAdapter(adapter);
         }
@@ -54,35 +53,37 @@ public class SupplierMainActivity extends AppCompatActivity {
 
         supplierLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // on click on book from the list.
                 bookToShow = (Book) supplierLV.getItemAtPosition(position);
-                Intent intent = new Intent(SupplierMainActivity.this, SupplierBookViewActivity.class);
+                Intent intent = new Intent(SupplierMainActivity.this, SupplierBookViewActivity.class); // go to SupplierBookViewActivity (to edit option).
                 intent.putExtra("bookID", bookToShow.getBookID());
                 startActivity(intent);
             }
         });
+
         supplierLV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) { // on long click on book from the list. -> delete or edit options.
                 new AlertDialog.Builder(SupplierMainActivity.this)
                         .setTitle("Delete or Edit?")
                         .setPositiveButton("Edit", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(DialogInterface dialog, int which) { // choose edit...
                                 try {
                                     bookToShow = (Book) supplierLV.getItemAtPosition(position);
-                                    Intent intent = new Intent(SupplierMainActivity.this, SupplierBookViewActivity.class);
+                                    Intent intent = new Intent(SupplierMainActivity.this, SupplierBookViewActivity.class); // go to SupplierBookViewActivity (to edit option).
                                     intent.putExtra("bookID", bookToShow.getBookID());
                                     startActivity(intent);
-                                    refreshListView();
-                                } catch (Exception e) {
+                                    refreshListView(); // refresh LV with the new changes.
+                                }
+                                catch (Exception e) {
 
                                 }
                             }
                         })
                         .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(DialogInterface dialog, int which) { // choose delete...
                                 new AlertDialog.Builder(SupplierMainActivity.this)
                                         .setTitle("Are you sure?")
                                         .setMessage("Are you sure you want to delete?")
@@ -90,9 +91,10 @@ public class SupplierMainActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 try {
-                                                    backend.deleteBookSupplier(((Book) supplierLV.getItemAtPosition(position)).getBookID(), currentUser.getUserID());
-                                                    refreshListView();
-                                                } catch (Exception e) {
+                                                    backend.deleteBookSupplier(((Book) supplierLV.getItemAtPosition(position)).getBookID(), currentUser.getUserID()); // delete the book from the supplier.
+                                                    refreshListView(); // refresh LV with the new changes.
+                                                }
+                                                catch (Exception e) {
 
                                                 }
                                             }
@@ -123,7 +125,7 @@ public class SupplierMainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_logout) {
             User user = new User();
-            UserSingltone.setInstance(user);
+            userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
             Intent intent = new Intent(SupplierMainActivity.this, MainActivity.class);

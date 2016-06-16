@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,12 +17,10 @@ import java.util.ArrayList;
 
 import entities.Book;
 import entities.BookSupplier;
-import entities.BooksForOrder;
-import entities.Order;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
-import model.backend.UserSingltone;
+import model.backend.userSingleton;
 
 public class CustomerBookViewActivity extends AppCompatActivity {
     Backend backend;
@@ -55,7 +52,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         {
             try {
                 book = backend.getBookByBookID(extras.getInt("bookID"));
-                currentUser = UserSingltone.getInstance();
+                currentUser = userSingleton.getInstance();
             } catch (Exception e) {
                 finish();
             }
@@ -100,7 +97,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_logout) {
             User user = new User();
-            UserSingltone.setInstance(user);
+            userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
             Intent intent = new Intent(CustomerBookViewActivity.this, MainActivity.class);

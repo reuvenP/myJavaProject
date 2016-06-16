@@ -28,8 +28,9 @@ import entities.Supplier;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
-import model.backend.UserSingltone;
+import model.backend.userSingleton;
 
+// class to manage sign up activity.
 public class SignupActivity extends AppCompatActivity {
     DatePicker birthdayDP;
     AutoCompleteTextView mailTV;
@@ -38,9 +39,9 @@ public class SignupActivity extends AppCompatActivity {
     AutoCompleteTextView nameTV;
     AutoCompleteTextView addressTV;
     Switch genderSW;
-    RadioButton customrRB;
+    RadioButton customerRB;
     RadioButton supplierRB;
-    Button signupBTN;
+    Button signUpBTN;
     Backend backend;
     User currentUser;
 
@@ -50,30 +51,33 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         backend = BackendFactory.getInstance(SignupActivity.this);
-        currentUser = UserSingltone.getInstance();
+        currentUser = userSingleton.getInstance(); // get the current user if exist.
         birthdayDP = (DatePicker) findViewById(R.id.birthday_signup);
         birthdayDP.setCalendarViewShown(false);
         Date now = new Date();
         birthdayDP.setMaxDate(now.getTime());
+        birthdayDP.updateDate(1990,0,1);
         mailTV = (AutoCompleteTextView) findViewById(R.id.email_signup);
         passwordTV = (EditText) findViewById(R.id.password_signup);
         passwordReenterTV = (EditText) findViewById(R.id.password_reenter_signup);
         nameTV = (AutoCompleteTextView) findViewById(R.id.name_signup);
         addressTV = (AutoCompleteTextView) findViewById(R.id.address_signup);
         genderSW = (Switch) findViewById(R.id.maleFemaleSwitch);
-        customrRB = (RadioButton) findViewById(R.id.customerRB);
+        customerRB = (RadioButton) findViewById(R.id.customerRB);
         supplierRB = (RadioButton) findViewById(R.id.supplierRB);
-        signupBTN = (Button) findViewById(R.id.email_sign_up_button);
-        signupBTN.setOnClickListener(new View.OnClickListener() {
+        signUpBTN = (Button) findViewById(R.id.email_sign_up_button);
+        signUpBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 register();
             }
         });
     }
-    void register()
+
+
+    void register() // on click on register button.
     {
-        if (mailTV == null || passwordTV == null || passwordReenterTV == null ||
+        if (mailTV == null || passwordTV == null || passwordReenterTV == null || // if does not fill all the must fields.
                 nameTV == null || addressTV == null ||
                 mailTV.getText().toString().equals("") || passwordTV.getText().toString().equals("") ||
                 passwordReenterTV.getText().toString().equals("") ||
@@ -82,20 +86,24 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(SignupActivity.this, "all fields must not be empty", Toast.LENGTH_LONG).show();
             return;
         }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mailTV.getText().toString()).matches())
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mailTV.getText().toString()).matches()) // check for valid mail address.
         {
             Toast.makeText(SignupActivity.this, "enter a valid email address", Toast.LENGTH_LONG).show();
             mailTV.setText("");
             mailTV.requestFocus();
             return;
         }
-        if (!passwordTV.getText().toString().equals(passwordReenterTV.getText().toString()))
+
+        if (!passwordTV.getText().toString().equals(passwordReenterTV.getText().toString()))  // check for same password in 2 different TV.
         {
             Toast.makeText(SignupActivity.this, "passwords does not matching", Toast.LENGTH_LONG).show();
             passwordTV.setText("");
             passwordReenterTV.setText("");
             return;
         }
+
+        // if all fields are good... get the values.
         String email = mailTV.getText().toString();
         String password = passwordTV.getText().toString();
         String name = nameTV.getText().toString();
@@ -108,39 +116,42 @@ public class SignupActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.set(birthdayDP.getYear() - 1900, birthdayDP.getMonth(), birthdayDP.getDayOfMonth());
         Date birthday = calendar.getTime();
-        if (customrRB.isChecked())
+
+        if (customerRB.isChecked()) // need to create new customer.
         {
             try {
                 int ID = backend.addCustomer(new Customer(CustomerType.REGULAR,name,birthday,gender,address,null));
                 User user = new User(Permission.CUSTOMER,email, password, ID);
                 backend.addUser(user);
-                UserSingltone.setInstance(user);
-                currentUser = UserSingltone.getInstance();
-                SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
-                sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply();
+                userSingleton.setInstance(user); // set the user singleton.
+                currentUser = userSingleton.getInstance(); // get the user singleton.
+                SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE); // key & value pair.
+                sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply(); // set the user id in the sharedPreferences.
                 Toast.makeText(SignupActivity.this, "registered successfully", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class); // load customer main activity.
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                 startActivity(intent);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Toast.makeText(SignupActivity.this, "unsuccessful registered", Toast.LENGTH_LONG).show();
                 return;
             }
         }
-        else if(supplierRB.isChecked())
+
+        else if(supplierRB.isChecked()) // need to create new supplier.
         {
             try
             {
                 int ID = backend.addSupplier(new Supplier(Rating.THREE,name,birthday,gender,address,null));
                 User user = new User(Permission.SUPPLIER, email, password, ID);
                 backend.addUser(user);
-                UserSingltone.setInstance(user);
-                currentUser = UserSingltone.getInstance();
-                SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
-                sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply();
+                userSingleton.setInstance(user); // set the user singleton.
+                currentUser = userSingleton.getInstance(); // get the user singleton.
+                SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE); // key & value pair.
+                sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply(); // set the user id in the sharedPreferences.
                 Toast.makeText(SignupActivity.this, "registered successfully", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(SignupActivity.this, SupplierMainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent intent = new Intent(SignupActivity.this, SupplierMainActivity.class); // load supplier main activity.
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                 startActivity(intent);
             }
             catch (Exception e) {
@@ -155,15 +166,18 @@ public class SignupActivity extends AppCompatActivity {
         super.onResume();
         if (currentUser.getUserID() != -1)
         {
-            if (currentUser.getPermission() == Permission.CUSTOMER)
+            if (currentUser.getPermission() == Permission.CUSTOMER) // if the user is customer.
             {
-                Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class);
+                Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class); // load customer main activity.
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                 startActivity(intent);
-                finish();
             }
-            else if (currentUser.getPermission() == Permission.SUPPLIER)
-            {
 
+            else if (currentUser.getPermission() == Permission.SUPPLIER) // if the user is supplier.
+            {
+                Intent intent = new Intent(SignupActivity.this, SupplierMainActivity.class); // load supplier main activity.
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
+                startActivity(intent);
             }
         }
     }

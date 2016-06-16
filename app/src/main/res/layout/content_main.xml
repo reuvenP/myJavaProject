@@ -13,7 +13,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.shmulik.control.MainActivity"
     tools:showIn="@layout/activity_main"
-    android:baselineAligned="true">
+    android:baselineAligned="true"
+    android:background="@mipmap/login">
     <Button
         android:id="@+id/login_mainBT"
         style="?android:textAppearanceSmall"

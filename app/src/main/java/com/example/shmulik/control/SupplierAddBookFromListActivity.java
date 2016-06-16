@@ -24,7 +24,7 @@ import entities.BookSupplier;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
-import model.backend.UserSingltone;
+import model.backend.userSingleton;
 
 public class SupplierAddBookFromListActivity extends AppCompatActivity {
     ListView listView;
@@ -39,7 +39,7 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.add_book_from_list_LV);
         try {
             backend = BackendFactory.getInstance(SupplierAddBookFromListActivity.this);
-            currentUser = UserSingltone.getInstance();
+            currentUser = userSingleton.getInstance();
             bookArrayList = backend.getBookList();
             BooksAddAdapter adapter = new BooksAddAdapter(this, bookArrayList);
             listView.setAdapter(adapter);
@@ -110,7 +110,7 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_logout) {
             User user = new User();
-            UserSingltone.setInstance(user);
+            userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
             Intent intent = new Intent(SupplierAddBookFromListActivity.this, MainActivity.class);

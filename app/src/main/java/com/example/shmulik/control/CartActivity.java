@@ -24,7 +24,7 @@ import entities.Order;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
-import model.backend.UserSingltone;
+import model.backend.userSingleton;
 
 public class CartActivity extends AppCompatActivity {
     Backend backend;
@@ -40,7 +40,7 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         backend = BackendFactory.getInstance(CartActivity.this);
-        currentUser = UserSingltone.getInstance();
+        currentUser = userSingleton.getInstance();
         listView = (ListView) findViewById(R.id.cart_LV);
         clear = (Button) findViewById(R.id.cart_clear_BTN);
         total = (TextView) findViewById(R.id.cart_total);
@@ -74,7 +74,7 @@ public class CartActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_logout) {
             User user = new User();
-            UserSingltone.setInstance(user);
+            userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
             Intent intent = new Intent(CartActivity.this, MainActivity.class);

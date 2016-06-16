@@ -15,7 +15,7 @@ public class User {
     String password;
     //userID is the ID of supplier / customer
     //you can access the object by permission and ID.
-    //ID alone is not enough cause its possible customer and supplier equal ID
+    //ID alone is not enough because it's possible that customer and supplier have the same ID.
     int userID;
     ArrayList<BookSupplier> order;
 

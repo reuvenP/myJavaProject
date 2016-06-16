@@ -24,21 +24,19 @@ import java.util.List;
 
 import entities.Book;
 import entities.Category;
-import entities.Order;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
-import model.backend.UserSingltone;
+import model.backend.userSingleton;
 
+// class to manage customer main activity.
 public class CustomerMainActivity extends AppCompatActivity {
-
     Backend backend;
     ListView customerLV;
     ArrayList<Book> bookArrayList;
     public Book bookToShow = null;
     Spinner categorySpinner;
     User currentUser;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +45,8 @@ public class CustomerMainActivity extends AppCompatActivity {
         customerLV = (ListView) findViewById(R.id.customer_LV);
         categorySpinner = (Spinner) findViewById(R.id.category_spinner);
         try {
-
-            backend = BackendFactory.getInstance(CustomerMainActivity.this);
-            currentUser = UserSingltone.getInstance();
+            backend = BackendFactory.getInstance(CustomerMainActivity.this); // get the current backend.
+            currentUser = userSingleton.getInstance(); // get the current user.
         }
         catch (Exception e)
         {
@@ -124,7 +121,7 @@ public class CustomerMainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_logout) {
             User user = new User();
-            UserSingltone.setInstance(user);
+            userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
             Intent intent = new Intent(CustomerMainActivity.this, MainActivity.class);

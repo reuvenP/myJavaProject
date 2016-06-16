@@ -22,13 +22,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import entities.Book;
 import entities.BookSupplier;
 import entities.Category;
 import entities.User;
 import model.backend.Backend;
 import model.backend.BackendFactory;
-import model.backend.UserSingltone;
+import model.backend.userSingleton;
 
 public class SupplierBookViewActivity extends AppCompatActivity {
     Backend backend;
@@ -50,7 +49,7 @@ public class SupplierBookViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supplier_book_view);
         backend = BackendFactory.getInstance(SupplierBookViewActivity.this);
-        currentUser = UserSingltone.getInstance();
+        currentUser = userSingleton.getInstance();
         Bundle extras = getIntent().getExtras();
         if (extras == null)
         {
@@ -123,7 +122,7 @@ public class SupplierBookViewActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_logout) {
             User user = new User();
-            UserSingltone.setInstance(user);
+            userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
             Intent intent = new Intent(SupplierBookViewActivity.this, MainActivity.class);
