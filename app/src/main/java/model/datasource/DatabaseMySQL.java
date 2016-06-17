@@ -539,7 +539,22 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public ArrayList<Order> getOrderList() throws Exception {
-        return null;
+        ArrayList<Order> orderArrayList = new ArrayList<>();
+        try
+        {
+            JSONArray orders = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getOrderList.php")).getJSONArray("orders");
+            for (int i = 0; i < orders.length(); i++)
+            {
+                Order order = jsonToOrder(orders.getJSONObject(i));
+                if (order != null)
+                    orderArrayList.add(order);
+            }
+        }
+        catch (Exception e)
+        {
+            return orderArrayList;
+        }
+        return orderArrayList;
     }
 
     @Override

@@ -10,9 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.shmulik.myjavaproject.R;
 
+import java.util.ArrayList;
+
+import entities.Order;
 import entities.Permission;
 import entities.User;
 import model.backend.Backend;
@@ -54,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        try
+        {
+            ArrayList<Order> orderArrayList = backend.getOrderList();
+            Toast.makeText(MainActivity.this, "a", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
