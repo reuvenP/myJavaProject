@@ -56,8 +56,9 @@ public class SignupActivity extends AppCompatActivity {
         birthdayDP.setCalendarViewShown(false);
         Date now = new Date();
         birthdayDP.setMaxDate(now.getTime());
-        birthdayDP.updateDate(1990,0,1);
+        birthdayDP.updateDate(1990, 0, 1);
         mailTV = (AutoCompleteTextView) findViewById(R.id.email_signup);
+        mailTV.requestFocus();
         passwordTV = (EditText) findViewById(R.id.password_signup);
         passwordReenterTV = (EditText) findViewById(R.id.password_reenter_signup);
         nameTV = (AutoCompleteTextView) findViewById(R.id.name_signup);

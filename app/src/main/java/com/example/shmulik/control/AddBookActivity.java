@@ -30,8 +30,8 @@ import model.backend.Backend;
 import model.backend.BackendFactory;
 import model.backend.userSingleton;
 
+// class to manage add book activity.
 public class AddBookActivity extends AppCompatActivity {
-
     Backend backend;
     BookSupplier bookSupplier;
     Spinner category;
@@ -49,8 +49,9 @@ public class AddBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
-        backend = BackendFactory.getInstance(AddBookActivity.this);
-        currentUser = userSingleton.getInstance();
+        backend = BackendFactory.getInstance(AddBookActivity.this); // get the current backend.
+        currentUser = userSingleton.getInstance(); // get the current user.
+
         title = (AutoCompleteTextView) findViewById(R.id.book_name_sup_addbook);
         author = (AutoCompleteTextView) findViewById(R.id.book_author_sup_addbook);
         year = (AutoCompleteTextView) findViewById(R.id.book_year_sup_addbook);
@@ -73,19 +74,19 @@ public class AddBookActivity extends AppCompatActivity {
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { // on click on "Add".
                 try {
-                    Book book = new Book(title.getText().toString(), Integer.parseInt(year.getText().toString()),
+                    Book book = new Book(title.getText().toString(), Integer.parseInt(year.getText().toString()), // create the book.
                            author.getText().toString(), Integer.parseInt(pages.getText().toString()),
                             Category.valueOf(list.get(category.getSelectedItemPosition())));
-                    int id = backend.addBook(book);
+                    int id = backend.addBook(book); // add the book to the DBA. (return id).
                     book.setBookID(id);
-                    bookSupplier = new BookSupplier(backend.getSupplierBySupplierID(currentUser.getUserID()),
+                    bookSupplier = new BookSupplier(backend.getSupplierBySupplierID(currentUser.getUserID()), // create the bookSupplier.
                             book, Float.valueOf(price.getText().toString()), amount.getValue());
-                    backend.addBookSupplier(bookSupplier);
+                    backend.addBookSupplier(bookSupplier);// add the bookSupplier to the DBA.
                     Toast.makeText(AddBookActivity.this,"Added",Toast.LENGTH_LONG).show();
                     finish();
-                    startActivity(getIntent());
+                    startActivity(getIntent()); // restart activity.
                 }
                 catch (Exception e)
                 {
@@ -94,18 +95,18 @@ public class AddBookActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { // create the menu.
         getMenuInflater().inflate(R.menu.menu_logout, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            User user = new User();
+        if (id == R.id.action_logout) { // choose to logout.
+            User user = new User(); // reset the user...
             userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();

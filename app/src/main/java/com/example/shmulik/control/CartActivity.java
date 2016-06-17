@@ -26,6 +26,7 @@ import model.backend.Backend;
 import model.backend.BackendFactory;
 import model.backend.userSingleton;
 
+// class to manage cart activity.
 public class CartActivity extends AppCompatActivity {
     Backend backend;
     User currentUser;
@@ -39,12 +40,12 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        backend = BackendFactory.getInstance(CartActivity.this);
-        currentUser = userSingleton.getInstance();
+        backend = BackendFactory.getInstance(CartActivity.this); // get the current backend.
+        currentUser = userSingleton.getInstance(); // get the current user.
         listView = (ListView) findViewById(R.id.cart_LV);
-        clear = (Button) findViewById(R.id.cart_clear_BTN);
         total = (TextView) findViewById(R.id.cart_total);
-        clear.setOnClickListener(new View.OnClickListener() {
+        clear = (Button) findViewById(R.id.cart_clear_BTN);
+        clear.setOnClickListener(new View.OnClickListener() { // on click on "clear" button.
             @Override
             public void onClick(View v) {
                 emptyCart();
@@ -54,7 +55,7 @@ public class CartActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         total.setText("Total: " + Float.toString(totalForOrder()));
         submit = (Button) findViewById(R.id.cart_submit_BTN);
-        submit.setOnClickListener(new View.OnClickListener() {
+        submit.setOnClickListener(new View.OnClickListener() { // on click on "submit" button.
             @Override
             public void onClick(View v) {
                 submit();
@@ -63,17 +64,16 @@ public class CartActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { // create the menu.
         getMenuInflater().inflate(R.menu.menu_logout, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            User user = new User();
+        if (id == R.id.action_logout) { // choose to logout.
+            User user = new User(); // reset the user...
             userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
@@ -85,7 +85,9 @@ public class CartActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void removeFromCard(int position)
+
+
+    public void removeFromCard(int position) // on click on "remove" button. (called from adapter).
     {
         try {
             BookSupplier bookSupplier = currentUser.getOrder().get(position);

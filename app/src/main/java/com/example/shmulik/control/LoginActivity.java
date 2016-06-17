@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         currentUser = userSingleton.getInstance(); // get the current user if exist.
         mailTextView = (AutoCompleteTextView) findViewById(R.id.email);
+        mailTextView.requestFocus();
         passwordTextView = (EditText) findViewById(R.id.password);
         loginButton = (Button) findViewById(R.id.email_sign_in_button);
         backend = BackendFactory.getInstance(LoginActivity.this);  // get the current backend.
