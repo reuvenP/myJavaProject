@@ -33,6 +33,7 @@ public class CartActivity extends AppCompatActivity {
     ListView listView;
     Button clear;
     TextView total;
+    TextView sumOfItems;
     Button submit;
 
 
@@ -44,6 +45,7 @@ public class CartActivity extends AppCompatActivity {
         currentUser = userSingleton.getInstance(); // get the current user.
         listView = (ListView) findViewById(R.id.cart_LV);
         total = (TextView) findViewById(R.id.cart_total);
+        sumOfItems = (TextView) findViewById(R.id.cart_sum_of_item);
         clear = (Button) findViewById(R.id.cart_clear_BTN);
         clear.setOnClickListener(new View.OnClickListener() { // on click on "clear" button.
             @Override
@@ -54,6 +56,7 @@ public class CartActivity extends AppCompatActivity {
         CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
         listView.setAdapter(adapter);
         total.setText("Total: " + Float.toString(totalForOrder()));
+        sumOfItems.setText("    Sum of items: " + currentUser.getOrder().size());
         submit = (Button) findViewById(R.id.cart_submit_BTN);
         submit.setOnClickListener(new View.OnClickListener() { // on click on "submit" button.
             @Override
@@ -89,37 +92,44 @@ public class CartActivity extends AppCompatActivity {
 
     public void removeFromCard(int position) // on click on "remove" button. (called from adapter).
     {
-        try {
-            BookSupplier bookSupplier = currentUser.getOrder().get(position);
-            bookSupplier.setAmount(bookSupplier.getAmount()+1);
-            for (BookSupplier bookSupplier1 : currentUser.getOrder())
+        try
+        {
+            BookSupplier bookSupplier = currentUser.getOrder().get(position); // get the bookSupplier to remove from cart.
+            bookSupplier.setAmount(bookSupplier.getAmount()+1); // return the amount back.
+
+            for (BookSupplier bookSupplier1 : currentUser.getOrder()) // return the amount back to each same bookSupplier in cart.
             {
                 if (bookSupplier.getBook().getBookID() == bookSupplier1.getBook().getBookID() &&
                         bookSupplier.getSupplier().getSupplierID() == bookSupplier1.getSupplier().getSupplierID())
                     bookSupplier1.setAmount(bookSupplier.getAmount());
             }
-            currentUser.getOrder().remove(position);
+            currentUser.getOrder().remove(position); // remove bookSupplier from cart.
             backend.updateBookSupplier(bookSupplier);
             backend.updateUser(currentUser);
             refreshView();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
     }
+
     void refreshView()
     {
         CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
         listView.setAdapter(adapter);
         total.setText("Total: " + Float.toString(totalForOrder()));
+        sumOfItems.setText("    Sum of items: " + currentUser.getOrder().size());
     }
 
-    void emptyCart()
+    void emptyCart() // on click on "clear" button.
     {
-        try {
-            for (BookSupplier bookSupplier : currentUser.getOrder()) {
-                bookSupplier.setAmount(bookSupplier.getAmount()+1);
-                for (BookSupplier bookSupplier1 : currentUser.getOrder())
+        try
+        {
+            for (BookSupplier bookSupplier : currentUser.getOrder())
+            {
+                bookSupplier.setAmount(bookSupplier.getAmount()+1); // return the amount back.
+                for (BookSupplier bookSupplier1 : currentUser.getOrder()) // return the amount back to each same bookSupplier in cart.
                 {
                     if (bookSupplier.getBook().getBookID() == bookSupplier1.getBook().getBookID() &&
                             bookSupplier.getSupplier().getSupplierID() == bookSupplier1.getSupplier().getSupplierID())
@@ -127,14 +137,16 @@ public class CartActivity extends AppCompatActivity {
                 }
                 backend.updateBookSupplier(bookSupplier);
             }
-            currentUser.getOrder().clear();
+            currentUser.getOrder().clear(); // remove all bookSupplier from cart.
             backend.updateUser(currentUser);
             refreshView();
-        }catch (Exception e) {
+        }
+        catch (Exception e) {
             Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
     }
+
     float totalForOrder()
     {
         if (currentUser == null || currentUser.getOrder() == null)
@@ -147,7 +159,7 @@ public class CartActivity extends AppCompatActivity {
         return sum;
     }
 
-    void submit()
+    void submit() // on click on "submit" button.
     {
         try
         {
@@ -157,7 +169,7 @@ public class CartActivity extends AppCompatActivity {
                 booksForOrders.add(new BooksForOrder(bookSupplier,1,true));
             }*/
             boolean found;
-            for (BookSupplier bookSupplier : currentUser.getOrder())
+            for (BookSupplier bookSupplier : currentUser.getOrder()) // check if ordered this book from same supplier.
             {
                 found = false;
                 for (BooksForOrder booksForOrder : booksForOrders)
@@ -176,12 +188,13 @@ public class CartActivity extends AppCompatActivity {
             Order order = new Order(backend.getCustomerByCustomerID(currentUser.getUserID()),booksForOrders,now,totalForOrder(),true);
             backend.addOrder(order);
             Toast.makeText(CartActivity.this, "submitted",Toast.LENGTH_LONG).show();
-            currentUser.getOrder().clear();
+            currentUser.getOrder().clear(); // clear the cart.
             backend.updateUser(currentUser);
             backend.submit(order);
             refreshView();
 
-        }catch (Exception e) {
+        }
+        catch (Exception e) {
             Toast.makeText(CartActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             return;
         }
