@@ -18,6 +18,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -863,6 +864,24 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    Order jsonToOrder(JSONObject object)
+    {
+        try
+        {
+            int orderID = object.getInt("order_id");
+            Customer customer = this.getCustomerByCustomerID(object.getInt("customer_id"));
+            ArrayList<BooksForOrder> booksForOrders = this.booksForOrderStringToList(object.getString("books_for_order"));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = sdf.parse(object.getString("date"));
+            float price = (float) object.getDouble("total_price");
+            Order order = new Order(customer,booksForOrders,date,price,true);
+            return order;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     String bookSupplierListToString(ArrayList<BookSupplier> bookSuppliers) {
         try {
             JSONArray jsonArray = new JSONArray();
@@ -923,6 +942,40 @@ public class DatabaseMySQL implements Backend {
             }
             return bookSupplierArrayList;
         } catch (JSONException e) {
+            return null;
+        }
+    }
+
+    ArrayList<BooksForOrder> booksForOrderStringToList(String booksForOrder)
+    {
+        if (booksForOrder == null || booksForOrder.equals(""))
+            return null;
+        ArrayList<BooksForOrder> booksForOrderArrayList = new ArrayList<>();
+        try
+        {
+            JSONObject jsonObject = new JSONObject(booksForOrder);
+            JSONArray jsonArray = jsonObject.optJSONArray("osa");
+            for (int i = 0; i<jsonArray.length(); i++)
+            {
+                JSONObject object = jsonArray.getJSONObject(i);
+                int amount = object.getInt("amount");
+                int supplierID = object.getInt("supplierID");
+                int bookID = object.getInt("bookID");
+                try
+                {
+                    BookSupplier bookSupplier = this.getBookSupplierBySupplierIDAndByBookID(supplierID, bookID);
+                    if (bookSupplier != null)
+                    {
+                        BooksForOrder booksForOrder1 = new BooksForOrder(bookSupplier, amount, true);
+                        booksForOrderArrayList.add(booksForOrder1);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return  booksForOrderArrayList;
+        }
+        catch (JSONException e) {
             return null;
         }
     }
