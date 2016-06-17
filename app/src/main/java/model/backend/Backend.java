@@ -22,7 +22,7 @@ public interface Backend {
     public int addCustomer(Customer customer) throws Exception;// add customer to customerList.
     public int addSupplier(Supplier supplier) throws Exception;// add supplier to supplierList.
     public void addBooksInStore(BooksInStore booksInStore) throws Exception;// add booksInStore to booksInStoreList.
-    public void addOrder(Order order) throws Exception;// add order to orderList.
+    public int addOrder(Order order) throws Exception;// add order to orderList.
     public void addBooksForOrder(int orderID, BooksForOrder booksForOrder) throws Exception;// add booksForOrder to the list of specific order by orderID.
     public void addBookSupplier(BookSupplier bookSupplier) throws Exception;// add bookSupplier to bookSupplierList.
     public void addUser(User user) throws Exception;

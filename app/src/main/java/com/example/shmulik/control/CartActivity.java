@@ -186,7 +186,8 @@ public class CartActivity extends AppCompatActivity {
             }
             Date now = new Date();
             Order order = new Order(backend.getCustomerByCustomerID(currentUser.getUserID()),booksForOrders,now,totalForOrder(),true);
-            backend.addOrder(order);
+            int id = backend.addOrder(order);
+            order.setOrderID(id);
             Toast.makeText(CartActivity.this, "submitted",Toast.LENGTH_LONG).show();
             currentUser.getOrder().clear(); // clear the cart.
             backend.updateUser(currentUser);

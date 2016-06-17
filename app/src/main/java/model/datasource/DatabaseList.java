@@ -118,7 +118,7 @@ public class DatabaseList implements Backend {
     }
     @Override
     // add order to orderList.
-    public void addOrder (Order order) throws Exception{
+    public int addOrder (Order order) throws Exception{
 //        if(!supplierList.contains(order.getSupplier())){
 //            throw new Exception("This supplier(" + order.getSupplier().getSupplierID() + " " + order.getSupplier().getName() + ") does not exist in supplierList\n first add the supplier to supplierList!");
 //        }
@@ -132,6 +132,7 @@ public class DatabaseList implements Backend {
             throw new Exception("This order(" + order.getOrderID() + ")  already exists");
         }
         orderList.add(order);
+        return order.getOrderID();
     }
 
     // compute the total price for order.

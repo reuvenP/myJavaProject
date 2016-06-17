@@ -110,8 +110,25 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public void addOrder(Order order) throws Exception {
-
+    public int addOrder(Order order) throws Exception {
+        Map<String, Object> params = new LinkedHashMap<>();
+        String result = "";
+        params.put("customerID", order.getCustomer().getCustomerID());
+        params.put("date", new SimpleDateFormat("yyyy-MM-dd").format(order.getOrderDate()));
+        params.put("price", order.getTotalPrice());
+        params.put("books", BooksForOrderListToString(order.getBooksForOrders()));
+        try
+        {
+            result = POST("http://plevinsk.vlab.jct.ac.il/addOrder.php", params);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
+        int id = Integer.parseInt(result.substring(0, result.length() - 1));
+        if (id == 0)
+            throw new Exception("Error in add order");
+        return id;
     }
 
     @Override
@@ -860,6 +877,27 @@ public class DatabaseMySQL implements Backend {
             jsonObject.put("bsa", jsonArray);
             return jsonObject.toString();
         } catch (JSONException e) {
+            return "";
+        }
+    }
+
+    String BooksForOrderListToString(ArrayList<BooksForOrder> booksForOrders){
+        try
+        {
+            JSONArray jsonArray = new JSONArray();
+            for (BooksForOrder booksForOrder : booksForOrders)
+            {
+                JSONObject object = new JSONObject();
+                object.put("bookID", booksForOrder.getBookSupplier().getBook().getBookID());
+                object.put("supplierID", booksForOrder.getBookSupplier().getSupplier().getSupplierID());
+                object.put("amount", booksForOrder.getSumOfBooks());
+                jsonArray.put(object);
+            }
+            JSONObject object = new JSONObject();
+            object.put("osa", jsonArray);
+            return object.toString();
+        }
+        catch (JSONException e){
             return "";
         }
     }

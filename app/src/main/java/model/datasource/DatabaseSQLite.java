@@ -108,8 +108,8 @@ public class DatabaseSQLite implements Backend {
     }
 
     @Override
-    public void addOrder(Order order) throws Exception {
-
+    public int addOrder(Order order) throws Exception {
+        return 0;
     }
 
     @Override
