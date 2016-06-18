@@ -392,6 +392,15 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public Order getOrderByOrderID(int orderID) throws Exception {
+        try {
+            JSONArray orders = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getOrderByOrderID.php?id=" + orderID)).getJSONArray("orders");
+            Order order = jsonToOrder(orders.getJSONObject(0));
+            if (order != null)
+                return order;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return null;
     }
 
