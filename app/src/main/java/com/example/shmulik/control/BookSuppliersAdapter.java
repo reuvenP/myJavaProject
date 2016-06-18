@@ -15,9 +15,7 @@ import java.util.ArrayList;
 import entities.Book;
 import entities.BookSupplier;
 
-/**
- * Created by reuvenp on 5/4/2016.
- */
+
 public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
     Context mContext;
     public BookSuppliersAdapter(Context context, ArrayList<BookSupplier> bookSuppliers) {

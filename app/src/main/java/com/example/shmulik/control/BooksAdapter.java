@@ -14,9 +14,7 @@ import java.util.List;
 
 import entities.Book;
 
-/**
- * Created by reuvenp on 5/4/2016.
- */
+
 public class BooksAdapter extends ArrayAdapter<Book> {
     public BooksAdapter(Context context, ArrayList<Book> book) {
         super(context, 0,  book);
