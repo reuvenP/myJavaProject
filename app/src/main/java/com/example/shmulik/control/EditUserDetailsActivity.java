@@ -61,7 +61,8 @@ public class EditUserDetailsActivity extends AppCompatActivity {
                 rePassword.setText(currentUser.getPassword());
                 name.setText(supplier.getName());
                 address.setText(supplier.getAddress());
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Toast.makeText(EditUserDetailsActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 finish();
             }
