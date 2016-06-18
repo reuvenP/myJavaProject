@@ -55,23 +55,17 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             Book book = bookArrayList.get(position);
                             try {
-                                BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(currentUser.getUserID(),book.getBookID());
-                                if (bookSupplier != null)
-                                {
+                                BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(currentUser.getUserID(), book.getBookID());
+                                if (bookSupplier != null) {
                                     Toast.makeText(SupplierAddBookFromListActivity.this, "You have this book already", Toast.LENGTH_LONG).show();
                                     dialog.dismiss();
-                                }
-                                else
-                                {
-                                    TextView price = (TextView)dialog.findViewById(R.id.price_add_from_list);
-                                    TextView amount = (TextView)dialog.findViewById(R.id.amount_add_from_list);
-                                    if (amount == null || price == null || amount.getText().equals("") || price.getText().equals(""))
-                                    {
+                                } else {
+                                    TextView price = (TextView) dialog.findViewById(R.id.price_add_from_list);
+                                    TextView amount = (TextView) dialog.findViewById(R.id.amount_add_from_list);
+                                    if (amount.getText().toString().equals("") || price.getText().toString().equals("")) {
                                         Toast.makeText(SupplierAddBookFromListActivity.this, "Fill all the fields", Toast.LENGTH_LONG).show();
-                                    }
-                                    else
-                                    {
-                                        backend.addBookSupplier(new BookSupplier(backend.getSupplierBySupplierID(currentUser.getUserID()),book, Float.parseFloat(price.getText().toString()), Integer.parseInt(amount.getText().toString())));
+                                    } else {
+                                        backend.addBookSupplier(new BookSupplier(backend.getSupplierBySupplierID(currentUser.getUserID()), book, Float.parseFloat(price.getText().toString()), Integer.parseInt(amount.getText().toString())));
                                         dialog.dismiss();
                                     }
                                 }
