@@ -114,6 +114,12 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        else if (id == R.id.action_edit_details) // choose to edit profile
+        {
+            Intent intent = new Intent(CustomerBookViewActivity.this, EditUserDetailsActivity.class);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

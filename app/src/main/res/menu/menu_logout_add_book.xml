@@ -15,4 +15,8 @@
         android:id="@+id/action_add_exist_book"
         android:orderInCategory="100"
         android:title="Add Book From List" />
+    <item
+        android:id="@+id/action_edit_details"
+        android:orderInCategory="100"
+        android:title="Edit Profile" />
 </menu>

@@ -11,4 +11,8 @@
         android:id="@+id/action_cart"
         android:orderInCategory="100"
         android:title="Go to cart" />
+    <item
+        android:id="@+id/action_edit_details"
+        android:orderInCategory="100"
+        android:title="Edit Profile" />
 </menu>

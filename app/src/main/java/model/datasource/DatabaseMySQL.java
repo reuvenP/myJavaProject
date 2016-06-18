@@ -260,7 +260,8 @@ public class DatabaseMySQL implements Backend {
         params.put("userGender", customer.getGender().toString());
         params.put("userAddress", customer.getAddress());
         try {
-            POST("http://plevinsk.vlab.jct.ac.il/updateCustomerSupplier.php", params);
+            String s = POST("http://plevinsk.vlab.jct.ac.il/updateCustomerSupplier.php", params);
+            String f = s.replace("","");
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception(e.getMessage());
