@@ -22,6 +22,7 @@ import model.backend.Backend;
 import model.backend.BackendFactory;
 import model.backend.userSingleton;
 
+// class to manage customer book view activity.
 public class CustomerBookViewActivity extends AppCompatActivity {
     Backend backend;
     Book book;
@@ -34,6 +35,7 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     TextView amount;
     User currentUser;
     // AutoCompleteTextView addBookAmount;
+
     ArrayList<BookSupplier> bookSupplierArrayList;
     BookSuppliersAdapter adapter;
     ListView LV;
@@ -42,8 +44,8 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_book_view);
-        backend = BackendFactory.getInstance(CustomerBookViewActivity.this);
-        Bundle extras = getIntent().getExtras();
+        backend = BackendFactory.getInstance(CustomerBookViewActivity.this); // get the current backend.
+        Bundle extras = getIntent().getExtras(); // fetches data which was added using putExtra().
         if (extras == null)
         {
             finish();
@@ -52,8 +54,9 @@ public class CustomerBookViewActivity extends AppCompatActivity {
         {
             try {
                 book = backend.getBookByBookID(extras.getInt("bookID"));
-                currentUser = userSingleton.getInstance();
-            } catch (Exception e) {
+                currentUser = userSingleton.getInstance(); // get the current user.
+            }
+            catch (Exception e) {
                 finish();
             }
         }

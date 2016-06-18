@@ -7,24 +7,30 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:id="@+id/book_name_cart"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:id="@+id/supplier_name_cart"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:id="@+id/price_cart"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/remove_from_cart_BTN"
-        android:text="REMOVE FROM CART"/>
+        android:textStyle="bold"
+        android:text="REMOVE FROM CART"
+        android:textSize="15dp" />
     <View
         android:id="@+id/textSpacerNoButtons"
         android:layout_width="match_parent"
         android:layout_height="1mm"
+        android:textStyle="bold"
         android:background="#ffffff"
         />
 

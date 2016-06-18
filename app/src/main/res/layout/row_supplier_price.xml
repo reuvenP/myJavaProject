@@ -8,27 +8,32 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/supplier_name"/>
+        android:id="@+id/supplier_name"
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/supplier_address"/>
+        android:id="@+id/supplier_address"
+        android:textStyle="bold"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/price"/>
+        android:id="@+id/price"
+        android:textStyle="bold"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/amount"/>
+        android:id="@+id/amount"
+        android:textStyle="bold"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add to cart"
+        android:text="-->  Add to cart  &lt;--"
         android:textStyle="bold"
         android:id="@+id/add_to_cart_BTN"
-        android:background="#edc306" />
+        android:background="#edc306"
+        android:textSize="15dp" />
     <View
         android:id="@+id/textSpacerNoButtons"
         android:layout_width="match_parent"

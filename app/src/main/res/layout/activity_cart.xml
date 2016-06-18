@@ -14,13 +14,17 @@
         android:layout_height="wrap_content"
         android:text="SUBMIT"
         android:id="@+id/cart_submit_BTN"
-        android:background="#1520f1" />
+        android:background="#1520f1"
+        android:textSize="20dp"
+        android:textStyle="italic" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="CLEAR"
         android:id="@+id/cart_clear_BTN"
-        android:background="#ee1b1b" />
+        android:background="#ee1b1b"
+        android:textSize="20dp"
+        android:textStyle="italic" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

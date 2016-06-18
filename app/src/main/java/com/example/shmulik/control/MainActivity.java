@@ -58,6 +58,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        try
+        {
+            ArrayList<Order> orderArrayList = backend.getOrderList();
+            Toast.makeText(MainActivity.this, "orderArrayList loaded - try!", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

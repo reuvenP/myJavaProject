@@ -30,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Title"
+            android:textStyle="bold"
             android:inputType="textImeMultiLine"
             android:textSize="20dp"/>
 
@@ -44,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Author"
+            android:textStyle="bold"
             android:inputType="textImeMultiLine" />
 
     </android.support.design.widget.TextInputLayout>
@@ -57,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Year"
+            android:textStyle="bold"
             android:inputType="number" />
 
     </android.support.design.widget.TextInputLayout>
@@ -69,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Pages"
+            android:textStyle="bold"
             android:inputType="number" />
 
     </android.support.design.widget.TextInputLayout>
@@ -86,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Price"
+            android:textStyle="bold"
             android:inputType="numberDecimal" />
 
     </android.support.design.widget.TextInputLayout>
@@ -94,16 +99,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Amount"
+        android:textStyle="bold"
         android:paddingTop="15dp"/>
     <NumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/book_amount_sup_bookview"
+        android:textStyle="bold"
         android:layout_gravity="center_horizontal"></NumberPicker>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:id="@+id/book_update_sup_bookview"
         android:text="UPDATE"/>
         </LinearLayout>

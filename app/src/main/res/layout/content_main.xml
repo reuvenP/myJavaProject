@@ -23,13 +23,15 @@
         android:layout_marginTop="16dp"
         android:text="Login"
         android:textStyle="bold"
-        android:background="#54dcc1" />
+        android:background="#54dcc1"
+        android:textSize="20dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:textSize="25dp"
+        android:textStyle="bold"
         android:text="Or"
         android:textColor="@color/colorPrimaryDark" />
     <Button
@@ -40,5 +42,6 @@
         android:layout_marginTop="16dp"
         android:text="Register"
         android:textStyle="bold"
-        android:background="#ecf00c" />
+        android:background="#ecf00c"
+        android:textSize="20dp" />
 </LinearLayout>

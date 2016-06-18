@@ -57,6 +57,7 @@ tools:context="com.example.shmulik.control.AddBookActivity">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Year"
+                android:textStyle="bold"
                 android:inputType="number" />
 
         </android.support.design.widget.TextInputLayout>
@@ -69,12 +70,14 @@ tools:context="com.example.shmulik.control.AddBookActivity">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Pages"
+                android:textStyle="bold"
                 android:inputType="number" />
 
         </android.support.design.widget.TextInputLayout>
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:id="@+id/book_category_sup_addbook"></Spinner>
 
         <android.support.design.widget.TextInputLayout
@@ -86,6 +89,7 @@ tools:context="com.example.shmulik.control.AddBookActivity">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Price"
+                android:textStyle="bold"
                 android:inputType="numberDecimal" />
 
         </android.support.design.widget.TextInputLayout>
@@ -94,18 +98,23 @@ tools:context="com.example.shmulik.control.AddBookActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Amount"
+            android:textStyle="bold"
             android:paddingTop="15dp"/>
         <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/book_amount_sup_addbook"
+            android:textStyle="bold"
             android:layout_gravity="center_horizontal"></NumberPicker>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="bold|italic"
             android:id="@+id/book_update_sup_addbook"
-            android:text="ADD"/>
+            android:text="ADD"
+            android:textSize="20dp"
+            android:background="#979191" />
     </LinearLayout>
 </ScrollView>
 

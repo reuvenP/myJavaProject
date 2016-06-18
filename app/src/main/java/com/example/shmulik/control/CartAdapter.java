@@ -42,14 +42,14 @@ public class CartAdapter extends ArrayAdapter<BookSupplier> {
         price.setText(Float.toString(bookSupplier.getPrice()));
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { // on click on "remove" button.
                 if (mContext instanceof CartActivity)
                 {
                     ((CartActivity)mContext).removeFromCard(position);
                 }
             }
         });
-        if ((position % 2) == 0) {
+        if ((position % 2) == 0) { // set different color to each line.
             convertView.setBackgroundResource(R.color.colorEven2);
         }
         else {

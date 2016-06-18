@@ -41,6 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
+                    android:textStyle="bold"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -58,6 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
+                    android:textStyle="bold"
                     android:textColorHint="@color/colorAccent"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -76,8 +78,9 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:background="@android:color/holo_purple" />
+                android:textStyle="bold|italic"
+                android:background="@android:color/holo_purple"
+                android:textSize="20dp" />
 
 
         </LinearLayout>

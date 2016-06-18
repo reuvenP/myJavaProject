@@ -7,15 +7,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/book_id_row"
+        android:textStyle="bold"
         android:focusable="false" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:id="@+id/book_name_row" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:id="@+id/book_category_row" />
     <View
         android:id="@+id/textSpacerNoButtons"
