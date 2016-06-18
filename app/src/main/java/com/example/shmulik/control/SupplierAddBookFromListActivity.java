@@ -26,6 +26,7 @@ import model.backend.Backend;
 import model.backend.BackendFactory;
 import model.backend.userSingleton;
 
+// class to manage add book from list activity.
 public class SupplierAddBookFromListActivity extends AppCompatActivity {
     ListView listView;
     Backend backend;
@@ -38,45 +39,55 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_supplier_add_book_from_list);
         listView = (ListView) findViewById(R.id.add_book_from_list_LV);
         try {
-            backend = BackendFactory.getInstance(SupplierAddBookFromListActivity.this);
-            currentUser = userSingleton.getInstance();
+            backend = BackendFactory.getInstance(SupplierAddBookFromListActivity.this); // get the current backend.
+            currentUser = userSingleton.getInstance(); // get the current user.
             bookArrayList = backend.getBookList();
             BooksAddAdapter adapter = new BooksAddAdapter(this, bookArrayList);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) { // on click on book from the list.
+                    Book book = bookArrayList.get(position);
+                    try {
+                        BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(currentUser.getUserID(), book.getBookID());
+                        if (bookSupplier != null) { // check if this book already exist in this supplier list.
+                            Toast.makeText(SupplierAddBookFromListActivity.this, "You have this book already", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                        return;
+                    }
+
                     final Dialog dialog = new Dialog(SupplierAddBookFromListActivity.this);
                     dialog.setContentView(R.layout.dialog_add_price_amount);
                     dialog.setTitle("Confirm Adding Book:");
                     Button submit = (Button) dialog.findViewById(R.id.submit_add_from_list);
                     submit.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick(View v) { // on click on "submit" button.
                             Book book = bookArrayList.get(position);
                             try {
-                                BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(currentUser.getUserID(), book.getBookID());
-                                if (bookSupplier != null) {
-                                    Toast.makeText(SupplierAddBookFromListActivity.this, "You have this book already", Toast.LENGTH_LONG).show();
-                                    dialog.dismiss();
+                                TextView price = (TextView) dialog.findViewById(R.id.price_add_from_list);
+                                TextView amount = (TextView) dialog.findViewById(R.id.amount_add_from_list);
+                                if (amount.getText().toString().equals("") || price.getText().toString().equals("")) {
+                                    Toast.makeText(SupplierAddBookFromListActivity.this, "Fill all the fields", Toast.LENGTH_LONG).show();
                                 } else {
-                                    TextView price = (TextView) dialog.findViewById(R.id.price_add_from_list);
-                                    TextView amount = (TextView) dialog.findViewById(R.id.amount_add_from_list);
-                                    if (amount.getText().toString().equals("") || price.getText().toString().equals("")) {
-                                        Toast.makeText(SupplierAddBookFromListActivity.this, "Fill all the fields", Toast.LENGTH_LONG).show();
-                                    } else {
-                                        backend.addBookSupplier(new BookSupplier(backend.getSupplierBySupplierID(currentUser.getUserID()), book, Float.parseFloat(price.getText().toString()), Integer.parseInt(amount.getText().toString())));
-                                        dialog.dismiss();
-                                    }
+                                    backend.addBookSupplier(new BookSupplier(backend.getSupplierBySupplierID(currentUser.getUserID()), book, Float.parseFloat(price.getText().toString()), Integer.parseInt(amount.getText().toString())));
+                                    dialog.dismiss();
+
                                 }
-                            } catch (Exception e) {
+                            }
+                            catch (Exception e) {
                                 e.printStackTrace();
                                 dialog.dismiss();
                             }
                         }
                     });
                     Button cancel = (Button)dialog.findViewById(R.id.cancel_add_from_list);
-                    cancel.setOnClickListener(new View.OnClickListener() {
+                    cancel.setOnClickListener(new View.OnClickListener() { // on click on "cancel" button.
                         @Override
                         public void onClick(View v) {
                             dialog.dismiss();
@@ -92,18 +103,18 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
             finish();
         }
     }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { // create the menu.
         getMenuInflater().inflate(R.menu.menu_logout, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            User user = new User();
+        if (id == R.id.action_logout) { // choose to logout.
+            User user = new User(); // reset the user...
             userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
@@ -112,7 +123,6 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

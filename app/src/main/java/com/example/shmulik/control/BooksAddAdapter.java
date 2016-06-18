@@ -39,7 +39,8 @@ public class BooksAddAdapter extends ArrayAdapter<Book> {
         book_pages.setText("Pages: " + Integer.toString(book.getPages()));
         book_year.setText("Year: " + Integer.toString(book.getYear()));
         book_author.setText("Author: " + book.getAuthor());
-        if ((position % 2) == 0) {
+
+        if ((position % 2) == 0) { // set different color to each line.
             convertView.setBackgroundResource(R.color.colorEven2);
         }
         else {
