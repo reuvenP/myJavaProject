@@ -1,4 +1,8 @@
 package com.example.shmulik.control;
+//--------------------------------------
+//This class from the following websute:
+//http://www.jondev.net/articles/Sending_Emails_without_User_Intervention_(no_Intents)_in_Android
+//--------------------------------------
 
 
 import java.util.Date;
