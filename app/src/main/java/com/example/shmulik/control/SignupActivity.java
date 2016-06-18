@@ -115,7 +115,7 @@ public class SignupActivity extends AppCompatActivity {
         else
             gender = Gender.FEMALE;
         Calendar calendar = Calendar.getInstance();
-        calendar.set(birthdayDP.getYear() - 1900, birthdayDP.getMonth(), birthdayDP.getDayOfMonth());
+        calendar.set(birthdayDP.getYear(), birthdayDP.getMonth(), birthdayDP.getDayOfMonth());
         Date birthday = calendar.getTime();
 
         if (customerRB.isChecked()) // need to create new customer.
