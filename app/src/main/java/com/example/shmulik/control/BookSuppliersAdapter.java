@@ -15,9 +15,7 @@ import java.util.ArrayList;
 import entities.Book;
 import entities.BookSupplier;
 
-/**
- * Created by reuvenp on 5/4/2016.
- */
+
 public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
     Context mContext;
     public BookSuppliersAdapter(Context context, ArrayList<BookSupplier> bookSuppliers) {
@@ -42,14 +40,14 @@ public class BookSuppliersAdapter extends ArrayAdapter<BookSupplier> {
         amount.setText("Amount: " + Integer.toString(bookSupplier.getAmount()));
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { // on click on "add to cart" button.
                 if (mContext instanceof CustomerBookViewActivity)
                 {
                     ((CustomerBookViewActivity)mContext).addToCart(bookSupplier.getBook().getBookID(),bookSupplier.getSupplier().getSupplierID());
                 }
             }
         });
-        if ((position % 2) == 0) {
+        if ((position % 2) == 0) { // set different color to each line.
             convertView.setBackgroundResource(R.color.colorEven1);
         }
         else {

@@ -14,9 +14,7 @@ import java.util.List;
 
 import entities.Book;
 
-/**
- * Created by reuvenp on 5/4/2016.
- */
+
 public class BooksAdapter extends ArrayAdapter<Book> {
     public BooksAdapter(Context context, ArrayList<Book> book) {
         super(context, 0,  book);
@@ -34,7 +32,8 @@ public class BooksAdapter extends ArrayAdapter<Book> {
         book_id.setText("Serial Number: " + Integer.toString(book.getBookID()));
         book_name.setText(book.getTitle());
         book_category.setText("Category: " + book.getCategory().toString());
-        if ((position % 2) == 0) {
+
+        if ((position % 2) == 0) { // set different color to each line.
             convertView.setBackgroundResource(R.color.colorEven);
         }
         else {

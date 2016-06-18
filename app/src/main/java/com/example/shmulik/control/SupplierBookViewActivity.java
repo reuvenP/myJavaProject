@@ -29,6 +29,7 @@ import model.backend.Backend;
 import model.backend.BackendFactory;
 import model.backend.userSingleton;
 
+// class to manage Supplier Book View activity.
 public class SupplierBookViewActivity extends AppCompatActivity {
     Backend backend;
     BookSupplier bookSupplier;
@@ -48,9 +49,9 @@ public class SupplierBookViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supplier_book_view);
-        backend = BackendFactory.getInstance(SupplierBookViewActivity.this);
-        currentUser = userSingleton.getInstance();
-        Bundle extras = getIntent().getExtras();
+        backend = BackendFactory.getInstance(SupplierBookViewActivity.this); // get the current backend.
+        currentUser = userSingleton.getInstance(); // get the current user.
+        Bundle extras = getIntent().getExtras(); // fetches data which was added using putExtra().
         if (extras == null)
         {
             finish();
@@ -59,7 +60,8 @@ public class SupplierBookViewActivity extends AppCompatActivity {
         {
             try {
                 bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(currentUser.getUserID(),extras.getInt("bookID"));
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 finish();
             }
         }
@@ -82,7 +84,7 @@ public class SupplierBookViewActivity extends AppCompatActivity {
         amount.setValue(bookSupplier.getAmount());
         List<Category> categoryList = Arrays.asList(Category.values());
         final ArrayList<String> list = new ArrayList<>();
-        for (int i=0; i<categoryList.size();i++)
+        for (int i = 0; i < categoryList.size();i++) // set category list. (as string)
         {
             list.add(categoryList.get(i).toString());
         }
@@ -91,7 +93,7 @@ public class SupplierBookViewActivity extends AppCompatActivity {
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { // on click on "update" button. -> set the new values.
                 bookSupplier.getBook().setTitle(title.getText().toString());
                 bookSupplier.getBook().setAuthor(author.getText().toString());
                 bookSupplier.getBook().setPages(Integer.parseInt(pages.getText().toString()));
@@ -104,14 +106,16 @@ public class SupplierBookViewActivity extends AppCompatActivity {
                     backend.updateBookSupplier(bookSupplier);
                     Toast.makeText(SupplierBookViewActivity.this,"Update complete!",Toast.LENGTH_LONG).show();
                     finish();
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     Toast.makeText(SupplierBookViewActivity.this,"Error",Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { // create the menu
         getMenuInflater().inflate(R.menu.menu_logout, menu);
         return true;
     }
@@ -120,8 +124,8 @@ public class SupplierBookViewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            User user = new User();
+        if (id == R.id.action_logout) { // choose to logout.
+            User user = new User(); // reset the user...
             userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
@@ -130,7 +134,6 @@ public class SupplierBookViewActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
