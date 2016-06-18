@@ -586,7 +586,22 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public ArrayList<Order> getOrderListOfSpecificCustomerByCustomerID(int customerID) throws Exception {
-        return null;
+        ArrayList<Order> orderArrayList = new ArrayList<>();
+        try
+        {
+            JSONArray orders = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getOrderListByCustomerID.php?id=" + customerID)).getJSONArray("orders");
+            for (int i = 0; i < orders.length(); i++)
+            {
+                Order order = jsonToOrder(orders.getJSONObject(i));
+                if (order != null)
+                    orderArrayList.add(order);
+            }
+        }
+        catch (Exception e)
+        {
+            return orderArrayList;
+        }
+        return orderArrayList;
     }
 
     @Override
