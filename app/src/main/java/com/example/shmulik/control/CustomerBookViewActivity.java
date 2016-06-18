@@ -83,13 +83,14 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             adapter = new BookSuppliersAdapter(this,bookSupplierArrayList);
             LV = (ListView) findViewById(R.id.bookSupplierLV);
             LV.setAdapter(adapter);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             finish();
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { // create the menu.
         getMenuInflater().inflate(R.menu.menu_logout_cart, menu);
         return true;
     }
@@ -98,8 +99,8 @@ public class CustomerBookViewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            User user = new User();
+        if (id == R.id.action_logout) { // choose to logout.
+            User user = new User(); // reset the user...
             userSingleton.setInstance(user);
             SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE);
             sharedPreferences.edit().putInt("userID", -1).apply();
@@ -108,22 +109,21 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-        else if (id == R.id.action_cart)
+        else if (id == R.id.action_cart) // choose to "go to cart".
         {
             Intent intent = new Intent(CustomerBookViewActivity.this, CartActivity.class);
             startActivity(intent);
         }
 
-        else if (id == R.id.action_edit_details)
+        else if (id == R.id.action_edit_details) // choose to edit details.
         {
             Intent intent = new Intent(CustomerBookViewActivity.this, EditUserDetailsActivity.class);
             startActivity(intent);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
-    public void addToCart(int bookID, int supplierID)
+    public void addToCart(int bookID, int supplierID) // on click on "add to cart" button. (called from the adapter)
     {
         try {
             BookSupplier bookSupplier = backend.getBookSupplierBySupplierIDAndByBookID(supplierID,bookID);
@@ -131,13 +131,13 @@ public class CustomerBookViewActivity extends AppCompatActivity {
                 throw new Exception("out of stock");
            //if (bookSupplier.getAmount() < Integer.parseInt(addBookAmount.getText().toString()))
            //     throw new Exception("There is not enough quantity");
-            bookSupplier.setAmount(bookSupplier.getAmount() - 1); //(Integer.parseInt(addBookAmount.getText().toString())));
+            bookSupplier.setAmount(bookSupplier.getAmount() - 1); //(Integer.parseInt(addBookAmount.getText().toString()))); // set the new amount of this bookSupplier in store.
             if (currentUser.getOrder() == null)
             {
                 ArrayList<BookSupplier> order = new ArrayList<>();
                 currentUser.setOrder(order);
             }
-            for (BookSupplier bookSupplier1 : currentUser.getOrder())
+            for (BookSupplier bookSupplier1 : currentUser.getOrder()) // set the new amount to each bookSupplier in cart.
             {
                 if (bookSupplier1.getBook().getBookID() == bookSupplier.getBook().getBookID() &&
                         bookSupplier1.getSupplier().getSupplierID() == bookSupplier.getSupplier().getSupplierID())
@@ -155,14 +155,16 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             return;
         }
     }
-    void refreshView()
+
+    void refreshView() // refresh the view.
     {
         try {
             bookSupplierArrayList = backend.getBookSupplierByBookID(book.getBookID());
             adapter = new BookSuppliersAdapter(this,bookSupplierArrayList);
             LV.setAdapter(adapter);
             amount.setText("Total amount in store: " + backend.getBookAmountByBookID(book.getBookID()));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             finish();
         }
     }
