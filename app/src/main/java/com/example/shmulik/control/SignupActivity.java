@@ -129,7 +129,7 @@ public class SignupActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE); // key & value pair.
                 sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply(); // set the user id in the sharedPreferences.
                 Toast.makeText(SignupActivity.this, "registered successfully", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class); // load customer main activity.
+                Intent intent = new Intent(SignupActivity.this, CustomerMainActivityNew.class); // load customer main activity.
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                 startActivity(intent);
             }
@@ -151,7 +151,7 @@ public class SignupActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("userIDPre", Context.MODE_PRIVATE); // key & value pair.
                 sharedPreferences.edit().putInt("userID", currentUser.getUserID()).apply(); // set the user id in the sharedPreferences.
                 Toast.makeText(SignupActivity.this, "registered successfully", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(SignupActivity.this, SupplierMainActivity.class); // load supplier main activity.
+                Intent intent = new Intent(SignupActivity.this, SupplierMainActivityNew.class); // load supplier main activity.
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                 startActivity(intent);
             }
@@ -169,14 +169,14 @@ public class SignupActivity extends AppCompatActivity {
         {
             if (currentUser.getPermission() == Permission.CUSTOMER) // if the user is customer.
             {
-                Intent intent = new Intent(SignupActivity.this, CustomerMainActivity.class); // load customer main activity.
+                Intent intent = new Intent(SignupActivity.this, CustomerMainActivityNew.class); // load customer main activity.
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                 startActivity(intent);
             }
 
             else if (currentUser.getPermission() == Permission.SUPPLIER) // if the user is supplier.
             {
-                Intent intent = new Intent(SignupActivity.this, SupplierMainActivity.class); // load supplier main activity.
+                Intent intent = new Intent(SignupActivity.this, SupplierMainActivityNew.class); // load supplier main activity.
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                 startActivity(intent);
             }

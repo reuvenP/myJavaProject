@@ -17,4 +17,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="You.EditText.Style" parent="@android:style/Widget.EditText">
+        <item name="android:background">@color/colorEven</item>
+    </style>
+
 </resources>

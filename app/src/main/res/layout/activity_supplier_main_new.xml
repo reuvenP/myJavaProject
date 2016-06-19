@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/book_list_main_supplier"
+            android:background="@mipmap/book_list"
+            android:text="Book List"
+            android:textStyle="bold"
+            android:gravity="center|bottom"
+            android:paddingBottom="10dp"
+            android:textColor="#f90000"
+            android:textSize="25dp" />
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/edit_profile_main_supplier"
+            android:background="@mipmap/edit_profile"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:gravity="center|bottom"
+            android:paddingBottom="10dp"
+            android:textColor="#f90000"
+            android:text="Edit Profile" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/add_book_main_supplier"
+            android:background="@mipmap/add_new_book"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:gravity="center|bottom"
+            android:paddingBottom="10dp"
+            android:singleLine="false"
+            android:textColor="#f90000"
+            android:text="Add New Book"/>
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/add_book_from_list_main_supplier"
+            android:background="@mipmap/add_book_from_list"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:text="Add Book From List"
+            android:singleLine="true"
+            android:visibility="visible"
+            android:gravity="center|bottom"
+            android:paddingBottom="10dp"
+            android:typeface="normal"
+            android:textColor="#f90000"></Button>
+            <!--android:text="Add Book From List" />-->
+    </LinearLayout>
+</LinearLayout>

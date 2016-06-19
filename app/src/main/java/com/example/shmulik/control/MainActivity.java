@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
                 else if (currentUser.getPermission() == Permission.SUPPLIER) // if the user is supplier.
                 {
-                    Intent intent = new Intent(MainActivity.this, SupplierMainActivity.class); // load supplier main activity.
+                    Intent intent = new Intent(MainActivity.this, SupplierMainActivityNew.class); // load supplier main activity.
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                     startActivity(intent);
                 }

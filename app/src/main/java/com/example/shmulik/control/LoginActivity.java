@@ -76,14 +76,14 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (currentUser.getPermission() == Permission.CUSTOMER) // if the user is customer.
                         {
-                            Intent intent = new Intent(LoginActivity.this, CustomerMainActivity.class); // load customer main activity.
+                            Intent intent = new Intent(LoginActivity.this, CustomerMainActivityNew.class); // load customer main activity.
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                             startActivity(intent);
                         }
 
                         else if (currentUser.getPermission() == Permission.SUPPLIER) // if the user is supplier.
                         {
-                            Intent intent = new Intent(LoginActivity.this, SupplierMainActivity.class); // load supplier main activity.
+                            Intent intent = new Intent(LoginActivity.this, SupplierMainActivityNew.class); // load supplier main activity.
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                             startActivity(intent);
                         }
@@ -100,14 +100,14 @@ public class LoginActivity extends AppCompatActivity {
         {
             if (currentUser.getPermission() == Permission.CUSTOMER) // if the user is customer.
             {
-                Intent intent = new Intent(LoginActivity.this, CustomerMainActivity.class); // load customer main activity.
+                Intent intent = new Intent(LoginActivity.this, CustomerMainActivityNew.class); // load customer main activity.
                 startActivity(intent);
                 finish();
             }
 
             else if (currentUser.getPermission() == Permission.SUPPLIER) // if the user is supplier.
             {
-                Intent intent = new Intent(LoginActivity.this, SupplierMainActivity.class); // load supplier main activity.
+                Intent intent = new Intent(LoginActivity.this, SupplierMainActivityNew.class); // load supplier main activity.
                 startActivity(intent);
                 finish();
             }
