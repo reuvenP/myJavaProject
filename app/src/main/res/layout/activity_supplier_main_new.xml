@@ -14,7 +14,7 @@
             android:layout_weight="1"
             android:id="@+id/book_list_main_supplier"
             android:background="@mipmap/book_list"
-            android:text="My Book List"
+            android:text="My Book&#10; List"
             android:textStyle="bold"
             android:gravity="center|bottom"
             android:paddingBottom="10dp"
@@ -50,7 +50,7 @@
             android:paddingBottom="10dp"
             android:singleLine="false"
             android:textColor="#f90000"
-            android:text="Add New Book"/>
+            android:text="Add &#10;New Book"/>
         <Button
             android:layout_height="match_parent"
             android:layout_width="0dp"
@@ -59,8 +59,8 @@
             android:background="@mipmap/add_book_from_list"
             android:textStyle="bold"
             android:textSize="25dp"
-            android:text="Add Book From List"
-            android:singleLine="true"
+            android:text="Add Book&#10;From List"
+            android:singleLine="false"
             android:visibility="visible"
             android:gravity="center|bottom"
             android:paddingBottom="10dp"
