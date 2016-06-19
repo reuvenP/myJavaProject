@@ -14,7 +14,7 @@
             android:layout_weight="1"
             android:id="@+id/book_list_main_supplier"
             android:background="@mipmap/book_list"
-            android:text="Book List"
+            android:text="My Book List"
             android:textStyle="bold"
             android:gravity="center|bottom"
             android:paddingBottom="10dp"
