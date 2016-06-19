@@ -33,6 +33,7 @@
         <activity android:name="com.example.shmulik.control.AddBookActivity" />
         <activity android:name="com.example.shmulik.control.CartActivity" />
         <activity android:name="com.example.shmulik.control.SupplierAddBookFromListActivity" />
+        <activity android:name="com.example.shmulik.control.MyOrdersActivity" />
         <activity android:name="com.example.shmulik.control.EditUserDetailsActivity"></activity>
     </application>
 

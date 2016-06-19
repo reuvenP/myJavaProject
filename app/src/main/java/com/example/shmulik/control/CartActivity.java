@@ -47,12 +47,13 @@ public class CartActivity extends AppCompatActivity {
         total = (TextView) findViewById(R.id.cart_total);
         sumOfItems = (TextView) findViewById(R.id.cart_sum_of_item);
         clear = (Button) findViewById(R.id.cart_clear_BTN);
+
         clear.setOnClickListener(new View.OnClickListener() { // on click on "clear" button.
             @Override
             public void onClick(View v) {
                 emptyCart();
             }
-        });
+        }); // on click on "clear" button.
         CartAdapter adapter = new CartAdapter(this, currentUser.getOrder());
         listView.setAdapter(adapter);
         total.setText("Total: " + Float.toString(totalForOrder()));
@@ -63,7 +64,7 @@ public class CartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 submit();
             }
-        });
+        }); // on click on "submit" button.
     }
 
     @Override
@@ -191,7 +192,8 @@ public class CartActivity extends AppCompatActivity {
             Toast.makeText(CartActivity.this, "submitted",Toast.LENGTH_LONG).show();
             currentUser.getOrder().clear(); // clear the cart.
             backend.updateUser(currentUser);
-            backend.submit(order);
+            //backend.updateOrder(order,order.getOrderID());
+            backend.submit(order); // send the mail to the seller.
             refreshView();
 
         }

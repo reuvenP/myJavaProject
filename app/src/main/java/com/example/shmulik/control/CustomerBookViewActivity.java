@@ -120,6 +120,12 @@ public class CustomerBookViewActivity extends AppCompatActivity {
             Intent intent = new Intent(CustomerBookViewActivity.this, EditUserDetailsActivity.class);
             startActivity(intent);
         }
+
+        else if (id == R.id.action_my_orders) // choose to see old orders.
+        {
+            Intent intent = new Intent(CustomerBookViewActivity.this, MyOrdersActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -16,6 +16,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -115,7 +116,7 @@ public class DatabaseMySQL implements Backend {
         Map<String, Object> params = new LinkedHashMap<>();
         String result = "";
         params.put("customerID", order.getCustomer().getCustomerID());
-        params.put("date", new SimpleDateFormat("yyyy-MM-dd").format(order.getOrderDate()));
+        params.put("date", new android.text.format.DateFormat().format("yyyy-MM-dd hh:mm:ss", order.getOrderDate()));//SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getOrderDate()));
         params.put("price", order.getTotalPrice());
         params.put("books", BooksForOrderListToString(order.getBooksForOrders()));
         try
@@ -268,6 +269,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+
     @Override
     public void updateSupplier(Supplier supplier, int supplierID) throws Exception {
         final Map<String, Object> params = new LinkedHashMap<>();
@@ -292,7 +294,25 @@ public class DatabaseMySQL implements Backend {
 
     @Override
     public void updateOrder(Order order, int orderID) throws Exception {
-
+        Map<String, Object> params = new LinkedHashMap<>();
+        String result = "";
+        params.put("orderID", order.getOrderID());
+        params.put("customerID", order.getCustomer().getCustomerID());
+        params.put("date", new android.text.format.DateFormat().format("yyyy-MM-dd hh:mm:ss" , order.getOrderDate()));//SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getOrderDate()));
+        params.put("price", order.getTotalPrice());
+        params.put("books", BooksForOrderListToString(order.getBooksForOrders()));
+        try
+        {
+            result = POST("http://plevinsk.vlab.jct.ac.il/addOrder.php", params);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
+        int id = Integer.parseInt(result.substring(0, result.length() - 1));
+        if (id == 0)
+            throw new Exception("Error in update order");
+        return;
     }
 
     @Override
@@ -305,7 +325,8 @@ public class DatabaseMySQL implements Backend {
         params.put("bookSupplierAmount", bookSupplier.getAmount());
         try {
             result = POST("http://plevinsk.vlab.jct.ac.il/updateBookSupplier.php", params);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
             throw new Exception(result);
         }

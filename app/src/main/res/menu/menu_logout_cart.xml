@@ -12,6 +12,10 @@
         android:orderInCategory="100"
         android:title="Go to cart" />
     <item
+        android:id="@+id/action_my_orders"
+        android:orderInCategory="100"
+        android:title="My Orders" />
+    <item
         android:id="@+id/action_edit_details"
         android:orderInCategory="100"
         android:title="Edit Profile" />
