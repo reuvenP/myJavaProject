@@ -513,7 +513,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public ArrayList<Book> getBookList() throws Exception {
+    public ArrayList<Book> getBookList() throws Exception 
+    {
         final ArrayList<Book> bookArrayList = new ArrayList<>();
         try {
             JSONArray books = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getBookList.php")).getJSONArray("books");
@@ -530,7 +531,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public ArrayList<Customer> getCustomerList() throws Exception {
+    public ArrayList<Customer> getCustomerList() throws Exception //return entire customer list
+    {
         final ArrayList<Customer> customerArrayList = new ArrayList<>();
         try {
             JSONArray customers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getCustomerList.php")).getJSONArray("customers");
@@ -547,7 +549,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public ArrayList<Supplier> getSupplierList() throws Exception {
+    public ArrayList<Supplier> getSupplierList() throws Exception //return entire suppliers list
+    {
         final ArrayList<Supplier> supplierArrayList = new ArrayList<>();
         try {
             JSONArray suppliers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getSupplierList.php")).getJSONArray("suppliers");
@@ -569,7 +572,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public ArrayList<Order> getOrderList() throws Exception {
+    public ArrayList<Order> getOrderList() throws Exception //return entire orders list
+    {
         ArrayList<Order> orderArrayList = new ArrayList<>();
         try
         {
@@ -589,7 +593,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public ArrayList<BookSupplier> getBookSupplierList() throws Exception {
+    public ArrayList<BookSupplier> getBookSupplierList() throws Exception //return entire bookSuppliers list
+    {
         final ArrayList<BookSupplier> bookSupplierArrayList = new ArrayList<>();
         try {
             JSONArray bookSuppliers = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getBookSupplierList.php")).getJSONArray("bookSuppliers");
@@ -616,7 +621,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public ArrayList<Order> getOrderListOfSpecificCustomerByCustomerID(int customerID) throws Exception {
+    public ArrayList<Order> getOrderListOfSpecificCustomerByCustomerID(int customerID) throws Exception //return orders list of a customer
+    {
         ArrayList<Order> orderArrayList = new ArrayList<>();
         try
         {
@@ -641,7 +647,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public ArrayList<User> getUserList() throws Exception {
+    public ArrayList<User> getUserList() throws Exception //return entire users list
+    {
         final ArrayList<User> userArrayList = new ArrayList<>();
         try {
             JSONArray users = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getUserList.php")).getJSONArray("users");
@@ -658,7 +665,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public ArrayList<Book> getBookListByCategory(Category category) throws Exception {
+    public ArrayList<Book> getBookListByCategory(Category category) throws Exception //return book list by category
+    {
         final ArrayList<Book> bookArrayList = new ArrayList<>();
         try {
             JSONArray books = new JSONObject(GET("http://plevinsk.vlab.jct.ac.il/getBookListByCategory.php?category=" + category.toString())).getJSONArray("books");
@@ -675,7 +683,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public int getBookAmountByBookID(int bookID) {
+    public int getBookAmountByBookID(int bookID) //return book amount by going over BookSupplier object and counting them
+    {
         int amount = 0;
         try {
             ArrayList<BookSupplier> bookSupplierArrayList = this.getBookSupplierByBookID(bookID);
@@ -689,7 +698,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public User login(String email, String password) {
+    public User login(String email, String password) //return User object if username and password are matched
+    {
         try {
             ArrayList<User> userArrayList = this.getUserList();
             for (User user : userArrayList) {
@@ -729,7 +739,8 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public void submit(final Order order) throws Exception {
+    public void submit(final Order order) throws Exception //submit an order. send mail to suppliers
+    {
         for (BooksForOrder booksForOrder : order.getBooksForOrders()) {
             try {
                 User user = getUserByID(booksForOrder.getBookSupplier().getSupplier().getSupplierID());
@@ -752,6 +763,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //function to sent mail via SMTP server. used with generic Mail class. credit appears there
     void sendMail(final String to, final String subject, final String body) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -772,6 +784,7 @@ public class DatabaseMySQL implements Backend {
         }.execute();
     }
 
+    //async task - send GET request to the server and wait for response
     private static String GET(String url) throws Exception {
         final String[] result = {""};
         final String url2 = url;
@@ -805,6 +818,7 @@ public class DatabaseMySQL implements Backend {
         return result[0];
     }
 
+    //async task - send POST request to the server and wait for response
     private static String POST(final String url, Map<String, Object> params) throws IOException {
         //Convert Map<String,Object> into key=value&key=value pairs.
         final StringBuilder postData = new StringBuilder();
@@ -857,6 +871,7 @@ public class DatabaseMySQL implements Backend {
         return result[0];
     }
 
+    //make Book object from JSONObject
     Book jsonToBook(JSONObject object) {
         try {
             Book book = new Book(object.getString("title"), object.getInt("year"), object.getString("author"), object.getInt("pages"), Category.valueOf(object.getString("category")));
@@ -867,6 +882,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //make Customer object from JSONObject
     Customer jsonToCustomer(JSONObject object) {
         try {
             if (object.getString("userPermission").equals(Permission.CUSTOMER.toString())) {
@@ -882,6 +898,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //make Supplier object from JSONObject
     Supplier jsonToSupplier(JSONObject object) {
         try {
             if (object.getString("userPermission").equals(Permission.SUPPLIER.toString())) {
@@ -897,6 +914,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //make User object from JSONObject
     User jsonToUser(JSONObject object) {
         try {
             User user = new User(Permission.valueOf(object.getString("userPermission")), object.getString("userMail"), object.getString("userPassword"), object.getInt("userID"));
@@ -909,6 +927,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //make BookSupplier object from JSONObject
     BookSupplier jsonToBookSupplier(JSONObject object) {
         try {
             int bookID = object.getInt("bookSupplierBook");
@@ -925,6 +944,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //make Order object from JSONObject
     Order jsonToOrder(JSONObject object)
     {
         try
@@ -944,6 +964,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //make Json string from array list of BookSupplier
     String bookSupplierListToString(ArrayList<BookSupplier> bookSuppliers) {
         try {
             JSONArray jsonArray = new JSONArray();
@@ -962,6 +983,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //make Json string from array list of BooksForOrder
     String BooksForOrderListToString(ArrayList<BooksForOrder> booksForOrders){
         try
         {
@@ -983,6 +1005,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //make array list of BookSupplier from Json string
     ArrayList<BookSupplier> bookSupplierStringToList(String bookSuppliers) {
         if (bookSuppliers == null || bookSuppliers.equals(""))
             return null;
@@ -1008,6 +1031,7 @@ public class DatabaseMySQL implements Backend {
         }
     }
 
+    //make array list of BooksForOrder from Json string
     ArrayList<BooksForOrder> booksForOrderStringToList(String booksForOrder)
     {
         if (booksForOrder == null || booksForOrder.equals(""))
