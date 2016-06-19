@@ -513,7 +513,7 @@ public class DatabaseMySQL implements Backend {
     }
 
     @Override
-    public ArrayList<Book> getBookList() throws Exception 
+    public ArrayList<Book> getBookList() throws Exception
     {
         final ArrayList<Book> bookArrayList = new ArrayList<>();
         try {
