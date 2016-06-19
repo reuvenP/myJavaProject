@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/book_list_main_customer"
+            android:background="@mipmap/book_list"
+            android:text="Book List"
+            android:gravity="center|bottom"
+            android:paddingBottom="10dp"
+            android:textStyle="bold"
+            android:textColor="#f90000"
+            android:textSize="25dp" />
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/edit_profile_main_customer"
+            android:background="@mipmap/edit_profile"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:gravity="center|bottom"
+            android:paddingBottom="10dp"
+            android:textColor="#f90000"
+            android:text="Edit Profile" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/cart_main_customer"
+            android:background="@mipmap/cart_icon_main"
+            android:text="Cart"
+            android:textStyle="bold"
+            android:gravity="center|bottom"
+            android:paddingBottom="10dp"
+            android:textColor="#f90000"
+            android:textSize="25dp" />
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/orders_main_customer"
+            android:background="@mipmap/orders"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:textColor="#f90000"
+            android:gravity="center|bottom"
+            android:paddingBottom="10dp"
+            android:text="My Orders" />
+    </LinearLayout>
+</LinearLayout>
