@@ -59,15 +59,15 @@ public class MyOrdersActivity extends AppCompatActivity {
             }
 
             setOrdersLV();
-//            ordersLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // on click on order from the list.
-//                    orderToShow = (Order) ordersLV.getItemAtPosition(position);
-//                    Intent intent = new Intent(MyOrdersActivity.this, OrderViewActivity.class); // go to OrderViewActivity (to see more details).
-//                    intent.putExtra("orderID", orderToShow.getOrderID());
-//                    startActivity(intent);
-//                }
-//            });
+            ordersLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // on click on order from the list.
+                    orderToShow = (Order) ordersLV.getItemAtPosition(position);
+                    Intent intent = new Intent(MyOrdersActivity.this, OrderViewActivity.class); // go to OrderViewActivity (to see more details).
+                    intent.putExtra("orderID", orderToShow.getOrderID());
+                    startActivity(intent);
+                }
+            });
         }
 
         void setOrdersLV(){ // set the view of all orders.

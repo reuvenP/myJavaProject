@@ -160,10 +160,12 @@ public class CartActivity extends AppCompatActivity {
         return sum;
     }
 
-    void submit() // on click on "submit" button.
+    void submit() // on click on "submit" button. (called from listener)
     {
         try
         {
+            if (currentUser.getOrder().size() == 0) // make sure that there is some order in cart
+                return;
             ArrayList<BooksForOrder> booksForOrders = new ArrayList<>();
             /*for (BookSupplier bookSupplier : currentUser.getOrder())
             {

@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.example.shmulik.myjavaproject.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 import entities.Order;
 /**
  * Created by shmuel on 19/06/2016.
@@ -30,7 +30,7 @@ public class OrdersAdapter extends ArrayAdapter<Order> {
         TextView order_date = (TextView)convertView.findViewById(R.id.order_date_row);
         TextView order_total_price = (TextView) convertView.findViewById(R.id.order_total_price_row);
         order_id.setText("Serial Number: " + Integer.toString(order.getOrderID()));
-        order_date.setText("Date of Order: " + order.getOrderDate().toString());
+        order_date.setText("Date of Order: " + new SimpleDateFormat("yyyy-MM-dd").format(order.getOrderDate()));
         order_total_price.setText("Total Price: " + Float.toString(order.getTotalPrice()));
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,10 +38,10 @@ public class OrdersAdapter extends ArrayAdapter<Order> {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if ((position % 2) == 0) { // set different color to each line.
-            convertView.setBackgroundResource(R.color.colorEven);
+            convertView.setBackgroundResource(R.color.colorEven2);
         }
         else {
-            convertView.setBackgroundResource(R.color.colorOdd);
+            convertView.setBackgroundResource(R.color.colorOdd2);
         }
         return convertView;
     }

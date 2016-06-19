@@ -116,7 +116,7 @@ public class DatabaseMySQL implements Backend {
         Map<String, Object> params = new LinkedHashMap<>();
         String result = "";
         params.put("customerID", order.getCustomer().getCustomerID());
-        params.put("date", new android.text.format.DateFormat().format("yyyy-MM-dd hh:mm:ss", order.getOrderDate()));//SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getOrderDate()));
+        params.put("date", new SimpleDateFormat("yyyy-MM-dd").format(order.getOrderDate()));
         params.put("price", order.getTotalPrice());
         params.put("books", BooksForOrderListToString(order.getBooksForOrders()));
         try
@@ -298,7 +298,7 @@ public class DatabaseMySQL implements Backend {
         String result = "";
         params.put("orderID", order.getOrderID());
         params.put("customerID", order.getCustomer().getCustomerID());
-        params.put("date", new android.text.format.DateFormat().format("yyyy-MM-dd hh:mm:ss" , order.getOrderDate()));//SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getOrderDate()));
+        params.put("date", new SimpleDateFormat("yyyy-MM-dd").format(order.getOrderDate()));
         params.put("price", order.getTotalPrice());
         params.put("books", BooksForOrderListToString(order.getBooksForOrders()));
         try
@@ -936,6 +936,7 @@ public class DatabaseMySQL implements Backend {
             Date date = sdf.parse(object.getString("date"));
             float price = (float) object.getDouble("total_price");
             Order order = new Order(customer,booksForOrders,date,price,true);
+            order.setOrderID(orderID);
             return order;
         } catch (Exception e) {
             e.printStackTrace();
