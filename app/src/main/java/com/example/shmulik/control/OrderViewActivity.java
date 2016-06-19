@@ -117,8 +117,7 @@ public class OrderViewActivity extends AppCompatActivity {
 
         else if (id == R.id.action_my_orders) // choose to see old orders.
         {
-            Intent intent = new Intent(OrderViewActivity.this, MyOrdersActivity.class);
-            startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
