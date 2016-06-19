@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (currentUser.getPermission() == Permission.CUSTOMER) // if the user is customer.
                 {
-                    Intent intent = new Intent(MainActivity.this, CustomerMainActivity.class); // load customer main activity.
+                    Intent intent = new Intent(MainActivity.this, CustomerMainActivityNew.class); // load customer main activity.
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
                     startActivity(intent);
                 }

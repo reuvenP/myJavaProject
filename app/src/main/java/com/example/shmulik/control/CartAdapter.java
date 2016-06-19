@@ -35,9 +35,9 @@ public class CartAdapter extends ArrayAdapter<BookSupplier> {
         TextView price = (TextView) convertView.findViewById(R.id.price_cart);
         Button submit = (Button) convertView.findViewById(R.id.cart_submit_BTN);
         Button remove = (Button) convertView.findViewById(R.id.remove_from_cart_BTN);
-        bookName.setText(bookSupplier.getBook().getTitle().toString());
-        supplierName.setText(bookSupplier.getSupplier().getName().toString());
-        price.setText(Float.toString(bookSupplier.getPrice()));
+        bookName.setText("Book Name: " + bookSupplier.getBook().getTitle().toString());
+        supplierName.setText("Supplier Name: " + bookSupplier.getSupplier().getName().toString());
+        price.setText("Price: " + Float.toString(bookSupplier.getPrice()));
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // on click on "remove" button.
