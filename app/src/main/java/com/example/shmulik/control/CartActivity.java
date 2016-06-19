@@ -69,7 +69,7 @@ public class CartActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) { // create the menu.
-        getMenuInflater().inflate(R.menu.menu_logout_cart, menu);
+        getMenuInflater().inflate(R.menu.menu_logout, menu);
         return true;
     }
 
@@ -85,23 +85,6 @@ public class CartActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // clear current Activity stack and launch a new Activity.
             startActivity(intent);
             return true;
-        }
-
-        else if (id == R.id.action_cart) // choose to go to cart.
-        {
-
-        }
-
-        else if (id == R.id.action_edit_details) // choose to edit profile
-        {
-            Intent intent = new Intent(CartActivity.this, EditUserDetailsActivity.class);
-            startActivity(intent);
-        }
-
-        else if (id == R.id.action_my_orders) // choose to see old orders.
-        {
-            Intent intent = new Intent(CartActivity.this, MyOrdersActivity.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
