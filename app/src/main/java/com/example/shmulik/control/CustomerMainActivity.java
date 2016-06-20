@@ -148,6 +148,11 @@ public class CustomerMainActivity extends AppCompatActivity {
             Intent intent = new Intent(CustomerMainActivity.this, MyOrdersActivity.class);
             startActivity(intent);
         }
+        else if (id == R.id.action_web_view)
+        {
+            Intent intent = new Intent(CustomerMainActivity.this, WebViewActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 

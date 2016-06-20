@@ -19,4 +19,9 @@
         android:id="@+id/action_edit_details"
         android:orderInCategory="100"
         android:title="Edit Profile" />
+    <item
+        android:id="@+id/action_web_view"
+        android:orderInCategory="100"
+        android:title="Web View"
+        app:showAsAction="never" />
 </menu>

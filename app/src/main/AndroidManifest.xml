@@ -37,7 +37,8 @@
         <activity android:name="com.example.shmulik.control.OrderViewActivity" />
         <activity android:name="com.example.shmulik.control.CustomerMainActivityNew" />
         <activity android:name="com.example.shmulik.control.SupplierMainActivityNew" />
-        <activity android:name="com.example.shmulik.control.EditUserDetailsActivity"></activity>
+        <activity android:name="com.example.shmulik.control.EditUserDetailsActivity" />
+        <activity android:name="com.example.shmulik.control.WebViewActivity"></activity>
     </application>
 
 </manifest>
