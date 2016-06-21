@@ -119,13 +119,15 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
     }
 
     private void refreshContent(){
-
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
+        pullToRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(SupplierAddBookFromListActivity.this, "start to refresh", Toast.LENGTH_SHORT).show();
+                refreshListView();
                 pullToRefresh.setRefreshing(false);
+                Toast.makeText(SupplierAddBookFromListActivity.this, "finished to refresh", Toast.LENGTH_SHORT).show();
             }
-        }, 5000);
-        refreshListView();
+        });
     }
 
     void refreshListView() // refresh the view.

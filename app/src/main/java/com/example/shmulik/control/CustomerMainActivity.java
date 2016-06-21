@@ -127,12 +127,29 @@ public class CustomerMainActivity extends AppCompatActivity {
 
     private void refreshContent(){
 
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
+        pullToRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(CustomerMainActivity.this, "start to refresh", Toast.LENGTH_SHORT).show();
+                refreshListView();
                 pullToRefresh.setRefreshing(false);
+                Toast.makeText(CustomerMainActivity.this, "finished to refresh", Toast.LENGTH_SHORT).show();
             }
-        }, 5000);
-        onResume();
+        });
+    }
+
+    private void refreshListView() {
+        if (categorySpinner == null)
+            setCustomerLV();
+        else
+        {
+            if (categorySpinner.getSelectedItem().toString().equals("All"))
+                setCustomerLV();
+            else
+            {
+                setCustomerLV(Category.valueOf(categorySpinner.getSelectedItem().toString()));
+            }
+        }
     }
 
     @Override
@@ -196,28 +213,4 @@ public class CustomerMainActivity extends AppCompatActivity {
             }
         }
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        new AlertDialog.Builder(CustomerMainActivity.this)
-//                .setTitle("Exit the store?")
-//                .setMessage("Are you sure you want to exit?")
-//                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) { // choose yes...
-//                        try {
-//                            finish();
-//                        } catch (Exception e) {
-//
-//                        }
-//                    }
-//                })
-//                .setNegativeButton("NO", new DialogInterface.OnClickListener() { // choose no...
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        return;
-//                    }
-//                })
-//                .show();
-//    }
 }

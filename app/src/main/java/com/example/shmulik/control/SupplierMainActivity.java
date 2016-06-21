@@ -28,13 +28,14 @@ import model.backend.userSingleton;
 
 
 // class to manage supplier main activity.
-public class SupplierMainActivity extends AppCompatActivity {
+public class SupplierMainActivity extends AppCompatActivity /*implements SwipeRefreshLayout.OnRefreshListener */{
     Backend backend;
     ListView supplierLV;
     SwipeRefreshLayout pullToRefresh;
     ArrayList<Book> bookArrayList;
     public Book bookToShow = null;
     User currentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class SupplierMainActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 // TODO Auto-generated method stub
+                pullToRefresh.setRefreshing(true);
                 refreshContent();
             }
         });
@@ -131,13 +133,15 @@ public class SupplierMainActivity extends AppCompatActivity {
     }
 
     private void refreshContent(){
-
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
+        pullToRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(SupplierMainActivity.this, "start to refresh", Toast.LENGTH_SHORT).show();
+                refreshListView();
                 pullToRefresh.setRefreshing(false);
+                Toast.makeText(SupplierMainActivity.this, "finished to refresh", Toast.LENGTH_SHORT).show();
             }
-        }, 5000);
-        refreshListView();
+        });
     }
 
     @Override
@@ -195,28 +199,4 @@ public class SupplierMainActivity extends AppCompatActivity {
         super.onResume();
         refreshListView();
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        new AlertDialog.Builder(SupplierMainActivity.this)
-//                .setTitle("Exit the store?")
-//                .setMessage("Are you sure you want to exit?")
-//                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) { // choose yes...
-//                        try {
-//                            finish();
-//                        } catch (Exception e) {
-//
-//                        }
-//                    }
-//                })
-//                .setNegativeButton("NO", new DialogInterface.OnClickListener() { // choose no...
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        return;
-//                    }
-//                })
-//                .show();
-//    }
 }
