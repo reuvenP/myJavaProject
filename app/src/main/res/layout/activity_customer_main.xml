@@ -15,10 +15,13 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:id="@+id/category_spinner"></Spinner>
-
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/pullToRefresh_customer_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/customer_LV"></ListView>
-
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

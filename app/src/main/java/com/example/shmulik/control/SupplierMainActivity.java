@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import model.backend.userSingleton;
 public class SupplierMainActivity extends AppCompatActivity {
     Backend backend;
     ListView supplierLV;
+    SwipeRefreshLayout pullToRefresh;
     ArrayList<Book> bookArrayList;
     public Book bookToShow = null;
     User currentUser;
@@ -38,6 +41,16 @@ public class SupplierMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supplier_main);
         supplierLV = (ListView) findViewById(R.id.supplier_LV);
+        pullToRefresh = (SwipeRefreshLayout) findViewById(R.id.pullToRefresh_supplier_main);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                // TODO Auto-generated method stub
+                refreshContent();
+            }
+        });
+
         try {
             backend = BackendFactory.getInstance(SupplierMainActivity.this); // get the current backend.
             currentUser = userSingleton.getInstance(); // get the current user.
@@ -75,8 +88,7 @@ public class SupplierMainActivity extends AppCompatActivity {
                                     intent.putExtra("bookID", bookToShow.getBookID());
                                     startActivity(intent);
                                     refreshListView(); // refresh LV with the new changes.
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
 
                                 }
                             }
@@ -93,8 +105,7 @@ public class SupplierMainActivity extends AppCompatActivity {
                                                 try {
                                                     backend.deleteBookSupplier(((Book) supplierLV.getItemAtPosition(position)).getBookID(), currentUser.getUserID()); // delete the book from the supplier.
                                                     refreshListView(); // refresh LV with the new changes.
-                                                }
-                                                catch (Exception e) {
+                                                } catch (Exception e) {
 
                                                 }
                                             }
@@ -117,6 +128,16 @@ public class SupplierMainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) { // create the menu
         getMenuInflater().inflate(R.menu.menu_logout_add_book, menu);
         return true;
+    }
+
+    private void refreshContent(){
+
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                pullToRefresh.setRefreshing(false);
+            }
+        }, 5000);
+        refreshListView();
     }
 
     @Override

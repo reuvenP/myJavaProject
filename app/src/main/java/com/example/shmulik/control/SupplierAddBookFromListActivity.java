@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,6 +31,7 @@ import model.backend.userSingleton;
 // class to manage add book from list activity.
 public class SupplierAddBookFromListActivity extends AppCompatActivity {
     ListView listView;
+    SwipeRefreshLayout pullToRefresh;
     Backend backend;
     User currentUser;
     ArrayList<Book> bookArrayList = new ArrayList<>();
@@ -38,6 +41,17 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supplier_add_book_from_list);
         listView = (ListView) findViewById(R.id.add_book_from_list_LV);
+        pullToRefresh = (SwipeRefreshLayout) findViewById(R.id.pullToRefresh_add_book_from_list);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                // TODO Auto-generated method stub
+
+                refreshContent();
+            }
+        });
+
         try {
             backend = BackendFactory.getInstance(SupplierAddBookFromListActivity.this); // get the current backend.
             currentUser = userSingleton.getInstance(); // get the current user.
@@ -104,7 +118,29 @@ public class SupplierAddBookFromListActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+    private void refreshContent(){
+
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                pullToRefresh.setRefreshing(false);
+            }
+        }, 5000);
+        refreshListView();
+    }
+
+    void refreshListView() // refresh the view.
+    {
+        try {
+            bookArrayList = backend.getBookList();
+            BooksAddAdapter adapter = new BooksAddAdapter(this, bookArrayList);
+            listView.setAdapter(adapter);
+        } catch (Exception e) {
+            finish();
+        }
+    }
+
+
+            @Override
     public boolean onCreateOptionsMenu(Menu menu) { // create the menu.
         getMenuInflater().inflate(R.menu.menu_logout, menu);
         return true;

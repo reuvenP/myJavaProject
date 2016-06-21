@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +35,7 @@ import model.backend.userSingleton;
 public class CustomerMainActivity extends AppCompatActivity {
     Backend backend;
     ListView customerLV;
+    SwipeRefreshLayout pullToRefresh;
     ArrayList<Book> bookArrayList;
     public Book bookToShow = null;
     Spinner categorySpinner;
@@ -43,6 +46,8 @@ public class CustomerMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_main);
         customerLV = (ListView) findViewById(R.id.customer_LV);
+        pullToRefresh = (SwipeRefreshLayout) findViewById(R.id.pullToRefresh_customer_main);
+
         categorySpinner = (Spinner) findViewById(R.id.category_spinner);
         try {
             backend = BackendFactory.getInstance(CustomerMainActivity.this); // get the current backend.
@@ -62,6 +67,16 @@ public class CustomerMainActivity extends AppCompatActivity {
                 Intent intent = new Intent(CustomerMainActivity.this, CustomerBookViewActivity.class); // go to CustomerBookViewActivity (to add to cart).
                 intent.putExtra("bookID", bookToShow.getBookID());
                 startActivity(intent);
+            }
+        });
+
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                // TODO Auto-generated method stub
+
+                refreshContent();
             }
         });
 
@@ -108,6 +123,16 @@ public class CustomerMainActivity extends AppCompatActivity {
         } catch (Exception e) {
             finish();
         }
+    }
+
+    private void refreshContent(){
+
+        new Handler().postDelayed(new Runnable() {
+            @Override public void run() {
+                pullToRefresh.setRefreshing(false);
+            }
+        }, 5000);
+        onResume();
     }
 
     @Override
