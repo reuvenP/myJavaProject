@@ -10,22 +10,20 @@ import android.webkit.WebView;
 
 import com.example.shmulik.myjavaproject.R;
 
-import java.util.zip.Inflater;
-
 /**
- * Created by reuvenp on 6/20/2016.
+ * Created by reuvenp on 6/21/2016.
  */
-public class AddBookWebView extends Fragment {
+public class AddUserWebView extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_book, container, false);
+        return inflater.inflate(R.layout.fragment_add_user, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        WebView webView = (WebView) getView().findViewById(R.id.add_book_webview);
-        webView.loadUrl("http://plevinsk.vlab.jct.ac.il/form/addBook.html");
+        WebView webView = (WebView) getView().findViewById(R.id.add_user_webview);
+        webView.loadUrl("http://plevinsk.vlab.jct.ac.il/form/addUser.html");
     }
 }
